@@ -1,9 +1,7 @@
-import React from 'react'
-
-function Footer() {
+export default function Footer() {
   return (
-    <div>Footer</div>
-  )
+    <div className="bg-primary flex justify-center items-center text-white h-14">
+      <p>© 2023 Campyuk Copyright. All Rights Reserved.</p>
+    </div>
+  );
 }
-
-export default Footer
