@@ -1,9 +1,32 @@
-import React from 'react'
+import React from "react";
+import { useCookies } from "react-cookie";
 
-function Layout() {
-  return (
-    <div>Layout</div>
-  )
+import Footer from "./Footer";
+import { NavbarGuest, NavbarLogin, NavbarForm } from "./Navbar";
+
+interface LayoutProps {
+  children: React.ReactNode;
 }
 
-export default Layout
+export function Layout({ children }: LayoutProps) {
+  const [cookie] = useCookies(["token"]);
+  const checkToken = cookie.token;
+
+  return (
+    <div>
+      {checkToken ? <NavbarLogin /> : <NavbarGuest />}
+      <div className="min-h-[85vh]">{children}</div>
+      <Footer />
+    </div>
+  );
+}
+
+export function LayoutForm({ children }: LayoutProps) {
+  return (
+    <div>
+      <NavbarForm />
+      <div className="min-h-[85vh]">{children}</div>
+      <Footer />
+    </div>
+  );
+}
