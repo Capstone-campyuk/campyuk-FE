@@ -15,8 +15,10 @@ import Order from "../pages/Order";
 import BookingHistory from "../pages/BookingHistory";
 import BookingDetail from "../pages/BookingDetail";
 import DashboardHost from "../pages/DashboardHost";
-import DetailCampAdmin from "../pages/DetailCampHost";
+import DetailCampHost from "../pages/DetailCampHost";
 import Profile from "../pages/Profile";
+import DashboardSAdmin from "../pages/DashboardSAdmin";
+import DetailSAdmin from "../pages/DetailSAdmin";
 
 function App() {
   const [cookie, , removeCookie] = useCookies(["token"]);
@@ -67,11 +69,19 @@ function App() {
     },
     {
       path: "/detail-camp-host/:id_camp",
-      element: <DetailCampAdmin />,
+      element: <DetailCampHost />,
     },
     {
       path: "/profile/:id-username",
       element: <Profile />,
+    },
+    {
+      path: "/super-admin",
+      element: <DashboardSAdmin />,
+    },
+    {
+      path: "/detail-admin/:id_camp",
+      element: <DetailSAdmin />,
     },
   ]);
 

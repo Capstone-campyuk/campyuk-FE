@@ -155,3 +155,62 @@ export function CardHost({
     </div>
   );
 }
+
+interface CardSAdminProps {
+  image: string;
+  campsite: string;
+  loc: string;
+  address: string;
+  id_camp: number;
+  price: number;
+}
+
+export function CardSAdmin({
+  campsite,
+  image,
+  loc,
+  price,
+  address,
+  id_camp,
+}: CardSAdminProps) {
+  const navigate = useNavigate();
+  const onClickDetail = () => {
+    navigate(`/detail-admin/:id_camp`);
+  };
+
+  return (
+    <div className="flex flex-col lg:flex-row bg-bgcard border-2 rounded-3xl shadow-lg">
+      <img
+        className="rounded-t-2xl lg:rounded-l-3xl lg:w-2/3"
+        src={image}
+        alt={image}
+      />
+      <div className="flex flex-col p-4 justify-evenly lg:w-1/3">
+        <div>
+          <h1 className="text-2xl">{campsite}</h1>
+          <p className="flex items-center">
+            <ImLocation /> {loc}
+          </p>
+        </div>
+        <div>
+          <h1 className="text-2xl">Address</h1>
+          <p>{address}</p>
+        </div>
+        <div>
+          <h1 className="text-2xl">Camp Id</h1>
+          <p>{id_camp}</p>
+        </div>
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl">$ {price} /night</h1>
+          <Btn
+            className="w-18"
+            label="Check"
+            onClick={() => {
+              onClickDetail();
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
