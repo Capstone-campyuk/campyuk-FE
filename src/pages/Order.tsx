@@ -12,6 +12,19 @@ function Order() {
         price={60}
         loc={"Sukabumi"}
       />
+      <CardReviewOrder
+        checkin={21 - 21 - 2022}
+        checkout={12 - 12 - 2022}
+        pricecamp={100}
+        totalnight={2}
+        guest={2}
+        subtotalcamp={200}
+        size={"small"}
+        pricetent={50}
+        quantity={2}
+        subtotaltent={100}
+        total={500}
+      />
     </Layout>
   );
 }
