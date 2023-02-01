@@ -16,7 +16,7 @@ interface modalProps {
   input7?: any;
   input8?: any;
 }
-
+//modal
 export const Modals1: FC<modalProps> = ({
   no,
   tombol1,

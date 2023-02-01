@@ -52,23 +52,22 @@ function App() {
     },
     {
       path: "/booking-history",
-      element: checkToken ? <BookingHistory /> : <Login />,
+      element: <BookingHistory />,
     },
     {
       path: "/booking-detail/:id_booking",
-      element: checkToken ? <BookingDetail /> : <Login />,
+      element: <BookingDetail />,
     },
     {
       path: "/dashboard-admin",
-      element: checkToken ? <DashboardAdmin /> : <Login />,
+      element: <DashboardAdmin />,
     },
     {
       path: "/detail-camp-admin/:id_camp",
-      element: checkToken ? <DetailCampAdmin /> : <Login />,
+      element: <DetailCampAdmin />,
     },
     {
       path: "/profile/:id-username",
-      // element: checkToken ? <Profile /> : <Login />,
       element: <Profile />,
     },
   ]);

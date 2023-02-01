@@ -16,11 +16,13 @@ export function Btn({
   className,
   disabled,
   icon,
+  onClick,
 }: ButtonProps) {
   return (
     <Button
       className={`bg-btn text-white hover:bg-btnh border-none rounded-full w-full disabled:bg-btnh disabled:text-gray-200 ${className}`}
       disabled={disabled}
+      onClick={onClick}
     >
       {label} {icon}
     </Button>

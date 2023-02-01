@@ -26,4 +26,30 @@ body {
 
 h1 {
   font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+  border-radius: 9999px;
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 9999px;
+  background: #181d31;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  border-radius: 9999px;
+  background: #555;
 }
