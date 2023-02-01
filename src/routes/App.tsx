@@ -1,9 +1,6 @@
 import React from "react";
 import axios, { AxiosHeaders } from "axios";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 import Home from "../pages/Home";
@@ -20,6 +17,7 @@ import Profile from "../pages/Profile";
 import DashboardSAdmin from "../pages/DashboardSAdmin";
 import DetailSAdmin from "../pages/DetailSAdmin";
 import OrderListAdmin from "../pages/OrderListAdmin";
+import AddTent from "../pages/AddTent";
 
 function App() {
   const [cookie, , removeCookie] = useCookies(["token"]);
@@ -87,6 +85,10 @@ function App() {
     {
       path: "/orderlist-admin",
       element: <OrderListAdmin />,
+    },
+    {
+      path: "/addtent",
+      element: <AddTent />,
     },
   ]);
 
