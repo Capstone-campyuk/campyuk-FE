@@ -1,6 +1,9 @@
 import React from "react";
 import axios, { AxiosHeaders } from "axios";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 import Home from "../pages/Home";
@@ -11,8 +14,8 @@ import DetailCamp from "../pages/DetailCamp";
 import Order from "../pages/Order";
 import BookingHistory from "../pages/BookingHistory";
 import BookingDetail from "../pages/BookingDetail";
-import DashboardAdmin from "../pages/DashboardAdmin";
-import DetailCampAdmin from "../pages/DetailCampAdmin";
+import DashboardHost from "../pages/DashboardHost";
+import DetailCampAdmin from "../pages/DetailCampHost";
 import Profile from "../pages/Profile";
 
 function App() {
@@ -59,11 +62,11 @@ function App() {
       element: <BookingDetail />,
     },
     {
-      path: "/dashboard-admin",
-      element: <DashboardAdmin />,
+      path: "/dashboard-host",
+      element: <DashboardHost />,
     },
     {
-      path: "/detail-camp-admin/:id_camp",
+      path: "/detail-camp-host/:id_camp",
       element: <DetailCampAdmin />,
     },
     {

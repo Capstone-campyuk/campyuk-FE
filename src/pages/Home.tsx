@@ -24,7 +24,6 @@ function Home() {
             Journeys, explorations, and adventures
           </h1>
           <h1 className="text-2xl font-extrabold antialiased">
-            {" "}
             Let’s go...
           </h1>
           <Link to="/camplist">
