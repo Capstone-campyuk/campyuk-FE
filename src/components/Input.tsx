@@ -1,9 +1,17 @@
-import React from 'react'
+import { InputHTMLAttributes } from "react";
 
-function Input() {
-  return (
-    <div>Input</div>
-  )
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
+  id: string;
 }
 
-export default Input
+function Input({ id, ...props }: Props) {
+  return (
+    <input
+      id={id}
+      className="bg-[#D8D8DD] rounded-lg text-black p-2 border focus:outline-none focus:border-black"
+      {...props}
+    />
+  );
+}
+
+export default Input;
