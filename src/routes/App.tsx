@@ -1,9 +1,6 @@
 import React from "react";
 import axios, { AxiosHeaders } from "axios";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 import Home from "../pages/Home";
