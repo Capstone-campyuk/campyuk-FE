@@ -19,6 +19,7 @@ import DetailCampHost from "../pages/DetailCampHost";
 import Profile from "../pages/Profile";
 import DashboardSAdmin from "../pages/DashboardSAdmin";
 import DetailSAdmin from "../pages/DetailSAdmin";
+import OrderListAdmin from "../pages/OrderListAdmin";
 
 function App() {
   const [cookie, , removeCookie] = useCookies(["token"]);
@@ -82,6 +83,10 @@ function App() {
     {
       path: "/detail-admin/:id_camp",
       element: <DetailSAdmin />,
+    },
+    {
+      path: "/orderlist-admin",
+      element: <OrderListAdmin />,
     },
   ]);
 

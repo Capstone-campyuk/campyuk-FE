@@ -51,7 +51,7 @@ export function CardCampList({
   );
 }
 
-interface CardCampLongProps {
+interface CardHistoryProps {
   image: string;
   campsite: string;
   loc: string;
@@ -59,9 +59,10 @@ interface CardCampLongProps {
   checkout: string;
   eticket: string;
   totalprice: number;
+  status: string;
 }
 
-export function CardCampLong({
+export function CardHistory({
   campsite,
   image,
   loc,
@@ -69,7 +70,8 @@ export function CardCampLong({
   checkin,
   checkout,
   eticket,
-}: CardCampLongProps) {
+  status,
+}: CardHistoryProps) {
   const navigate = useNavigate();
   const onClickDetail = () => {
     navigate(`/booking-detail/:id_booking`);
@@ -104,7 +106,12 @@ export function CardCampLong({
           <h1 className="text-2xl">E-Ticket</h1>
           <p>{eticket}</p>
         </div>
-        <h1 className="text-3xl text-end">$ {totalprice}</h1>
+        <div className="flex justify-between">
+          <h1 className="text-3xl text-end">$ {totalprice}</h1>
+          <p className="bg-primary text-bgcard text-center rounded-3xl p-2">
+            {status}
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -155,7 +162,6 @@ export function CardHost({
     </div>
   );
 }
-
 interface CardSAdminProps {
   image: string;
   campsite: string;

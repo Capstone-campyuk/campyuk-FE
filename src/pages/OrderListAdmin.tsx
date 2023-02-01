@@ -3,7 +3,7 @@ import React from "react";
 import { Layout } from "../components/Layout";
 import { CardHistory } from "../components/Card";
 
-function BookingHistory() {
+function OrderListAdmin() {
   return (
     <Layout>
       <h1 className="text-4xl p-5">Camp Site</h1>
@@ -43,4 +43,4 @@ function BookingHistory() {
   );
 }
 
-export default BookingHistory;
+export default OrderListAdmin;
