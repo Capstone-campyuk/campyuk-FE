@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function DetailCamp() {
-  return (
-    <div>DetailCamp</div>
-  )
+  return <div>DetailCamp</div>;
 }
 
-export default DetailCamp
+export default DetailCamp;
