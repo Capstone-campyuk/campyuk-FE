@@ -220,3 +220,89 @@ export function CardSAdmin({
     </div>
   );
 }
+
+interface CardOrderProps {
+  image: string;
+  campsite: string;
+  loc: string;
+  price: number;
+}
+
+export function CardOrder({ campsite, image, loc, price }: CardOrderProps) {
+  return (
+    <div className="px-20 pt-10">
+      <div className="flex  bg-white rounded-2xl h-80">
+        <div className="flex-row w-3/5 ">
+          <img
+            className="rounded-t-2xl lg:rounded-l-3xl lg:w-full h-80 "
+            src={image}
+            alt={image}
+          />
+        </div>
+        <div className="flex-row w-2/5 px-10">
+          <div className="flex flex-col pt-10">
+            <h1 className="font-bold text-2xl">{campsite}</h1>
+            <div className="flex flex-row">
+              <ImLocation className="w-8 h-8" /> {loc}
+            </div>
+            <div className="flex flex-col pt-10">
+              <h1 className="font-bold text-2xl">Facilities</h1>
+              <span>parkir</span>
+              <span>toilets</span>
+            </div>
+
+            <h1 className="text-3xl text-end pt-10">$ {price}/night</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface CardReviewOrderProps {
+  checkin: string;
+  checkout: string;
+  pricecamp: number;
+  totalnight: number;
+  guest: number;
+  subtotalcamp: number;
+  size: string;
+  pricetent: number;
+  quantity: number;
+  subtotaltent: number;
+  total: number;
+}
+
+export function CardReviewOrder({
+  checkin,
+  checkout,
+  pricecamp,
+  totalnight,
+  guest,
+  subtotalcamp,
+  size,
+  pricetent,
+  quantity,
+  subtotaltent,
+  total,
+}: CardReviewOrderProps) {
+  return (
+    <div className="px-20 pt-10">
+      <div className="flex  bg-white rounded-2xl h-80">
+        <div className="flex-row w-1/2 ">
+          <h1>Check-in</h1>
+        </div>
+        <div className="flex-row w-1/2 px-10">
+          <div className="flex flex-col pt-10">
+            <div className="flex flex-row"></div>
+            <div className="flex flex-col pt-10">
+              <h1 className="font-bold text-2xl">Facilities</h1>
+              <span>parkir</span>
+              <span>toilets</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
