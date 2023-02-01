@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 
 import { Btn } from "./Button";
 import { ImLocation } from "react-icons/im";
+import { HiOutlinePencilAlt, HiOutlineTrash } from "react-icons/hi";
+import { GiCampingTent } from "react-icons/gi";
 
 interface CardCampProps {
   image: string;
@@ -49,7 +51,7 @@ export function CardCampList({
   );
 }
 
-interface CardCampLongProps {
+interface CardHistoryProps {
   image: string;
   campsite: string;
   loc: string;
@@ -57,9 +59,10 @@ interface CardCampLongProps {
   checkout: string;
   eticket: string;
   totalprice: number;
+  status: string;
 }
 
-export function CardCampLong({
+export function CardHistory({
   campsite,
   image,
   loc,
@@ -67,7 +70,8 @@ export function CardCampLong({
   checkin,
   checkout,
   eticket,
-}: CardCampLongProps) {
+  status,
+}: CardHistoryProps) {
   const navigate = useNavigate();
   const onClickDetail = () => {
     navigate(`/booking-detail/:id_booking`);
@@ -102,7 +106,116 @@ export function CardCampLong({
           <h1 className="text-2xl">E-Ticket</h1>
           <p>{eticket}</p>
         </div>
-        <h1 className="text-3xl text-end">$ {totalprice}</h1>
+        <div className="flex justify-between">
+          <h1 className="text-3xl text-end">$ {totalprice}</h1>
+          <p className="bg-primary text-bgcard text-center rounded-3xl p-2">
+            {status}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface CardHostProps {
+  image: string;
+  campsite: string;
+  loc: string;
+  price: number;
+  status: string;
+}
+
+export function CardHost({
+  campsite,
+  image,
+  loc,
+  price,
+  status,
+}: CardHostProps) {
+  const navigate = useNavigate();
+  const onClickDetail = () => {
+    navigate(`/detail-camp-host/:id_camp`);
+  };
+  return (
+    <div className="flex flex-col bg-bgcard border-2 rounded-3xl shadow-lg max-w-2xl">
+      <img className="rounded-t-3xl" src={image} alt={image} />
+      <div className="flex justify-between p-4">
+        <div className="flex flex-col">
+          <h1>{campsite}</h1>
+          <p className="flex items-center">
+            <ImLocation /> {loc}
+          </p>
+        </div>
+        <div className="flex flex-col justify-between">
+          <h1>$ {price} /night</h1>
+          <br />
+          <p className="bg-primary text-bgcard text-center rounded-3xl p-2">
+            {status}
+          </p>
+        </div>
+      </div>
+      <div className="flex justify-between text-4xl p-4">
+        <HiOutlinePencilAlt />
+        <GiCampingTent />
+        <HiOutlineTrash className="text-btn" />
+      </div>
+    </div>
+  );
+}
+interface CardSAdminProps {
+  image: string;
+  campsite: string;
+  loc: string;
+  address: string;
+  id_camp: number;
+  price: number;
+}
+
+export function CardSAdmin({
+  campsite,
+  image,
+  loc,
+  price,
+  address,
+  id_camp,
+}: CardSAdminProps) {
+  const navigate = useNavigate();
+  const onClickDetail = () => {
+    navigate(`/detail-admin/:id_camp`);
+  };
+
+  return (
+    <div className="flex flex-col lg:flex-row bg-bgcard border-2 rounded-3xl shadow-lg">
+      <img
+        className="rounded-t-2xl lg:rounded-l-3xl lg:w-2/3"
+        src={image}
+        alt={image}
+      />
+      <div className="flex flex-col p-4 justify-evenly lg:w-1/3">
+        <div>
+          <h1 className="text-2xl">{campsite}</h1>
+          <p className="flex items-center">
+            <ImLocation /> {loc}
+          </p>
+        </div>
+        <div>
+          <h1 className="text-2xl">Address</h1>
+          <p>{address}</p>
+        </div>
+        <div>
+          <h1 className="text-2xl">Camp Id</h1>
+          <p>{id_camp}</p>
+        </div>
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl">$ {price} /night</h1>
+          <Btn
+            className="w-18"
+            label="Check"
+            onClick={() => {
+              onClickDetail();
+            }}
+          />
+        </div>
       </div>
     </div>
   );

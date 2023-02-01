@@ -1,6 +1,9 @@
 import React from "react";
 import axios, { AxiosHeaders } from "axios";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 import Home from "../pages/Home";
@@ -11,9 +14,12 @@ import DetailCamp from "../pages/DetailCamp";
 import Order from "../pages/Order";
 import BookingHistory from "../pages/BookingHistory";
 import BookingDetail from "../pages/BookingDetail";
-import DashboardAdmin from "../pages/DashboardAdmin";
-import DetailCampAdmin from "../pages/DetailCampAdmin";
+import DashboardHost from "../pages/DashboardHost";
+import DetailCampHost from "../pages/DetailCampHost";
 import Profile from "../pages/Profile";
+import DashboardSAdmin from "../pages/DashboardSAdmin";
+import DetailSAdmin from "../pages/DetailSAdmin";
+import OrderListAdmin from "../pages/OrderListAdmin";
 
 function App() {
   const [cookie, , removeCookie] = useCookies(["token"]);
@@ -59,16 +65,28 @@ function App() {
       element: <BookingDetail />,
     },
     {
-      path: "/dashboard-admin",
-      element: <DashboardAdmin />,
+      path: "/dashboard-host",
+      element: <DashboardHost />,
     },
     {
-      path: "/detail-camp-admin/:id_camp",
-      element: <DetailCampAdmin />,
+      path: "/detail-camp-host/:id_camp",
+      element: <DetailCampHost />,
     },
     {
       path: "/profile/:id-username",
       element: <Profile />,
+    },
+    {
+      path: "/super-admin",
+      element: <DashboardSAdmin />,
+    },
+    {
+      path: "/detail-admin/:id_camp",
+      element: <DetailSAdmin />,
+    },
+    {
+      path: "/orderlist-admin",
+      element: <OrderListAdmin />,
     },
   ]);
 
