@@ -1,5 +1,8 @@
+import { Link } from "react-router-dom";
+
 import { ReactImageCarouselViewer } from "react-image-carousel-viewer";
 import { MapContainer, Marker, TileLayer, Popup } from "react-leaflet";
+
 import L, { LatLngExpression } from "leaflet";
 import { useState } from "react";
 import "leaflet/dist/leaflet.css";
@@ -125,9 +128,9 @@ function DetailCamp() {
                 </tr>
               </tbody>
             </table>
-            <div className="pt-10">
-              <Btn label="Reserve" />
-            </div>
+            <Link to={"/order/:id_order"}>
+              <Btn className="mt-10" label="Reserve" />
+            </Link>
           </div>
         </div>
       </div>

@@ -55,7 +55,7 @@ export function NavbarLogin() {
             className="dropdown-content mt-3 p-2 shadow bg-primary rounded-box w-52"
           >
             <Link
-              to={`/profile/${cookie.username}`}
+              to={`/profile/:id-username`}
               className="flex items-center gap-2"
             >
               <IoIosPerson className="text-2xl" />
@@ -84,7 +84,7 @@ export function NavbarLogin() {
       <div className="navbar-end hidden lg:flex ">
         <ul className="flex gap-8">
           <Link
-            to={`/profile/${cookie.username}`}
+            to={`/profile/:id-username`}
             className="flex items-center gap-2"
           >
             <IoIosPerson className="text-2xl" />
