@@ -14,17 +14,8 @@ export function Layout({ children }: LayoutProps) {
 
   return (
     <div>
-      {checkToken ? <NavbarLogin /> : <NavbarGuest />}
-      <div className="min-h-[85vh]">{children}</div>
-      <Footer />
-    </div>
-  );
-}
-
-export function LayoutForm({ children }: LayoutProps) {
-  return (
-    <div>
-      <NavbarForm />
+      {/* {checkToken ? <NavbarLogin /> : <NavbarGuest />} */}
+      <NavbarLogin />
       <div className="min-h-[85vh]">{children}</div>
       <Footer />
     </div>
