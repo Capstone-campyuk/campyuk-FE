@@ -1,8 +1,7 @@
 import { Layout } from "../components/Layout";
-import { Btn } from "../components/Button";
-import { ImLocation } from "react-icons/im";
+import { Btn, Btns } from "../components/Button";
 
-function AddTent() {
+function EditCampHost() {
   return (
     <Layout>
       <h1 className="font-bold text-3xl pt-5 px-20">Add Camp</h1>
@@ -109,11 +108,93 @@ function AddTent() {
           </form>
         </div>
       </div>
-      <div className="flex justify-end p-5">
-        <Btn className="w-18" label="Add Camp" />
+      <div className="flex justify-center gap-20 pb-10">
+        <label
+          htmlFor="edit-modal"
+          className="btn bg-btns text-white hover:bg-btnsh border-none rounded-full"
+        >
+          Edit Tent
+        </label>
+        {/* modal edit */}
+        <input type="checkbox" id="edit-modal" className="modal-toggle" />
+        <div className="modal modal-bottom sm:modal-middle">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Add Tent</h3>
+            <div className="flex py-5 w-full px-10">
+              <label className="font-semibold text-black flex items-start justify-start w-1/3 text-center">
+                Size
+              </label>
+              <select
+                name="size"
+                id="size"
+                className="bg-[#cbd5e1]  w-full rounded-lg text-black p-3 border focus:outline-none focus:border-black"
+              >
+                <option value="small">S</option>
+                <option value="medium">M</option>
+                <option value="large">L</option>
+              </select>
+            </div>
+            <div className="flex py-5 w-full px-10">
+              <label className="font-semibold text-black flex items-start justify-start w-1/3 text-center">
+                Price
+              </label>
+              <input
+                className="rounded-lg bg-[#cbd5e1] border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
+                type="number"
+                placeholder=""
+              />
+            </div>
+            <div className="flex py-5 w-full px-10">
+              <label className="font-semibold text-black flex items-start justify-start w-1/3 text-center">
+                Stok
+              </label>
+              <input
+                className="rounded-lg bg-[#cbd5e1] border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
+                type="number"
+                placeholder=""
+              />
+            </div>
+
+            <div className="flex py-5 w-full px-10">
+              <label
+                htmlFor="edit-photo"
+                style={{ cursor: "pointer" }}
+                className={
+                  "font-semibold text-black flex items-start justify-start w-1/3 text-center"
+                }
+              >
+                Add image
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                id="edit-photo"
+                style={{ display: "none" }}
+                onChange={(e) => {
+                  if (!e.target.files) return;
+                  e.target.files[0];
+                }}
+              />
+              <img src={"newPreviewImage"} alt="" width={200} height={100} />
+            </div>
+            <div className="modal-action">
+              <button className="btn bg-btn text-white hover:bg-btnh border-none rounded-full ">
+                Add Tent
+              </button>
+              <label
+                htmlFor="edit-modal"
+                className="btn bg-btn text-white hover:bg-btnh border-none rounded-full "
+              >
+                Cancel
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <Btn className="w-18" label="Update Camp" />
       </div>
     </Layout>
   );
 }
 
-export default AddTent;
+export default EditCampHost;

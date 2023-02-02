@@ -18,6 +18,7 @@ import DashboardSAdmin from "../pages/DashboardSAdmin";
 import DetailSAdmin from "../pages/DetailSAdmin";
 import OrderListAdmin from "../pages/OrderListAdmin";
 import AddTent from "../pages/AddTent";
+import EditCampHost from "../pages/EditCampHost";
 
 function App() {
   const [cookie, , removeCookie] = useCookies(["token"]);
@@ -89,6 +90,10 @@ function App() {
     {
       path: "/addtent",
       element: <AddTent />,
+    },
+    {
+      path: "/edit-camp/:id_camp",
+      element: <EditCampHost />,
     },
   ]);
 
