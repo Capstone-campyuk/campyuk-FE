@@ -132,13 +132,11 @@ export function CardHost({
   price,
   status,
 }: CardHostProps) {
-  const navigate = useNavigate();
-  const onClickDetail = () => {
-    navigate(`/detail-camp-host/:id_camp`);
-  };
   return (
     <div className="flex flex-col bg-bgcard border-2 rounded-3xl shadow-lg max-w-2xl">
-      <img className="rounded-t-3xl" src={image} alt={image} />
+      <Link to="/detail-camp-host/:id_camp">
+        <img className="rounded-t-3xl" src={image} alt={image} />
+      </Link>
       <div className="flex justify-between p-4">
         <div className="flex flex-col">
           <h1>{campsite}</h1>
@@ -155,7 +153,9 @@ export function CardHost({
         </div>
       </div>
       <div className="flex justify-between text-4xl p-4">
-        <HiOutlinePencilAlt />
+        <Link to="/edit-camp/:id_camp">
+          <HiOutlinePencilAlt />
+        </Link>
         <GiCampingTent />
         <HiOutlineTrash className="text-btn" />
       </div>
@@ -186,11 +186,13 @@ export function CardSAdmin({
 
   return (
     <div className="flex flex-col lg:flex-row bg-bgcard border-2 rounded-3xl shadow-lg">
-      <img
-        className="rounded-t-2xl lg:rounded-l-3xl lg:w-2/3"
-        src={image}
-        alt={image}
-      />
+      <Link to="/detail-admin/:id_camp">
+        <img
+          className="rounded-t-2xl lg:rounded-l-3xl lg:w-2/3"
+          src={image}
+          alt={image}
+        />
+      </Link>
       <div className="flex flex-col p-4 justify-evenly lg:w-1/3">
         <div>
           <h1 className="text-2xl">{campsite}</h1>
@@ -228,7 +230,12 @@ interface CardOrderProps {
   price: number;
 }
 
-export function CardOrder({ campsite, image, loc, price }: CardOrderProps) {
+export function CardOrder({
+  campsite,
+  image,
+  loc,
+  price,
+}: CardOrderProps) {
   return (
     <div className="px-20 pt-10">
       <div className="flex  bg-white rounded-2xl h-80">
@@ -247,11 +254,14 @@ export function CardOrder({ campsite, image, loc, price }: CardOrderProps) {
             </div>
             <div className="flex flex-col pt-10">
               <h1 className="font-bold text-2xl">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem
+                Lorem ipsum dolor sit amet consectetur adipisicing
+                elit. Rem
               </h1>
             </div>
 
-            <h1 className="text-3xl text-end pt-10">$ {price}/night</h1>
+            <h1 className="text-3xl text-end pt-10">
+              $ {price}/night
+            </h1>
           </div>
         </div>
       </div>

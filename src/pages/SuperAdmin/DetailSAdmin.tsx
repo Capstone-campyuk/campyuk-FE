@@ -153,7 +153,7 @@ function DetailSAdmin() {
       </div>
       <div className="px-10">
         <label htmlFor="" className="font-bold text-2xl text-sky-900">
-          Download Business Lisance
+          Download Business License
         </label>
       </div>
       <div className="flex px-10 pt-10 pb-10">
