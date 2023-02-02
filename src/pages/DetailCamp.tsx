@@ -1,101 +1,116 @@
-import { GiPositionMarker } from "react-icons/gi";
-import { Btn } from "../components/Button";
+import L, { LatLngExpression } from "leaflet";
+import "leaflet/dist/leaflet.css";
+import tileLayer from "../utils/tileLayer";
+
+import {
+  MapContainer,
+  Marker,
+  TileLayer,
+  Popup,
+} from "react-leaflet";
+
 import { Layout } from "../components/Layout";
+import { Btn } from "../components/Button";
+import { ImLocation } from "react-icons/im";
 
 function DetailCamp() {
+  const content =
+    "https://images.unsplash.com/photo-1632714395151-aa853eac30e1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1128&q=80";
+
+  const position: LatLngExpression = [-6.8853, 107.61373];
+
   return (
     <Layout>
-      <div className="flex px-10 pt-10">
-        <div className="flex-row w-3/5">
-          <div className="">
-            <img
-              src="https://th.bing.com/th/id/R.8c8475554407564886b9b1aada6f724a?rik=i8tRDbGzOI5yog&riu=http%3a%2f%2f1.bp.blogspot.com%2f-EdP9dGHEs30%2fU8TdaCUlG-I%2fAAAAAAAAAs8%2f60LYOVa-U-k%2fs1600%2fGambar%2bPemandangan%2bAlam%2bTerindah%2bDi%2bDunia%2b2014.jpg&ehk=MKdf9m1kHL4Zyz9YDFNz7eJIrazSsyKjpYNMjqHMT6I%3d&risl=&pid=ImgRaw&r=0"
-              alt=""
-              className="w-full h-96 rounded-lg"
-            />
-          </div>
+      <div className="flex flex-col lg:flex-row p-5 gap-5 justify-center">
+        <div className="lg:w-4/6">
+          <img
+            src={content}
+            alt=""
+            className="w-full h-96 rounded-lg"
+          />
         </div>
-        <div className="flex-row w-2/5 px-10">
-          <div className="flex">
-            <div className="flex-col">
-              <div className="">
-                <img
-                  src="https://dagodreampark.co.id/images/ke_2.jpg"
-                  alt=""
-                  className="w-[650px] h-[200px] rounded-lg"
-                />
-              </div>
-              <div className="flex gap-12 pt-5">
-                <div className="flex-row">
-                  <div className="">
-                    <img
-                      src="https://dagodreampark.co.id/images/ke_2.jpg"
-                      alt=""
-                      className="w-[290px] h-[130px] rounded-lg"
-                    />
-                  </div>
-                </div>
-                <div className="flex-row">
-                  <div className="">
-                    <img
-                      src="https://dagodreampark.co.id/images/ke_2.jpg"
-                      alt=""
-                      className="w-[290px] h-[130px] rounded-lg"
-                    />
-                  </div>
-                </div>
-              </div>
+        <div className="hidden lg:block w-2/6">
+          <div className="flex flex-col gap-5 h-full">
+            <img
+              src={content}
+              alt=""
+              className="w-full h-1/2 rounded-lg"
+            />
+            <div className="flex h-full gap-5">
+              <img
+                src={content}
+                alt=""
+                className="w-[48%] rounded-lg"
+              />
+              <img
+                src={content}
+                alt=""
+                className="w-[48%] rounded-lg"
+              />
             </div>
           </div>
         </div>
       </div>
-      <div className="flex px-10 pt-10">
-        <div className="flex-row w-3/5">
-          <h1 className="font-bold text-4xl">Nama tempat camp</h1>
-          <div className="flex flex-rows">
-            <GiPositionMarker className="w-8 h-8" />
-            <span className="font-semibold text-xl">Alamat</span>
+      <div className="flex flex-col lg:flex-row justify-around p-5">
+        <div className="lg:w-4/6">
+          <h1 className="text-4xl">Danau Toba</h1>
+          <div className="flex items-center">
+            <ImLocation className="text-2xl" />
+            <p className="font-semibold text-xl">City</p>
           </div>
-          <p className="justify-items-start">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-            molestie tempus purus, at tristique justo vehicula id. Sed non
-            mollis risus. Curabitur nisl risus, pretium vitae suscipit at,
-            mattis quis lacus. Phasellus in orci aliquet, ultrices turpis
-            feugiat, sagittis lacus. Vivamus mauris est, tincidunt in ipsum eu,
-            sagittis placerat justo.
+          <p className="pt-5">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Morbi molestie tempus purus, at tristique justo vehicula
+            id. Sed non mollis risus. Curabitur nisl risus, pretium
+            vitae suscipit at, mattis quis lacus. Phasellus in orci
+            aliquet, ultrices turpis feugiat, sagittis lacus. Vivamus
+            mauris est, tincidunt in ipsum eu, sagittis placerat
+            justo.
           </p>
-          <div>
-            <img
-              src="https://statik.tempo.co/data/2019/01/23/id_813830/813830_720.jpg"
-              alt=""
-            />
+          <div className="py-10">
+            <MapContainer
+              center={position}
+              zoom={20}
+              scrollWheelZoom={true}
+              style={{ height: "400px" }}
+            >
+              <TileLayer {...tileLayer} />
+              <Marker position={position}>
+                <Popup>Center Warsaw</Popup>
+              </Marker>
+            </MapContainer>
           </div>
         </div>
-        <div className="flex-row w-2/5 px-10">
-          <div className="box-border h-auto w-full p-4 border-4 bg-white rounded-lg">
-            <h1 className="font-bold text-2xl">$ 50 /night</h1>
-            <div className="pt-10 rounded-xl ">
-              <table className="border-collapse border border-slate-500 w-full">
-                <tbody className="">
-                  <tr className="">
-                    <td className="border border-slate-700 font-bold text-xl">
-                      Check-in
-                    </td>
-                    <td className="border border-slate-700 font-bold text-xl">
-                      Check-out
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="border border-slate-700 font-bold text-xl">
-                      Guest
-                    </td>
-                    <td className="border border-slate-700 font-bold text-xl">
-                      Tent
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+        <div className="lg:w-[25%]">
+          <div className="p-5 bg-white rounded-xl">
+            <h1 className="text-2xl">$ 50 /night</h1>
+            <br />
+            <h1 className="text-xl">Available Add On</h1>
+            <br />
+            <table className="border-collapse border border-slate-500 w-[90%] text-center mx-auto">
+              <thead>
+                <tr>
+                  <th className="border border-slate-600">Items</th>
+                  <th className="border border-slate-600">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="border border-slate-700">Tent</td>
+                  <td className="border border-slate-700">$ 5</td>
+                </tr>
+                <tr>
+                  <td className="border border-slate-700">Bonfire</td>
+                  <td className="border border-slate-700">$ 3</td>
+                </tr>
+                <tr>
+                  <td className="border border-slate-700">
+                    Sleeping Bag
+                  </td>
+                  <td className="border border-slate-700">$ 2</td>
+                </tr>
+              </tbody>
+            </table>
             <div className="pt-10">
               <Btn label="Reserve" />
             </div>
