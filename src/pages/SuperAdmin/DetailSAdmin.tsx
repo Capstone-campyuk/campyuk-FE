@@ -1,11 +1,16 @@
 import { ReactImageCarouselViewer } from "react-image-carousel-viewer";
-import { MapContainer, Marker, TileLayer, Popup } from "react-leaflet";
+import {
+  MapContainer,
+  Marker,
+  TileLayer,
+  Popup,
+} from "react-leaflet";
 import L, { LatLngExpression } from "leaflet";
 import { useState } from "react";
 import "leaflet/dist/leaflet.css";
-import tileLayer from "../utils/tileLayer";
-import { Layout } from "../components/Layout";
-import { Btn, Btns } from "../components/Button";
+import tileLayer from "../../utils/tileLayer";
+import { Layout } from "../../components/Layout";
+import { Btn, Btns } from "../../components/Button";
 import { GiPositionMarker } from "react-icons/gi";
 
 function DetailSAdmin() {
@@ -34,13 +39,25 @@ function DetailSAdmin() {
     <Layout>
       <div className="flex flex-col lg:flex-row p-5 gap-5 justify-center">
         <div className="lg:w-4/6">
-          <img src={content} alt="" className="w-full h-96 rounded-lg" />
+          <img
+            src={content}
+            alt=""
+            className="w-full h-96 rounded-lg"
+          />
         </div>
         <div className="hidden lg:block w-2/6">
           <div className="flex flex-col gap-5 h-full">
-            <img src={content} alt="" className="w-full h-1/2 rounded-lg" />
+            <img
+              src={content}
+              alt=""
+              className="w-full h-1/2 rounded-lg"
+            />
             <div className="flex h-full gap-5">
-              <img src={content} alt="" className="w-[48%] rounded-lg" />
+              <img
+                src={content}
+                alt=""
+                className="w-[48%] rounded-lg"
+              />
               <img
                 src={content}
                 alt=""
@@ -74,13 +91,14 @@ function DetailSAdmin() {
         </div>
         <div className="flex-row w-3/4 px-20">
           <p className="text-xl">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-            molestie tempus purus, at tristique justo vehicula id. Sed non
-            mollis risus. Curabitur nisl risus, pretium vitae suscipit at,
-            mattis quis lacus. Phasellus in orci aliquet, ultrices turpis
-            feugiat, sagittis lacus. Vivamus mauris est, tincidunt in ipsum eu,
-            sagittis placerat justo. Donec vitae dui mollis, mattis mi eget,
-            semper quam. In tempus finibus vulputate. In sed est magna. Proin
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Morbi molestie tempus purus, at tristique justo vehicula
+            id. Sed non mollis risus. Curabitur nisl risus, pretium
+            vitae suscipit at, mattis quis lacus. Phasellus in orci
+            aliquet, ultrices turpis feugiat, sagittis lacus. Vivamus
+            mauris est, tincidunt in ipsum eu, sagittis placerat
+            justo. Donec vitae dui mollis, mattis mi eget, semper
+            quam. In tempus finibus vulputate. In sed est magna. Proin
             sed lectus vel orci cursus dignissim.
           </p>
         </div>
@@ -88,9 +106,15 @@ function DetailSAdmin() {
       <div className="grid grid-cols-4 gap-4 px-10 pt-10">
         <div className="flex flex-col">
           <h1 className="font-bold text-4xl pb-3">Tent</h1>
-          <p className="font-semibold text-xl pb-3">Small (1-2 person) </p>
-          <p className="font-semibold text-xl pb-3">Medium (3-4 person) </p>
-          <p className="font-semibold text-xl pb-3">Large (4-5 person) </p>
+          <p className="font-semibold text-xl pb-3">
+            Small (1-2 person){" "}
+          </p>
+          <p className="font-semibold text-xl pb-3">
+            Medium (3-4 person){" "}
+          </p>
+          <p className="font-semibold text-xl pb-3">
+            Large (4-5 person){" "}
+          </p>
         </div>
         <div>
           <h1 className="font-bold text-4xl pb-3">Stock</h1>
@@ -148,7 +172,8 @@ function DetailSAdmin() {
         </div>
         <div className="flex-row w-1/2 px-10">
           <p className="text-3xl px-10 ">
-            Jl. Spartan No.IV, Gotham city, West Java, 53241 +62 985904
+            Jl. Spartan No.IV, Gotham city, West Java, 53241 +62
+            985904
           </p>
           <div className="flex justify-end gap-20 pb-10 pt-60 ">
             <Btns label="Unaccept" className="w-48" />

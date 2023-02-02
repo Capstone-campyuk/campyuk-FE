@@ -1,5 +1,5 @@
-import { Layout } from "../components/Layout";
-import { Modals2 } from "../components/Modal";
+import { Layout } from "../../components/Layout";
+import { Modals2 } from "../../components/Modal";
 
 function Profile() {
   const data = {

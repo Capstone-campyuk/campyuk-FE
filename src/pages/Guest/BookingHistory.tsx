@@ -1,7 +1,7 @@
 import React from "react";
 
-import { Layout } from "../components/Layout";
-import { CardHistory } from "../components/Card";
+import { Layout } from "../../components/Layout";
+import { CardHistory } from "../../components/Card";
 
 function BookingHistory() {
   return (

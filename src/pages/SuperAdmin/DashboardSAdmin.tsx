@@ -1,7 +1,7 @@
 import React from "react";
 
-import { Layout } from "../components/Layout";
-import { CardSAdmin } from "../components/Card";
+import { Layout } from "../../components/Layout";
+import { CardSAdmin } from "../../components/Card";
 
 function DashboardSAdmin() {
   return (

@@ -1,8 +1,8 @@
 import React from "react";
 
-import { Layout } from "../components/Layout";
-import { CardHost } from "../components/Card";
-import { Btn } from "../components/Button";
+import { Layout } from "../../components/Layout";
+import { CardHost } from "../../components/Card";
+import { Btn } from "../../components/Button";
 
 function DashboardHost() {
   return (

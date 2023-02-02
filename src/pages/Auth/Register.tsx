@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
-import { Input } from "../components/Input";
-import { Btn } from "../components/Button";
+import { Input } from "../../components/Input";
+import { Btn } from "../../components/Button";
 
 function Register() {
   const [formRegister, setFormRegister] = useState({
@@ -107,11 +107,18 @@ function Register() {
           </select>
           <p className="text-sm pt-2">
             Already have an account?
-            <Link className="text-blue-700 font-bold ml-1" to="/login">
+            <Link
+              className="text-blue-700 font-bold ml-1"
+              to="/login"
+            >
               login
             </Link>
           </p>
-          <Btn disabled={disabled} className="my-10" label="Register" />
+          <Btn
+            disabled={disabled}
+            className="my-10"
+            label="Register"
+          />
         </form>
       </div>
     </div>

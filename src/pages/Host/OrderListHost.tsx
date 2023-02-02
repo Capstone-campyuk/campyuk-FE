@@ -1,9 +1,9 @@
 import React from "react";
 
-import { Layout } from "../components/Layout";
-import { CardHistory } from "../components/Card";
+import { Layout } from "../../components/Layout";
+import { CardHistory } from "../../components/Card";
 
-function OrderListAdmin() {
+function OrderListHost() {
   return (
     <Layout>
       <h1 className="text-4xl p-5">Camp Site</h1>
@@ -43,4 +43,4 @@ function OrderListAdmin() {
   );
 }
 
-export default OrderListAdmin;
+export default OrderListHost;
