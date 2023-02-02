@@ -246,93 +246,12 @@ export function CardOrder({ campsite, image, loc, price }: CardOrderProps) {
               <ImLocation className="w-8 h-8" /> {loc}
             </div>
             <div className="flex flex-col pt-10">
-              <h1 className="font-bold text-2xl">Facilities</h1>
-              <span>parkir</span>
-              <span>toilets</span>
+              <h1 className="font-bold text-2xl">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem
+              </h1>
             </div>
 
             <h1 className="text-3xl text-end pt-10">$ {price}/night</h1>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-interface CardReviewOrderProps {
-  checkin: number;
-  checkout: number;
-  pricecamp: number;
-  totalnight: number;
-  guest: number;
-  subtotalcamp: number;
-  size: string;
-  pricetent: number;
-  quantity: number;
-  subtotaltent: number;
-  total: number;
-}
-
-export function CardReviewOrder({
-  checkin,
-  checkout,
-  pricecamp,
-  totalnight,
-  guest,
-  subtotalcamp,
-  size,
-  pricetent,
-  quantity,
-  subtotaltent,
-  total,
-}: CardReviewOrderProps) {
-  return (
-    <div className="px-20 pt-3 pb-10">
-      <div className="flex  bg-white rounded-2xl h-auto">
-        <div className="flex-row w-1/2 pt-10 px-10">
-          <h1 className="font-bold text-3xl pb-5">
-            Check-in: <span className="font-normal text-3xl">{checkin}</span>
-          </h1>
-
-          <h1 className="font-bold text-3xl">Camp Ground </h1>
-          <p className="text-2xl">
-            Total night:
-            <span className="font-normal text-3xl">{totalnight}</span>
-          </p>
-          <p className="text-2xl">
-            Price: <span className="font-normal text-3xl">{pricecamp}</span>
-          </p>
-          <p className="text-2xl">
-            Guest: <span className="font-normal text-3xl">{guest}</span>
-          </p>
-          <p className="text-2xl">
-            Sub Total:
-            <span className="font-normal text-3xl">{subtotalcamp}</span>
-          </p>
-          <p className="font-bold text-3xl pt-8">
-            Total: <span className="font-normal text-3xl">{total}</span>
-          </p>
-        </div>
-        <div className="flex-row w-1/2 pt-10">
-          <h1 className="font-bold text-3xl pb-5">
-            Check-out:<span className="font-normal text-3xl">{checkout}</span>
-          </h1>
-          <h1 className="font-bold text-3xl">Tent</h1>
-          <p className="text-2xl">
-            Size: <span className="font-normal text-3xl">{size}</span>
-          </p>
-          <p className="text-2xl">
-            Price: <span className="font-normal text-3xl">{pricetent}</span>
-          </p>
-          <p className="text-2xl">
-            Quantity:<span className="font-normal text-3xl">{quantity}</span>
-          </p>
-          <p className="text-2xl">
-            Sub Total:
-            <span className="font-normal text-3xl">{subtotaltent}</span>
-          </p>
-          <div className="w-48 pt-8 ">
-            <Btn label="Book Now" />
           </div>
         </div>
       </div>

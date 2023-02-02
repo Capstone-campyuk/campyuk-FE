@@ -1,56 +1,74 @@
+import { ReactImageCarouselViewer } from "react-image-carousel-viewer";
+import { MapContainer, Marker, TileLayer, Popup } from "react-leaflet";
+import L, { LatLngExpression } from "leaflet";
+import { useState } from "react";
+import "leaflet/dist/leaflet.css";
+import tileLayer from "../utils/tileLayer";
+
 import { Layout } from "../components/Layout";
 import { GiPositionMarker } from "react-icons/gi";
 
 function DetailCampHost() {
+  const content =
+    "https://images.unsplash.com/photo-1632714395151-aa853eac30e1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1128&q=80";
+
+  const position: LatLngExpression = [-6.8853, 107.61373];
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [index, setIndex] = useState(0);
+  const images = [
+    {
+      src: "https://images.tokopedia.net/img/JFrBQq/2022/6/22/307bcc9a-8564-49d9-999f-d47e7141320a.jpg",
+    },
+    {
+      src: "https://images.tokopedia.net/img/JFrBQq/2022/6/22/56110566-f35c-43e4-93e3-b3ba554f0118.jpg",
+    },
+    {
+      src: "https://images.tokopedia.net/img/JFrBQq/2022/6/22/307bcc9a-8564-49d9-999f-d47e7141320a.jpg",
+    },
+    {
+      src: "https://images.tokopedia.net/img/JFrBQq/2022/6/22/56110566-f35c-43e4-93e3-b3ba554f0118.jpg",
+    },
+  ];
   return (
     <Layout>
-      <div className="flex px-10 pt-10">
-        <div className="flex-row w-3/5">
-          <div className="">
-            <img
-              src="https://th.bing.com/th/id/R.8c8475554407564886b9b1aada6f724a?rik=i8tRDbGzOI5yog&riu=http%3a%2f%2f1.bp.blogspot.com%2f-EdP9dGHEs30%2fU8TdaCUlG-I%2fAAAAAAAAAs8%2f60LYOVa-U-k%2fs1600%2fGambar%2bPemandangan%2bAlam%2bTerindah%2bDi%2bDunia%2b2014.jpg&ehk=MKdf9m1kHL4Zyz9YDFNz7eJIrazSsyKjpYNMjqHMT6I%3d&risl=&pid=ImgRaw&r=0"
-              alt=""
-              className="w-full h-96 rounded-lg"
-            />
-          </div>
+      <div className="flex flex-col lg:flex-row p-5 gap-5 justify-center">
+        <div className="lg:w-4/6">
+          <img src={content} alt="" className="w-full h-96 rounded-lg" />
         </div>
-        <div className="flex-row w-2/5 px-10">
-          <div className="flex">
-            <div className="flex-col">
-              <div className="">
-                <img
-                  src="https://dagodreampark.co.id/images/ke_2.jpg"
-                  alt=""
-                  className="w-[650px] h-[200px] rounded-lg"
-                />
-              </div>
-              <div className="flex gap-12 pt-5">
-                <div className="flex-row">
-                  <div className="">
-                    <img
-                      src="https://dagodreampark.co.id/images/ke_2.jpg"
-                      alt=""
-                      className="w-[290px] h-[130px] rounded-lg"
-                    />
-                  </div>
-                </div>
-                <div className="flex-row">
-                  <div className="">
-                    <img
-                      src="https://dagodreampark.co.id/images/ke_2.jpg"
-                      alt=""
-                      className="w-[290px] h-[130px] rounded-lg"
-                    />
-                  </div>
-                </div>
-              </div>
+        <div className="hidden lg:block w-2/6">
+          <div className="flex flex-col gap-5 h-full">
+            <img src={content} alt="" className="w-full h-1/2 rounded-lg" />
+            <div className="flex h-full gap-5">
+              <img src={content} alt="" className="w-[48%] rounded-lg" />
+
+              <img
+                src={content}
+                alt=""
+                className="w-[48%] rounded-lg static"
+                onClick={() => {
+                  setIndex(index);
+                  setIsOpen(true);
+                }}
+              />
+
+              <p className="absolute right-16 items-center text-2xl font-bold opacity-75 py-10 text-white">
+                More image
+              </p>
+
+              <ReactImageCarouselViewer
+                open={isOpen}
+                onClose={() => setIsOpen(false)}
+                images={images}
+                startIndex={index}
+              />
             </div>
           </div>
         </div>
       </div>
       <div className="flex pt-10">
         <div className="flex-row w-1/4 px-10">
-          <h1 className="font-bold text-4xl pb-3">Tanakita Camp</h1>
+          <h1 className="font-bold text-2xl pb-3">Tanakita Camp</h1>
           <div className="flex flex-rows pb-3">
             <GiPositionMarker className="w-8 h-8" />
             <span className="font-semibold text-xl">Alamat</span>
@@ -58,7 +76,9 @@ function DetailCampHost() {
           <p className="font-semibold text-xl pb-3">
             5 km away from the city centre
           </p>
-          <p className="font-semibold text-xl pb-3">$ 60/night</p>
+          <p className="font-bold text-3xl pb-3">
+            $ 60 <span className="font-normal text-xl">/night</span>
+          </p>
         </div>
         <div className="flex-row w-3/4 px-20">
           <p className="text-xl">
@@ -95,25 +115,45 @@ function DetailCampHost() {
         </div>
         <div className="mr-8">
           <img
-            src="https://dagodreampark.co.id/images/ke_2.jpg"
+            src={content}
             alt=""
-            className="w-[650px] h-[200px] rounded-lg"
+            className="w-80 rounded-lg absolute"
+            onClick={() => {
+              setIndex(index);
+              setIsOpen(true);
+            }}
+          />
+          <p className="inline-block py-16 px-16 text-2xl font-bold opacity-75 text-white">
+            More image
+          </p>
+
+          <ReactImageCarouselViewer
+            open={isOpen}
+            onClose={() => setIsOpen(false)}
+            images={images}
+            startIndex={index}
           />
         </div>
       </div>
-      <div className="flex px-10 pt-10 pb-10">
+      <div className="flex px-10 pt-10">
         <div className="flex-row w-1/2">
-          <img
-            src="https://statik.tempo.co/data/2019/01/23/id_813830/813830_720.jpg"
-            alt=""
-            className="rounded-t-2xl lg:rounded-l-3xl lg:w-full h-48"
-          />
+          <MapContainer
+            center={position}
+            zoom={20}
+            scrollWheelZoom={true}
+            style={{ height: "400px" }}
+          >
+            <TileLayer {...tileLayer} />
+            <Marker position={position}>
+              <Popup>Center Warsaw</Popup>
+            </Marker>
+          </MapContainer>
         </div>
-        <div className="flex-row w-1/2 px-10">
-          <p className="text-lg">
+        <div className="flex-row w-1/2 py-10">
+          <p className="text-3xl px-10 ">
             Jl. Spartan No.IV, Gotham city, West Java, 53241 +62 985904
           </p>
-          <h1 className="font-bold text-3xl pt-20 text-end">Accept</h1>
+          <h1 className="font-bold text-4xl pt-40 text-end">Accept</h1>
         </div>
       </div>
     </Layout>
