@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import L, { LatLngExpression } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import tileLayer from "../utils/tileLayer";
@@ -111,9 +112,9 @@ function DetailCamp() {
                 </tr>
               </tbody>
             </table>
-            <div className="pt-10">
-              <Btn label="Reserve" />
-            </div>
+            <Link to={"/order/:id_order"}>
+              <Btn className="mt-10" label="Reserve" />
+            </Link>
           </div>
         </div>
       </div>
