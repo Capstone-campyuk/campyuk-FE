@@ -12,7 +12,11 @@ export function NavbarGuest() {
         <h1 className="font-extrabold antialiased text-2xl">
           campyuk
         </h1>
-        <img src="icon.png" alt="icon" className="w-7" />
+        <img
+          src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
+          alt="icon"
+          className="w-7"
+        />
       </Link>
       <div className="navbar-end">
         <Link to="/login">
@@ -70,7 +74,11 @@ export function NavbarLogin() {
           <h1 className="font-extrabold antialiased text-2xl">
             campyuk
           </h1>
-          <img src="icon.png" alt="icon" className="w-7" />
+          <img
+            src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
+            alt="icon"
+            className="w-7"
+          />
         </Link>
       </div>
       <div className="navbar-end hidden lg:flex ">
@@ -110,7 +118,11 @@ export function NavbarForm() {
           <h1 className="font-extrabold antialiased text-2xl">
             campyuk
           </h1>
-          <img src="icon.png" alt="icon" className="w-7" />
+          <img
+            src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
+            alt="icon"
+            className="w-7"
+          />
         </Link>
       </div>
     </div>
