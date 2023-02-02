@@ -158,44 +158,44 @@ function Order() {
         </div>
       </div>
       <h1 className="text-4xl p-5">Payment Method</h1>
-      <form
-        action=""
-        className="flex flex-col gap-5 p-5 m-5 bg-bgcard rounded-3xl shadow-lg border-2"
-      >
-        <div className="grid grid-cols-3 items-center">
-          <img
-            src="https://images.tokopedia.net/img/toppay/sprites/bca.png"
-            alt=""
-          />
-          <label>BCA Virtual Account</label>
-          <input type="radio" id="bca" value="bca" />
+      <fieldset>
+        <form
+          action=""
+          className="flex flex-col gap-5 p-5 m-5 bg-bgcard rounded-3xl shadow-lg border-2"
+        >
+          <div className="grid grid-cols-3 items-center">
+            <img
+              src="https://images.tokopedia.net/img/toppay/sprites/bca.png"
+              alt=""
+            />
+            <label>BCA Virtual Account</label>
+            <input type="radio" id="bca" value="bca" name="payment" />
+          </div>
+          <div className="grid grid-cols-3 items-center">
+            <img
+              src="https://images.tokopedia.net/img/toppay/sprites/bni.png"
+              alt=""
+            />
+            <label>BNI Virtual Account</label>
+            <input type="radio" id="bni" value="bni" name="payment" />
+          </div>
+          <div className="grid grid-cols-3 items-center">
+            <img
+              src="https://images.tokopedia.net/img/toppay/bank-bri.png"
+              alt=""
+            />
+            <label>BRI Virtual Account</label>
+            <input type="radio" id="bri" value="bri" name="payment" />
+          </div>
+        </form>
+      </fieldset>
+      <div className="flex flex-col lg:flex-row justify-between items-center gap-3 p-5 pb-12">
+        <div className="flex lg:flex-row lg:items-center lg:w-4/6">
+          <h1 className="text-lg lg:text-2xl">Total Price :</h1>
+          <p className="text-xl lg:text-2xl lg:ml-4">{`50 juta`}</p>
         </div>
-        <div className="grid grid-cols-3 items-center">
-          <img
-            src="https://images.tokopedia.net/img/toppay/sprites/bni.png"
-            alt=""
-          />
-          <label>BNI Virtual Account</label>
-          <input type="radio" id="bni" value="bni" />
-        </div>
-        <div className="grid grid-cols-3 items-center">
-          <img
-            src="https://images.tokopedia.net/img/toppay/bank-bri.png"
-            alt=""
-          />
-          <label>BRI Virtual Account</label>
-          <input type="radio" id="bri" value="bri" />
-        </div>
-      </form>
-      <div className="flex justify-between items-center gap-3 p-5 pb-12">
-        <div>
-          <h1 className="text-lg lg:text-2xl w-4/6">
-            Total Price :{" "}
-          </h1>
-          <p>{`50 juta`}</p>
-        </div>
-        <Btns className="w-2/6 lg:w-1/6" label="Cancel" />
-        <Btn className="w-2/6 lg:w-1/6" label="Book Now" />
+        <Btns className="lg:w-1/6" label="Cancel" />
+        <Btn className="lg:w-1/6" label="Book Now" />
       </div>
     </Layout>
   );
