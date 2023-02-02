@@ -1,5 +1,5 @@
-import { Layout } from "../components/Layout";
-import { Btn } from "../components/Button";
+import { Layout } from "../../components/Layout";
+import { Btn } from "../../components/Button";
 import { ImLocation } from "react-icons/im";
 
 function AddTent() {
@@ -34,7 +34,7 @@ function AddTent() {
                 Description
               </label>
               <textarea
-                className="w-full h-auto overflow-y-auto h-36 bg-[#cbd5e1] rounded-lg"
+                className="w-full overflow-y-auto h-36 bg-[#cbd5e1] rounded-lg"
                 style={{ resize: "none" }}
               />
             </div>

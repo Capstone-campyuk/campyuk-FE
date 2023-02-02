@@ -1,24 +1,27 @@
 import React from "react";
 import axios, { AxiosHeaders } from "axios";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 import Home from "../pages/Home";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
+import Login from "../pages/Auth/Login";
+import Register from "../pages/Auth/Register";
 import CampList from "../pages/CampList";
 import DetailCamp from "../pages/DetailCamp";
-import Order from "../pages/Order";
-import BookingHistory from "../pages/BookingHistory";
+import Order from "../pages/Guest/Order";
+import BookingHistory from "../pages/Guest/BookingHistory";
 import BookingDetail from "../pages/BookingDetail";
-import DashboardHost from "../pages/DashboardHost";
-import DetailCampHost from "../pages/DetailCampHost";
-import Profile from "../pages/Profile";
-import DashboardSAdmin from "../pages/DashboardSAdmin";
-import DetailSAdmin from "../pages/DetailSAdmin";
-import OrderListAdmin from "../pages/OrderListAdmin";
-import AddTent from "../pages/AddTent";
-import EditCampHost from "../pages/EditCampHost";
+import DashboardHost from "../pages/Host/DashboardHost";
+import DetailCampHost from "../pages/Host/DetailCampHost";
+import Profile from "../pages/Guest/Profile";
+import DashboardSAdmin from "../pages/SuperAdmin/DashboardSAdmin";
+import DetailSAdmin from "../pages/SuperAdmin/DetailSAdmin";
+import OrderListHost from "../pages/Host/OrderListHost";
+import AddTent from "../pages/Host/AddTent";
+import EditCampHost from "../pages/Host/EditCampHost";
 
 function App() {
   const [cookie, , removeCookie] = useCookies(["token"]);
@@ -84,8 +87,8 @@ function App() {
       element: <DetailSAdmin />,
     },
     {
-      path: "/orderlist-admin",
-      element: <OrderListAdmin />,
+      path: "/orderlist-host",
+      element: <OrderListHost />,
     },
     {
       path: "/addtent",

@@ -1,10 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-import { Layout } from "../components/Layout";
-import { CardHost } from "../components/Card";
-import { Btn } from "../components/Button";
+import { Layout } from "../../components/Layout";
+import { CardHost } from "../../components/Card";
+import { Btn, Btns } from "../../components/Button";
 
 function DashboardHost() {
+  const navigate = useNavigate();
+
   return (
     <Layout>
       <h1 className="text-4xl p-5">Uname Host</h1>
@@ -40,8 +43,17 @@ function DashboardHost() {
           />
         </div>
       </div>
-      <div className="flex justify-end p-5">
-        <Btn className="w-18" label="Add Campsite" />
+      <div className="flex justify-end p-5 gap-5">
+        <Btns
+          className="w-18"
+          label="Booking List"
+          onClick={() => navigate("/orderlist-host")}
+        />
+        <Btn
+          className="w-18"
+          label="Add Campsite"
+          onClick={() => navigate("/addtent")}
+        />
       </div>
     </Layout>
   );

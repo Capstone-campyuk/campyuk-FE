@@ -3,8 +3,8 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
-import { Input } from "../components/Input";
-import { Btn, Btns } from "../components/Button";
+import { Input } from "../../components/Input";
+import { Btn, Btns } from "../../components/Button";
 
 function Login() {
   const [formLogin, setFormLogin] = useState({

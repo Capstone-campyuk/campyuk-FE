@@ -1,15 +1,10 @@
-import { CardOrder } from "../components/Card";
-import { Layout } from "../components/Layout";
+import { Layout } from "../../components/Layout";
 
-import { CardOrder, CardReviewOrder } from "../components/Card";
-import { InputSolo } from "../components/Input";
+import { InputSolo } from "../../components/Input";
 import { ImLocation } from "react-icons/im";
-import { Btn, Btns } from "../components/Button";
+import { Btn, Btns } from "../../components/Button";
 
-import { datacamp } from "../utils/datas";
-
-import { Btn, Btns } from "../components/Button";
-
+import { datacamp } from "../../utils/datas";
 
 function Order() {
   return (
@@ -208,8 +203,7 @@ function Order() {
 
 export default Order;
 
-{
-  /* <CardOrder
+/* <CardOrder
         image={"https://dagodreampark.co.id/images/ke_2.jpg"}
         campsite={"Tanakita Camp"}
         price={60}

@@ -1,5 +1,5 @@
-import { Layout } from "../components/Layout";
-import { Btn, Btns } from "../components/Button";
+import { Layout } from "../../components/Layout";
+import { Btn, Btns } from "../../components/Button";
 
 function EditCampHost() {
   return (
@@ -33,7 +33,7 @@ function EditCampHost() {
                 Description
               </label>
               <textarea
-                className="w-full h-auto overflow-y-auto h-36 bg-[#cbd5e1] rounded-lg"
+                className="w-full overflow-y-auto h-36 bg-[#cbd5e1] rounded-lg"
                 style={{ resize: "none" }}
               />
             </div>
@@ -116,7 +116,11 @@ function EditCampHost() {
           Edit Tent
         </label>
         {/* modal edit tent*/}
-        <input type="checkbox" id="edit-modal-tent" className="modal-toggle" />
+        <input
+          type="checkbox"
+          id="edit-modal-tent"
+          className="modal-toggle"
+        />
         <div className="modal modal-bottom sm:modal-middle">
           <div className="modal-box">
             <h3 className="font-bold text-lg">Add Tent</h3>
@@ -175,7 +179,12 @@ function EditCampHost() {
                   e.target.files[0];
                 }}
               />
-              <img src={"newPreviewImage"} alt="" width={200} height={100} />
+              <img
+                src={"newPreviewImage"}
+                alt=""
+                width={200}
+                height={100}
+              />
             </div>
             <div className="modal-action">
               <button className="btn bg-btn text-white hover:bg-btnh border-none rounded-full ">
@@ -198,7 +207,11 @@ function EditCampHost() {
           Edit Item
         </label>
         {/* modal edit item*/}
-        <input type="checkbox" id="edit-modal-item" className="modal-toggle" />
+        <input
+          type="checkbox"
+          id="edit-modal-item"
+          className="modal-toggle"
+        />
         <div className="modal modal-bottom sm:modal-middle">
           <div className="modal-box">
             <h3 className="font-bold text-lg">Add Tent</h3>
