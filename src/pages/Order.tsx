@@ -1,10 +1,15 @@
+import { CardOrder } from "../components/Card";
 import { Layout } from "../components/Layout";
+
 import { CardOrder, CardReviewOrder } from "../components/Card";
 import { InputSolo } from "../components/Input";
 import { ImLocation } from "react-icons/im";
 import { Btn, Btns } from "../components/Button";
 
 import { datacamp } from "../utils/datas";
+
+import { Btn, Btns } from "../components/Button";
+
 
 function Order() {
   return (
@@ -210,7 +215,7 @@ export default Order;
         price={60}
         loc={"Sukabumi"}
       />
-      <CardReviewOrder
+      {/* <CardReviewOrder
         checkin={21 - 21 - 2022}
         checkout={12 - 12 - 2022}
         pricecamp={100}
@@ -223,4 +228,3 @@ export default Order;
         subtotaltent={100}
         total={500}
       /> */
-}
