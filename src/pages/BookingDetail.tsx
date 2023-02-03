@@ -80,7 +80,7 @@ function BookingDetail() {
                   {"ACT / 34799 / XVII - MMDKJF"}
                 </p>
               </div>
-              <Btns className="lg:w-1/6" label="Issued" />
+              <Btns className="lg:w-1/6" id="btn-issued" label="Issued" />
             </div>
           </div>
         </div>
