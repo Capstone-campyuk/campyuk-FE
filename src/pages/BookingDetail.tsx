@@ -80,7 +80,9 @@ function BookingDetail() {
                   {"ACT / 34799 / XVII - MMDKJF"}
                 </p>
               </div>
-              <Btns className="lg:w-1/6" id="btn-issued" label="Issued" />
+              <p className="bg-primary text-bgcard text-center rounded-3xl p-2">
+                {"issued"}
+              </p>
             </div>
           </div>
         </div>
