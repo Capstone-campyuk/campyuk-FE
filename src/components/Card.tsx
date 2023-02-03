@@ -1,5 +1,4 @@
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Btn } from "./Button";
 import { ImLocation } from "react-icons/im";
@@ -21,10 +20,6 @@ export function CardCampList({
   price,
   distance,
 }: CardCampProps) {
-  const navigate = useNavigate();
-  const onClickDetail = () => {
-    navigate(`/detail/:id_camp`);
-  };
   return (
     <div className="flex flex-col bg-bgcard border-2 rounded-3xl shadow-lg max-w-2xl">
       <img className="rounded-t-3xl" src={image} alt={image} />
@@ -39,12 +34,9 @@ export function CardCampList({
         </div>
         <div className="flex flex-col justify-between">
           <h1>$ {price} /night</h1>
-          <Btn
-            label="Check!"
-            onClick={() => {
-              onClickDetail();
-            }}
-          />
+          <Link to="/camp/:id_camp">
+            <Btn label="Check!" />
+          </Link>
         </div>
       </div>
     </div>
@@ -72,11 +64,6 @@ export function CardHistory({
   eticket,
   status,
 }: CardHistoryProps) {
-  const navigate = useNavigate();
-  const onClickDetail = () => {
-    navigate(`/booking-detail/:id_booking`);
-  };
-
   return (
     <div className="flex flex-col lg:flex-row bg-bgcard border-2 rounded-3xl shadow-lg">
       <img
@@ -84,11 +71,9 @@ export function CardHistory({
         src={image}
         alt={image}
       />
-      <div
+      <Link
+        to="/booking/:id_booking"
         className="flex flex-col p-4 justify-evenly lg:w-1/3 cursor-pointer"
-        onClick={() => {
-          onClickDetail();
-        }}
       >
         <div>
           <h1 className="text-2xl">{campsite}</h1>
@@ -112,7 +97,7 @@ export function CardHistory({
             {status}
           </p>
         </div>
-      </div>
+      </Link>
     </div>
   );
 }
@@ -156,10 +141,6 @@ export function CardHost({
         <Link to="/edit-camp/:id_camp">
           <HiOutlinePencilAlt />
         </Link>
-        <Link to="/addtent">
-          <GiCampingTent />
-        </Link>
-
         <HiOutlineTrash className="text-btn" />
       </div>
     </div>
@@ -182,20 +163,13 @@ export function CardSAdmin({
   address,
   id_camp,
 }: CardSAdminProps) {
-  const navigate = useNavigate();
-  const onClickDetail = () => {
-    navigate(`/detail-admin/:id_camp`);
-  };
-
   return (
     <div className="flex flex-col lg:flex-row bg-bgcard border-2 rounded-3xl shadow-lg">
-      <Link to="/detail-admin/:id_camp">
-        <img
-          className="rounded-t-2xl lg:rounded-l-3xl lg:w-2/3"
-          src={image}
-          alt={image}
-        />
-      </Link>
+      <img
+        className="rounded-t-2xl lg:rounded-l-3xl lg:w-2/3"
+        src={image}
+        alt={image}
+      />
       <div className="flex flex-col p-4 justify-evenly lg:w-1/3">
         <div>
           <h1 className="text-2xl">{campsite}</h1>
@@ -213,13 +187,9 @@ export function CardSAdmin({
         </div>
         <div className="flex justify-between items-center">
           <h1 className="text-3xl">$ {price} /night</h1>
-          <Btn
-            className="w-18"
-            label="Check"
-            onClick={() => {
-              onClickDetail();
-            }}
-          />
+          <Link to="/detail-admin/:id_camp">
+            <Btn className="w-18" label="Check" />
+          </Link>
         </div>
       </div>
     </div>
@@ -233,7 +203,12 @@ interface CardOrderProps {
   price: number;
 }
 
-export function CardOrder({ campsite, image, loc, price }: CardOrderProps) {
+export function CardOrder({
+  campsite,
+  image,
+  loc,
+  price,
+}: CardOrderProps) {
   return (
     <div className="px-20 pt-10">
       <div className="flex  bg-white rounded-2xl h-80">
@@ -252,11 +227,14 @@ export function CardOrder({ campsite, image, loc, price }: CardOrderProps) {
             </div>
             <div className="flex flex-col pt-10">
               <h1 className="font-bold text-2xl">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem
+                Lorem ipsum dolor sit amet consectetur adipisicing
+                elit. Rem
               </h1>
             </div>
 
-            <h1 className="text-3xl text-end pt-10">$ {price}/night</h1>
+            <h1 className="text-3xl text-end pt-10">
+              $ {price}/night
+            </h1>
           </div>
         </div>
       </div>

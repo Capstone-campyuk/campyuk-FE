@@ -1,12 +1,17 @@
 import { Link } from "react-router-dom";
 
 import { ReactImageCarouselViewer } from "react-image-carousel-viewer";
-import { MapContainer, Marker, TileLayer, Popup } from "react-leaflet";
+import {
+  MapContainer,
+  Marker,
+  TileLayer,
+  Popup,
+} from "react-leaflet";
 
 import L, { LatLngExpression } from "leaflet";
 import { useState } from "react";
 import "leaflet/dist/leaflet.css";
-import tileLayer from "../utils/tileLayer";
+import tileLayer from "../utils/const/tileLayer";
 
 import { Layout } from "../components/Layout";
 import { Btn } from "../components/Button";
@@ -39,13 +44,25 @@ function DetailCamp() {
     <Layout>
       <div className="flex flex-col lg:flex-row p-5 gap-5 justify-center">
         <div className="lg:w-4/6">
-          <img src={content} alt="" className="w-full h-96 rounded-lg" />
+          <img
+            src={content}
+            alt=""
+            className="w-full h-96 rounded-lg"
+          />
         </div>
         <div className="hidden lg:block w-2/6">
           <div className="flex flex-col gap-5 h-full">
-            <img src={content} alt="" className="w-full h-1/2 rounded-lg" />
+            <img
+              src={content}
+              alt=""
+              className="w-full h-1/2 rounded-lg"
+            />
             <div className="flex h-full gap-5">
-              <img src={content} alt="" className="w-[48%] rounded-lg" />
+              <img
+                src={content}
+                alt=""
+                className="w-[48%] rounded-lg"
+              />
 
               <img
                 src={content}
@@ -79,12 +96,13 @@ function DetailCamp() {
             <p className="font-semibold text-xl">City</p>
           </div>
           <p className="pt-5">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-            molestie tempus purus, at tristique justo vehicula id. Sed non
-            mollis risus. Curabitur nisl risus, pretium vitae suscipit at,
-            mattis quis lacus. Phasellus in orci aliquet, ultrices turpis
-            feugiat, sagittis lacus. Vivamus mauris est, tincidunt in ipsum eu,
-            sagittis placerat justo.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Morbi molestie tempus purus, at tristique justo vehicula
+            id. Sed non mollis risus. Curabitur nisl risus, pretium
+            vitae suscipit at, mattis quis lacus. Phasellus in orci
+            aliquet, ultrices turpis feugiat, sagittis lacus. Vivamus
+            mauris est, tincidunt in ipsum eu, sagittis placerat
+            justo.
           </p>
           <div className="py-10">
             <MapContainer
@@ -123,7 +141,9 @@ function DetailCamp() {
                   <td className="border border-slate-700">$ 3</td>
                 </tr>
                 <tr>
-                  <td className="border border-slate-700">Sleeping Bag</td>
+                  <td className="border border-slate-700">
+                    Sleeping Bag
+                  </td>
                   <td className="border border-slate-700">$ 2</td>
                 </tr>
               </tbody>

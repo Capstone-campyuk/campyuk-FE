@@ -4,7 +4,7 @@ import { InputSolo } from "../../components/Input";
 import { ImLocation } from "react-icons/im";
 import { Btn, Btns } from "../../components/Button";
 
-import { datacamp } from "../../utils/datas";
+import { datacamp } from "../../utils/const/datas";
 
 function Order() {
   return (

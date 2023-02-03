@@ -17,10 +17,10 @@ import BookingDetail from "../pages/BookingDetail";
 import DashboardHost from "../pages/Host/DashboardHost";
 import DetailCampHost from "../pages/Host/DetailCampHost";
 import Profile from "../pages/Guest/Profile";
-import DashboardSAdmin from "../pages/SuperAdmin/DashboardSAdmin";
-import DetailSAdmin from "../pages/SuperAdmin/DetailSAdmin";
+import DashboardAdmin from "../pages/Admin/DashboardAdmin";
+import DetailAdmin from "../pages/Admin/DetailAdmin";
 import OrderListHost from "../pages/Host/OrderListHost";
-import AddTent from "../pages/Host/AddTent";
+import AddTent from "../pages/Host/AddCamp";
 import EditCampHost from "../pages/Host/EditCampHost";
 
 function App() {
@@ -51,8 +51,12 @@ function App() {
       element: <CampList />,
     },
     {
-      path: "/detail/:id_camp",
+      path: "/camp/:id_camp",
       element: <DetailCamp />,
+    },
+    {
+      path: "/profile/:id-username",
+      element: <Profile />,
     },
     {
       path: "/order/:id_order",
@@ -63,40 +67,36 @@ function App() {
       element: <BookingHistory />,
     },
     {
-      path: "/booking-detail/:id_booking",
+      path: "/booking/:id_booking",
       element: <BookingDetail />,
     },
     {
-      path: "/dashboard-host",
+      path: "/host/:id-username",
       element: <DashboardHost />,
-    },
-    {
-      path: "/detail-camp-host/:id_camp",
-      element: <DetailCampHost />,
-    },
-    {
-      path: "/profile/:id-username",
-      element: <Profile />,
-    },
-    {
-      path: "/super-admin",
-      element: <DashboardSAdmin />,
-    },
-    {
-      path: "/detail-admin/:id_camp",
-      element: <DetailSAdmin />,
-    },
-    {
-      path: "/orderlist-host",
-      element: <OrderListHost />,
     },
     {
       path: "/addtent",
       element: <AddTent />,
     },
     {
+      path: "/camp-host/:id_camp",
+      element: <DetailCampHost />,
+    },
+    {
+      path: "/orderlist-host",
+      element: <OrderListHost />,
+    },
+    {
       path: "/edit-camp/:id_camp",
       element: <EditCampHost />,
+    },
+    {
+      path: "/admin",
+      element: <DashboardAdmin />,
+    },
+    {
+      path: "/detail-admin/:id_camp",
+      element: <DetailAdmin />,
     },
   ]);
 

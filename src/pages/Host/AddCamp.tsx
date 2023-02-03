@@ -2,7 +2,7 @@ import { Layout } from "../../components/Layout";
 import { Btn } from "../../components/Button";
 import { ImLocation } from "react-icons/im";
 
-function AddTent() {
+function AddCamp() {
   return (
     <Layout>
       <h1 className="font-bold text-3xl pt-5 px-20">Add Camp</h1>
@@ -116,4 +116,4 @@ function AddTent() {
   );
 }
 
-export default AddTent;
+export default AddCamp;
