@@ -6,7 +6,7 @@ function EditCampHost() {
     <Layout>
       <h1 className="font-bold text-3xl pt-5 px-20">Edit Camp</h1>
       <div className="px-20 pt-10 pb-10">
-        <div className="flex flex-col bg-white rounded-lg">
+        <div className="flex flex-col bg-bgcard  rounded-lg">
           <form action="">
             <div className="flex py-5 w-full px-10">
               <label className="font-semibold text-black flex items-start justify-start w-1/3 text-center">
@@ -15,6 +15,7 @@ function EditCampHost() {
               <input
                 className="rounded-lg bg-[#cbd5e1] border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                 type="text"
+                id="editcamp-title"
                 placeholder=""
               />
             </div>
@@ -23,6 +24,7 @@ function EditCampHost() {
                 Price
               </label>
               <input
+                id="editcamp-price"
                 className="rounded-lg bg-[#cbd5e1] border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                 type="number"
                 placeholder=""
@@ -34,6 +36,7 @@ function EditCampHost() {
               </label>
               <textarea
                 className="w-full overflow-y-auto h-36 bg-[#cbd5e1] rounded-lg"
+                id="editcamp-description"
                 style={{ resize: "none" }}
               />
             </div>
@@ -43,6 +46,7 @@ function EditCampHost() {
               </label>
               <input
                 type="number"
+                id="editcamp-location"
                 className="input input-bordered bg-[#cbd5e1] w-full"
                 placeholder=""
               />
@@ -53,6 +57,7 @@ function EditCampHost() {
               </label>
               <input
                 type="text"
+                id="editcamp-address"
                 className="input input-bordered bg-[#cbd5e1] w-full"
                 placeholder=""
               />
@@ -63,6 +68,7 @@ function EditCampHost() {
               </label>
               <input
                 type="file"
+                id="editcamp-image"
                 className="flex-row w-42 bg-white rounded-lg text-black"
               />
             </div>
@@ -72,6 +78,7 @@ function EditCampHost() {
               </label>
               <input
                 type="file"
+                id="editcamp-businessL"
                 className="flex-row w-42 bg-white rounded-lg text-black"
               />
             </div>
@@ -81,6 +88,7 @@ function EditCampHost() {
               </label>
               <input
                 type="number"
+                id="editcamp-latitude"
                 className="input input-bordered bg-[#cbd5e1] w-full"
                 placeholder=""
               />
@@ -91,6 +99,7 @@ function EditCampHost() {
               </label>
               <input
                 type="number"
+                id="editcamp-longtitude"
                 className="input input-bordered bg-[#cbd5e1] w-full"
                 placeholder=""
               />
@@ -101,6 +110,7 @@ function EditCampHost() {
               </label>
               <input
                 type="number"
+                id="editcamp-distance"
                 className="input input-bordered bg-[#cbd5e1] w-full"
                 placeholder=""
               />
@@ -111,6 +121,7 @@ function EditCampHost() {
       <div className="flex justify-center gap-20 pb-10">
         <label
           htmlFor="edit-modal-tent"
+          id="edit-tent"
           className="btn bg-btns text-white hover:bg-btnsh border-none rounded-full"
         >
           Edit Tent
@@ -141,6 +152,7 @@ function EditCampHost() {
               <input
                 className="rounded-lg bg-[#cbd5e1] border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                 type="number"
+                id="edittent-price"
                 placeholder=""
               />
             </div>
@@ -151,6 +163,7 @@ function EditCampHost() {
               <input
                 className="rounded-lg bg-[#cbd5e1] border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                 type="number"
+                id="edittent-stok"
                 placeholder=""
               />
             </div>
@@ -158,6 +171,7 @@ function EditCampHost() {
             <div className="flex py-5 w-full px-10">
               <label
                 htmlFor="edit-photo"
+                id="add-image"
                 style={{ cursor: "pointer" }}
                 className={
                   "font-semibold text-black flex items-start justify-start w-1/3 text-center"
@@ -178,11 +192,15 @@ function EditCampHost() {
               <img src={"newPreviewImage"} alt="" width={200} height={100} />
             </div>
             <div className="modal-action">
-              <button className="btn bg-btn text-white hover:bg-btnh border-none rounded-full ">
+              <button
+                className="btn bg-btn text-white hover:bg-btnh border-none rounded-full "
+                id="btn-add-tent"
+              >
                 Add Tent
               </button>
               <label
                 htmlFor="edit-modal-tent"
+                id="cancel"
                 className="btn bg-btn text-white hover:bg-btnh border-none rounded-full "
               >
                 Cancel
@@ -193,6 +211,7 @@ function EditCampHost() {
         {/* akhir modal edit tent */}
         <label
           htmlFor="edit-modal-item"
+          id="edit-item"
           className="btn bg-btns text-white hover:bg-btnsh border-none rounded-full"
         >
           Edit Item
@@ -222,6 +241,7 @@ function EditCampHost() {
               <input
                 className="rounded-lg bg-[#cbd5e1] border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                 type="number"
+                id="edititem-price"
                 placeholder=""
               />
             </div>
@@ -232,16 +252,21 @@ function EditCampHost() {
               <input
                 className="rounded-lg bg-[#cbd5e1] border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                 type="number"
+                id="edititem-stok"
                 placeholder=""
               />
             </div>
 
             <div className="modal-action">
-              <button className="btn bg-btn text-white hover:bg-btnh border-none rounded-full ">
+              <button
+                className="btn bg-btn text-white hover:bg-btnh border-none rounded-full "
+                id="btn-add-item"
+              >
                 Add Item
               </button>
               <label
                 htmlFor="edit-modal-item"
+                id="cencel-edit-item"
                 className="btn bg-btn text-white hover:bg-btnh border-none rounded-full "
               >
                 Cancel
@@ -251,7 +276,7 @@ function EditCampHost() {
         </div>
         {/* akhir modal edit item */}
 
-        <Btn className="w-18" label="Update Camp" />
+        <Btn className="w-18" label="Update Camp" id="update-camp" />
       </div>
     </Layout>
   );

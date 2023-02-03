@@ -7,7 +7,7 @@ function AddCamp() {
     <Layout>
       <h1 className="font-bold text-3xl pt-5 px-20">Add Camp</h1>
       <div className="px-20 pt-10 pb-10">
-        <div className="flex flex-col bg-white rounded-lg">
+        <div className="flex flex-col bg-bgcard  rounded-lg">
           <form action="">
             <div className="flex py-5 w-full px-10">
               <label className="font-semibold text-black flex items-start justify-start w-1/3 text-center">
@@ -16,6 +16,7 @@ function AddCamp() {
               <input
                 className="rounded-lg bg-[#cbd5e1] border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                 type="text"
+                id="add-camp-title"
                 placeholder=""
               />
             </div>
@@ -26,6 +27,7 @@ function AddCamp() {
               <input
                 className="rounded-lg bg-[#cbd5e1] border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                 type="number"
+                id="add-camp-price"
                 placeholder=""
               />
             </div>
@@ -36,6 +38,7 @@ function AddCamp() {
               <textarea
                 className="w-full overflow-y-auto h-36 bg-[#cbd5e1] rounded-lg"
                 style={{ resize: "none" }}
+                id="add-camp-description"
               />
             </div>
             <div className="flex py-2 w-full px-10">
@@ -44,6 +47,7 @@ function AddCamp() {
               </label>
               <input
                 type="number"
+                id="add-camp-location"
                 className="input input-bordered bg-[#cbd5e1] w-full"
                 placeholder=""
               />
@@ -54,6 +58,7 @@ function AddCamp() {
               </label>
               <input
                 type="text"
+                id="add-camp-address"
                 className="input input-bordered bg-[#cbd5e1] w-full"
                 placeholder=""
               />
@@ -63,6 +68,7 @@ function AddCamp() {
                 Add image
               </label>
               <input
+                id="add-camp-image"
                 type="file"
                 className="flex-row w-42 bg-white rounded-lg text-black"
               />
@@ -73,6 +79,7 @@ function AddCamp() {
               </label>
               <input
                 type="file"
+                id="add-camp-businessL"
                 className="flex-row w-42 bg-white rounded-lg text-black"
               />
             </div>
@@ -82,6 +89,7 @@ function AddCamp() {
               </label>
               <input
                 type="number"
+                id="add-camp-latitude"
                 className="input input-bordered bg-[#cbd5e1] w-full"
                 placeholder=""
               />
@@ -92,6 +100,7 @@ function AddCamp() {
               </label>
               <input
                 type="number"
+                id="add-camp-longtitude"
                 className="input input-bordered bg-[#cbd5e1] w-full"
                 placeholder=""
               />
@@ -102,6 +111,7 @@ function AddCamp() {
               </label>
               <input
                 type="number"
+                id="add-camp-distance"
                 className="input input-bordered bg-[#cbd5e1] w-full"
                 placeholder=""
               />
@@ -110,7 +120,7 @@ function AddCamp() {
         </div>
       </div>
       <div className="flex justify-end p-5">
-        <Btn className="w-18" label="Add Camp" />
+        <Btn className="w-18" id="btn-addcamp" label="Add Camp" />
       </div>
     </Layout>
   );

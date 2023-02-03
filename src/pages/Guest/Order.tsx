@@ -30,21 +30,9 @@ function Order() {
             <h1>Guest</h1>
           </div>
           <form className="flex justify-around">
-            <InputSolo
-              className="w-[30%]"
-              id="Check-In"
-              type={"date"}
-            />
-            <InputSolo
-              className="w-[30%]"
-              id="Check-Out"
-              type={"date"}
-            />
-            <InputSolo
-              className="w-[30%]"
-              id="Guest"
-              type={"number"}
-            />
+            <InputSolo className="w-[30%]" id="Check-In" type={"date"} />
+            <InputSolo className="w-[30%]" id="Check-Out" type={"date"} />
+            <InputSolo className="w-[30%]" id="Guest" type={"number"} />
           </form>
           <h1 className="text-lg mt-4">Add On</h1>
           <div className="flex justify-around ml-10 mb-2">
@@ -67,51 +55,31 @@ function Order() {
               <input className="w-[13%]" type={"checkbox"} />
               <h1 className="w-1/4">{`Item 1`}</h1>
               <h1 className="w-1/4">$ </h1>
-              <InputSolo
-                className="w-1/4"
-                id="number"
-                type="number"
-              />
+              <InputSolo className="w-1/4" id="number" type="number" />
             </form>
             <form className="flex justify-around items-center">
               <input className="w-[13%]" type={"checkbox"} />
               <h1 className="w-1/4">{`Item 1`}</h1>
               <h1 className="w-1/4">$ </h1>
-              <InputSolo
-                className="w-1/4"
-                id="number"
-                type="number"
-              />
+              <InputSolo className="w-1/4" id="number" type="number" />
             </form>
             <form className="flex justify-around items-center">
               <input className="w-[13%]" type={"checkbox"} />
               <h1 className="w-1/4">{`Item 1`}</h1>
               <h1 className="w-1/4">$ </h1>
-              <InputSolo
-                className="w-1/4"
-                id="number"
-                type="number"
-              />
+              <InputSolo className="w-1/4" id="number" type="number" />
             </form>
             <form className="flex justify-around items-center">
               <input className="w-[13%]" type={"checkbox"} />
               <h1 className="w-1/4">{`Item 1`}</h1>
               <h1 className="w-1/4">$ </h1>
-              <InputSolo
-                className="w-1/4"
-                id="number"
-                type="number"
-              />
+              <InputSolo className="w-1/4" id="number" type="number" />
             </form>
             <form className="flex justify-around items-center">
               <input className="w-[13%]" type={"checkbox"} />
               <h1 className="w-1/4">{`Item 1`}</h1>
               <h1 className="w-1/4">$ </h1>
-              <InputSolo
-                className="w-1/4"
-                id="number"
-                type="number"
-              />
+              <InputSolo className="w-1/4" id="number" type="number" />
             </form>
           </div>
         </div>
@@ -119,12 +87,10 @@ function Order() {
       <h1 className="text-4xl p-5">Price Details</h1>
       <div className="flex flex-col gap-3 p-5 m-5 bg-bgcard rounded-3xl shadow-lg border-2">
         <h1 className="text-xl">
-          Check In :{" "}
-          <span className="font-normal">{`2 February 2023`}</span>
+          Check In : <span className="font-normal">{`2 February 2023`}</span>
         </h1>
         <h1 className="text-xl">
-          Check Out :{" "}
-          <span className="font-normal">{`5 February 2023`}</span>
+          Check Out : <span className="font-normal">{`5 February 2023`}</span>
         </h1>
         <div className="flex flex-col lg:flex-row gap-10">
           <div>
@@ -194,8 +160,8 @@ function Order() {
           <h1 className="text-lg lg:text-2xl">Total Price :</h1>
           <p className="text-xl lg:text-2xl lg:ml-4">{`50 juta`}</p>
         </div>
-        <Btns className="lg:w-1/6" label="Cancel" />
-        <Btn className="lg:w-1/6" label="Book Now" />
+        <Btns className="lg:w-1/6" id="btn-cancel" label="Cancel" />
+        <Btn className="lg:w-1/6" id="btn-booknow" label="Book Now" />
       </div>
     </Layout>
   );
