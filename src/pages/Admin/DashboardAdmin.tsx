@@ -3,7 +3,7 @@ import React from "react";
 import { Layout } from "../../components/Layout";
 import { CardSAdmin } from "../../components/Card";
 
-function DashboardSAdmin() {
+function DashboardAdmin() {
   return (
     <Layout>
       <h1 className="text-4xl p-5">Camp Site</h1>
@@ -37,4 +37,4 @@ function DashboardSAdmin() {
   );
 }
 
-export default DashboardSAdmin;
+export default DashboardAdmin;

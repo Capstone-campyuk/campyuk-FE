@@ -2,7 +2,7 @@ import { Layout } from "../components/Layout";
 import { Btns } from "../components/Button";
 import { ImLocation } from "react-icons/im";
 
-import { datacamp } from "../utils/datas";
+import { datacamp } from "../utils/const/datas";
 
 function BookingDetail() {
   return (
