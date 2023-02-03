@@ -4,7 +4,7 @@ import { Btn, Btns } from "../../components/Button";
 function EditCampHost() {
   return (
     <Layout>
-      <h1 className="font-bold text-3xl pt-5 px-20">Add Camp</h1>
+      <h1 className="font-bold text-3xl pt-5 px-20">Edit Camp</h1>
       <div className="px-20 pt-10 pb-10">
         <div className="flex flex-col bg-white rounded-lg">
           <form action="">
@@ -116,11 +116,7 @@ function EditCampHost() {
           Edit Tent
         </label>
         {/* modal edit tent*/}
-        <input
-          type="checkbox"
-          id="edit-modal-tent"
-          className="modal-toggle"
-        />
+        <input type="checkbox" id="edit-modal-tent" className="modal-toggle" />
         <div className="modal modal-bottom sm:modal-middle">
           <div className="modal-box">
             <h3 className="font-bold text-lg">Add Tent</h3>
@@ -179,12 +175,7 @@ function EditCampHost() {
                   e.target.files[0];
                 }}
               />
-              <img
-                src={"newPreviewImage"}
-                alt=""
-                width={200}
-                height={100}
-              />
+              <img src={"newPreviewImage"} alt="" width={200} height={100} />
             </div>
             <div className="modal-action">
               <button className="btn bg-btn text-white hover:bg-btnh border-none rounded-full ">
@@ -207,14 +198,10 @@ function EditCampHost() {
           Edit Item
         </label>
         {/* modal edit item*/}
-        <input
-          type="checkbox"
-          id="edit-modal-item"
-          className="modal-toggle"
-        />
+        <input type="checkbox" id="edit-modal-item" className="modal-toggle" />
         <div className="modal modal-bottom sm:modal-middle">
           <div className="modal-box">
-            <h3 className="font-bold text-lg">Add Tent</h3>
+            <h3 className="font-bold text-lg">Add Item</h3>
             <div className="flex py-5 w-full px-10">
               <label className="font-semibold text-black flex items-start justify-start w-1/3 text-center">
                 Size
