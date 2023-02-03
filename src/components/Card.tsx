@@ -156,7 +156,10 @@ export function CardHost({
         <Link to="/edit-camp/:id_camp">
           <HiOutlinePencilAlt />
         </Link>
-        <GiCampingTent />
+        <Link to="/addtent">
+          <GiCampingTent />
+        </Link>
+
         <HiOutlineTrash className="text-btn" />
       </div>
     </div>
@@ -230,12 +233,7 @@ interface CardOrderProps {
   price: number;
 }
 
-export function CardOrder({
-  campsite,
-  image,
-  loc,
-  price,
-}: CardOrderProps) {
+export function CardOrder({ campsite, image, loc, price }: CardOrderProps) {
   return (
     <div className="px-20 pt-10">
       <div className="flex  bg-white rounded-2xl h-80">
@@ -254,14 +252,11 @@ export function CardOrder({
             </div>
             <div className="flex flex-col pt-10">
               <h1 className="font-bold text-2xl">
-                Lorem ipsum dolor sit amet consectetur adipisicing
-                elit. Rem
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem
               </h1>
             </div>
 
-            <h1 className="text-3xl text-end pt-10">
-              $ {price}/night
-            </h1>
+            <h1 className="text-3xl text-end pt-10">$ {price}/night</h1>
           </div>
         </div>
       </div>
