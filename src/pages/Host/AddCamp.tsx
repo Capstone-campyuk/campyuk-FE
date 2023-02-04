@@ -5,7 +5,9 @@ import { ImLocation } from "react-icons/im";
 function AddCamp() {
   return (
     <Layout>
-      <h1 className="font-bold text-3xl pt-5 px-20">Add Camp</h1>
+      <h1 id="add-camp-page" className="font-bold text-3xl pt-5 px-20">
+        Add Camp
+      </h1>
       <div className="px-20 pt-10 pb-10">
         <div className="flex flex-col bg-bgcard  rounded-lg">
           <form action="">

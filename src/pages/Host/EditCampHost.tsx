@@ -4,7 +4,9 @@ import { Btn, Btns } from "../../components/Button";
 function EditCampHost() {
   return (
     <Layout>
-      <h1 className="font-bold text-3xl pt-5 px-20">Edit Camp</h1>
+      <h1 id="edit-camp-page" className="font-bold text-3xl pt-5 px-20">
+        Edit Camp
+      </h1>
       <div className="px-20 pt-10 pb-10">
         <div className="flex flex-col bg-bgcard  rounded-lg">
           <form action="">

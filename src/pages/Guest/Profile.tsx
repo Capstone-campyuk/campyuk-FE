@@ -1,40 +1,173 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import Swal from "sweetalert2";
+
+import axios from "axios";
+
 import { Layout } from "../../components/Layout";
-import { Modals2 } from "../../components/Modal";
 
 function Profile() {
-  const data = {
-    username: "Ronaldo",
-    fullname: "Cristiano Ronaldo",
-    email: "ajksdhjadhs@gmail.com",
-    user_image:
-      "https://pbs.twimg.com/profile_images/1596028249943179264/YyjBXZ_o_400x400.jpg",
-  };
+  const [cookie, setCookie, removeCookie] = useCookies();
+  const [username, setUsername] = useState<string>("");
+  const [user_image, setUserimage] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [fullname, setFullname] = useState<string>("");
+  const navigate = useNavigate();
+
+  //edit profile
+  const [newPreviewImage, setNewPreviewImage] = useState<any>();
+  const [editFullname, setEditFullname] = useState<string>("");
+  const [editEmail, setEditEmail] = useState<string>("");
+  const [editUsername, setEditUsername] = useState<string>("");
+  const [editImageprofil, setEditImageprofil] = useState<any>();
+
+  function getProfil() {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${cookie.token}`,
+      },
+    };
+    axios
+      .get(`http://users`, config)
+      .then((res) => {
+        const { email, fullname, username, user_image, message } = res.data;
+        setEmail(email);
+        setFullname(fullname);
+        setUsername(username);
+        setUserimage(user_image);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          text: message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }
+
+  function editProfil(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("username", editUsername);
+    formData.append("fullname", editFullname);
+    formData.append("email", editEmail);
+    formData.append("image_profil", editImageprofil);
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${cookie.token}`,
+      },
+    };
+    axios
+      .put(`https://-/users`, formData, config)
+      .then((res) => {
+        const { message } = res.data;
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          text: message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate(0);
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something Wrong Error",
+        });
+      });
+  }
+
+  function hapusAkun() {
+    axios
+      .delete(`https://-/users`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+
+      .then((res) => {
+        removeCookie("token");
+        removeCookie("username");
+        removeCookie("fullname");
+        removeCookie("email");
+        removeCookie("profil_image");
+        Swal.fire({
+          title: "Are you sure want to delete account?",
+
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Yes",
+          cancelButtonColor: "#d33",
+          cancelButtonText: "No",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              text: "Delete successfully",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            removeCookie("token");
+            navigate("/");
+          }
+        });
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Delete account failed",
+        });
+      });
+  }
+
+  useEffect(() => {
+    getProfil();
+  }, []);
 
   return (
     <Layout>
-      <h1 className="text-4xl p-5">Profile</h1>
+      <h1 id="profil-page" className="text-4xl p-5">
+        Profile
+      </h1>
       <div className="flex flex-col lg:flex-row justify-center items-center p-20">
         <div className="lg:w-1/3">
-          <img className="rounded-full" src={data.user_image} />
+          <img
+            className="rounded-full"
+            src={
+              user_image
+                ? user_image
+                : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+            }
+          />
         </div>
         <div className="bg-bgcard p-10 border-2 shadow-lg rounded-3xl lg:text-lg">
           <div className="flex gap-10 pt-5 pb-1">
             <h1>Full Name </h1>
-            <p>: {data.fullname}</p>
+            <p>: {fullname}</p>
           </div>
           <div className="flex gap-7 pt-5 pb-1">
             <h1>User Name </h1>
-            <p>: {data.username}</p>
+            <p>: {username}</p>
           </div>
           <div className="flex gap-20 pt-5 pb-1">
             <h1>Email </h1>
-            <p>: {data.email}</p>
+            <p>: {email}</p>
           </div>
           <div className="flex gap-20 pt-5 pb-1">
             <label
               id="update-profil"
-              htmlFor={`my-modal-1`}
-              className={`normal-case bg-transparent`}
+              htmlFor="my-modal-1"
+              className="normal-case bg-transparent"
             >
               <div className="flex flex-col cursor-pointer">
                 <div className="w-1/2 text-lg mx-10 capitalize bg-btn border-none shadow-lg text-white font-semibold rounded-lg btn hover:bg-btnh">
@@ -42,10 +175,13 @@ function Profile() {
                 </div>
               </div>
             </label>
-            <Modals2
-              no={1}
-              titleModal={"Update Profile"}
-              input1={
+
+            <input type="checkbox" id="my-modal-1" className="modal-toggle" />
+            <div className="modal modal-middle sm:modal-middle">
+              <div className="modal-box bg-white  flex flex-col justify-center items-center">
+                <h3 className="font-bold lg:text-2xl  text-base text-black text-center  ">
+                  Update Profile
+                </h3>
                 <div className="flex py-2 w-full">
                   <label className="font-semibold text-black flex items-center justify-center w-1/3 text-center">
                     Full Name
@@ -57,8 +193,6 @@ function Profile() {
                     placeholder="Full Name"
                   />
                 </div>
-              }
-              input2={
                 <div className="flex py-2 w-full">
                   <label className="font-semibold text-black flex items-center justify-center w-1/3 text-center">
                     User name
@@ -70,8 +204,6 @@ function Profile() {
                     placeholder="username"
                   />
                 </div>
-              }
-              input3={
                 <div className="flex py-2 w-full">
                   <label className="font-semibold text-black flex items-center justify-center w-1/3 text-center">
                     Email
@@ -83,8 +215,6 @@ function Profile() {
                     placeholder="email"
                   />
                 </div>
-              }
-              input4={
                 <div className="flex py-2 w-full">
                   <label className="font-semibold text-black flex items-center justify-center w-1/3"></label>
                   <input
@@ -94,12 +224,27 @@ function Profile() {
                     placeholder="picture"
                   />
                 </div>
-              }
-              tombol1={"Cancel"}
-              tombol2={"Save"}
-              onClick={() => "haha"}
-            />
-            <label className={`normal-case bg-transparent`} id="remove-profil">
+                <div className="grid grid-cols-2 w-2/3 md:w-full lg:w-full max-w-md mt-3">
+                  <label
+                    htmlFor="my-modal-1"
+                    className="btn bg-btn normal-case border-none mx-1 hover:btnh text-white"
+                  >
+                    Cancel
+                  </label>
+
+                  <label
+                    htmlFor="my-modal-1"
+                    id="save-update-profil"
+                    className="btn bg-btn normal-case  border-none mx-1 hover:btnh text-white"
+                    onClick={() => "haha"}
+                  >
+                    Save
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <label className="normal-case bg-transparent" id="remove-profil">
               <div className="flex flex-col cursor-pointer">
                 <div
                   className="w-1/2 text-lg mx-10 capitalize bg-btn border-none shadow-lg text-white font-semibold rounded-lg btn hover:bg-btnh"
