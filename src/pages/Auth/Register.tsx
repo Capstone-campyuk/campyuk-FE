@@ -6,43 +6,35 @@ import { Input } from "../../components/Input";
 import { Btn } from "../../components/Button";
 
 function Register() {
-  const [formRegister, setFormRegister] = useState({
-    username: "",
-    fullname: "",
-    email: "",
-    password: "",
-    role: "",
-  });
+  const [role, setRole] = useState("guest");
+  const [username, setUsername] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [disabled, setDisabled] = useState(true);
   const navigate = useNavigate();
 
-  const handleChange = (e: any) => {
-    setFormRegister({
-      ...formRegister,
-      [e.target.id]: e.target.value,
-    });
-  };
-
   useEffect(() => {
-    if (
-      formRegister.fullname &&
-      formRegister.username &&
-      formRegister.email &&
-      formRegister.password &&
-      formRegister.role
-    ) {
+    if (username && fullname && email && password) {
       setDisabled(false);
     } else {
       setDisabled(true);
     }
-  }, [formRegister]);
+  }, [username, fullname, email, password]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const body = {
+      role,
+      username,
+      fullname,
+      email,
+      password,
+    };
 
     axios
-      .post("https://-/register", formRegister)
-      .then(() => {
+      .post("https://abiasa.site/register", body)
+      .then((res) => {
         alert("Success signup");
         navigate("/login");
       })
@@ -50,6 +42,8 @@ function Register() {
         alert(err.response.data.message);
       });
   };
+
+  console.log(role);
 
   return (
     <div className="flex min-h-screen items-center">
@@ -66,55 +60,52 @@ function Register() {
           Register
         </h1>
         <form onSubmit={handleSubmit}>
-          <Input
-            id="input-username"
-            title="Username"
-            placeholder="Username"
-            type="text"
-            onChange={handleChange}
-            value={formRegister.username}
-          />
-          <Input
-            id="input-fullname"
-            title="Full Name"
-            placeholder="Full Name"
-            type="text"
-            onChange={handleChange}
-            value={formRegister.fullname}
-          />
-          <Input
-            id="input-email"
-            title="Email"
-            placeholder="Email"
-            type="email"
-            onChange={handleChange}
-            value={formRegister.email}
-          />
-          <Input
-            id="input-password"
-            title="Password"
-            placeholder="Password"
-            type="password"
-            onChange={handleChange}
-            value={formRegister.password}
-          />
           <p className="my-1 font-bold text-lg">Register as</p>
           <select
             name="role"
             id="input-role"
+            onChange={(e) => setRole(e.target.value)}
             className="bg-form w-full rounded-lg text-black p-3 border focus:outline-none focus:border-black"
           >
-            <option id="guest" value="guest">
+            <option id="guest" value="guest" selected>
               Guest
             </option>
             <option id="host" value="host">
               Host
             </option>
           </select>
+          <Input
+            id="input-username"
+            title="Username"
+            placeholder="Username"
+            type="text"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <Input
+            id="input-fullname"
+            title="Full Name"
+            placeholder="Full Name"
+            type="text"
+            onChange={(e) => setFullname(e.target.value)}
+          />
+          <Input
+            id="input-email"
+            title="Email"
+            placeholder="Email"
+            type="email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            id="input-password"
+            title="Password"
+            placeholder="Password"
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
           <p className="text-sm pt-2">
             Already have an account?
             <Link
-              id="btn-login"
+              id="direct-login"
               className="text-blue-700 font-bold ml-1"
               to="/login"
             >
