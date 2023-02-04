@@ -20,7 +20,10 @@ function Home() {
           <h1 className="text-xl font-extrabold antialiased">
             See the world with your own two eyes
           </h1>
-          <h1 className="text-6xl font-extrabold antialiased">
+          <h1
+            id="landing-page"
+            className="text-6xl font-extrabold antialiased"
+          >
             Journeys, explorations, and adventures
           </h1>
           <h1 className="text-2xl font-extrabold antialiased">
@@ -28,6 +31,7 @@ function Home() {
           </h1>
           <Link to="/camplist">
             <Btn
+              id="btn-camplist"
               label="Explore! "
               icon={<IoIosCompass className="text-xl" />}
             />

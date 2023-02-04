@@ -130,6 +130,7 @@ function DetailCampHost() {
           </p>
 
           <ReactImageCarouselViewer
+          id="carousel"
             open={isOpen}
             onClose={() => setIsOpen(false)}
             images={images}

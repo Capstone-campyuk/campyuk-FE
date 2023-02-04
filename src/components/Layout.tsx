@@ -2,7 +2,7 @@ import React from "react";
 import { useCookies } from "react-cookie";
 
 import Footer from "./Footer";
-import { NavbarGuest, NavbarLogin, NavbarForm } from "./Navbar";
+import { NavbarGuest, NavbarLogin } from "./Navbar";
 
 interface LayoutProps {
   children: React.ReactNode;

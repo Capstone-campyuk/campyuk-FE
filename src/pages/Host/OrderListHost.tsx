@@ -6,7 +6,7 @@ import { CardHistory } from "../../components/Card";
 function OrderListHost() {
   return (
     <Layout>
-      <h1 className="text-4xl p-5">Camp Site</h1>
+      <h1 id="orderhost-page" className="text-4xl p-5">Order List</h1>
       <div className="flex flex-col items-center gap-10 px-2 lg:px-6 pb-6">
         <CardHistory
           image={`img-content.jpg`}

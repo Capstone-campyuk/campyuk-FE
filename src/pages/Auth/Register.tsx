@@ -62,10 +62,12 @@ function Register() {
         <span className="hero-overlay bg-opacity-60" />
       </div>
       <div className="mx-auto bg-bgcard w-full max-w-md rounded-3xl p-5 my-5 shadow-lg">
-        <h1 className="text-3xl text-center mb-10">Register</h1>
+        <h1 id="register-page" className="text-3xl text-center mb-10">
+          Register
+        </h1>
         <form onSubmit={handleSubmit}>
           <Input
-            id="username"
+            id="input-username"
             title="Username"
             placeholder="Username"
             type="text"
@@ -73,7 +75,7 @@ function Register() {
             value={formRegister.username}
           />
           <Input
-            id="fullname"
+            id="input-fullname"
             title="Full Name"
             placeholder="Full Name"
             type="text"
@@ -81,7 +83,7 @@ function Register() {
             value={formRegister.fullname}
           />
           <Input
-            id="email"
+            id="input-email"
             title="Email"
             placeholder="Email"
             type="email"
@@ -89,7 +91,7 @@ function Register() {
             value={formRegister.email}
           />
           <Input
-            id="password"
+            id="input-password"
             title="Password"
             placeholder="Password"
             type="password"
@@ -99,15 +101,20 @@ function Register() {
           <p className="my-1 font-bold text-lg">Register as</p>
           <select
             name="role"
-            id="role"
+            id="input-role"
             className="bg-form w-full rounded-lg text-black p-3 border focus:outline-none focus:border-black"
           >
-            <option value="host">Guest</option>
-            <option value="user">Host</option>
+            <option id="guest" value="guest">
+              Guest
+            </option>
+            <option id="host" value="host">
+              Host
+            </option>
           </select>
           <p className="text-sm pt-2">
             Already have an account?
             <Link
+              id="btn-login"
               className="text-blue-700 font-bold ml-1"
               to="/login"
             >
@@ -115,6 +122,7 @@ function Register() {
             </Link>
           </p>
           <Btn
+            id="btn-register"
             disabled={disabled}
             className="my-10"
             label="Register"

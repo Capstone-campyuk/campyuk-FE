@@ -6,7 +6,7 @@ import { CardSAdmin } from "../../components/Card";
 function DashboardAdmin() {
   return (
     <Layout>
-      <h1 className="text-4xl p-5">Camp Site</h1>
+      <h1 id="admin-page" className="text-4xl p-5">Dashboard Admin</h1>
       <div className="flex flex-col items-center gap-10 px-2 lg:px-6 pb-6">
         <CardSAdmin
           image={`img-content.jpg`}
