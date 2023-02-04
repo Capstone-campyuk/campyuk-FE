@@ -7,42 +7,38 @@ import { Input } from "../../components/Input";
 import { Btn, Btns } from "../../components/Button";
 
 function Login() {
-  const [formLogin, setFormLogin] = useState({
-    username: "",
-    password: "",
-  });
-
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [disabled, setDisabled] = useState(true);
+  const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies([
     "username",
     "token",
     "role",
   ]);
 
-  const [disabled, setDisabled] = useState(true);
-  const navigate = useNavigate();
-
-  const handleChange = (e: any) => {
-    setFormLogin({
-      ...formLogin,
-      [e.target.id]: e.target.value,
-    });
-  };
-
   useEffect(() => {
-    if (formLogin.username && formLogin.password) {
+    if (username && password) {
       setDisabled(false);
     } else {
       setDisabled(true);
     }
-  }, [formLogin]);
+  }, [username, password]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const body = {
+      username,
+      password,
+    };
+
     axios
-      .post("https://-/login", formLogin)
+      .post("https://abiasa.site/login", body)
       .then((res) => {
+        console.log(res.data.data);
         setCookie("username", res.data.data.username);
         setCookie("token", res.data.token, { path: "/" });
+        setCookie("role", res.data.role, { path: "/" });
 
         alert("Success login");
         navigate("/");
@@ -72,16 +68,14 @@ function Login() {
             title="Username"
             placeholder="Username"
             type="text"
-            onChange={handleChange}
-            value={formLogin.username}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <Input
             id="input-password"
             title="Password"
             placeholder="Password"
             type="password"
-            onChange={handleChange}
-            value={formLogin.password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <Btn
             id="btn-login"
