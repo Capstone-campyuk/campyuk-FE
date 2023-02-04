@@ -35,7 +35,7 @@ export function CardCampList({
         <div className="flex flex-col justify-between">
           <h1>$ {price} /night</h1>
           <Link to="/camp/:id_camp">
-            <Btn label="Check!" />
+            <Btn id="btn-detail" label="Check!" />
           </Link>
         </div>
       </div>
@@ -72,6 +72,7 @@ export function CardHistory({
         alt={image}
       />
       <Link
+        id="detail-history"
         to="/booking/:id_booking"
         className="flex flex-col p-4 justify-evenly lg:w-1/3 cursor-pointer"
       >
@@ -117,9 +118,11 @@ export function CardHost({
   price,
   status,
 }: CardHostProps) {
+  function handleDelete() {}
+
   return (
     <div className="flex flex-col bg-bgcard border-2 rounded-3xl shadow-lg max-w-2xl">
-      <Link to="/detail-camp-host/:id_camp">
+      <Link id="detail-camphost" to="/camp-host/:id_camp">
         <img className="rounded-t-3xl" src={image} alt={image} />
       </Link>
       <div className="flex justify-between p-4">
@@ -130,18 +133,22 @@ export function CardHost({
           </p>
         </div>
         <div className="flex flex-col justify-between">
-          <h1>$ {price} /night</h1>
+          <h1 id="camp-title">$ {price} /night</h1>
           <br />
-          <p className="bg-primary text-bgcard text-center rounded-3xl p-2">
+          <p id="status" className="bg-primary text-bgcard text-center rounded-3xl p-2">
             {status}
           </p>
         </div>
       </div>
       <div className="flex justify-between text-4xl p-4">
-        <Link to="/edit-camp/:id_camp">
+        <Link id="btn-edit" to="/edit-camp/:id_camp">
           <HiOutlinePencilAlt />
         </Link>
-        <HiOutlineTrash className="text-btn" />
+        <HiOutlineTrash
+          id="btn-delete"
+          className="text-btn cursor-pointer"
+          onClick={handleDelete}
+        />
       </div>
     </div>
   );
@@ -188,7 +195,7 @@ export function CardSAdmin({
         <div className="flex justify-between items-center">
           <h1 className="text-3xl">$ {price} /night</h1>
           <Link to="/detail-admin/:id_camp">
-            <Btn className="w-18" label="Check" />
+            <Btn id="btn-check" className="w-18" label="Check" />
           </Link>
         </div>
       </div>

@@ -6,7 +6,7 @@ import { CardCampList } from "../components/Card";
 function CampList() {
   return (
     <Layout>
-      <h1 className="text-4xl p-5">Camp Site</h1>
+      <h1 id="camplist-page" className="text-4xl p-5">Camp Site</h1>
       <div className="flex justify-center px-2 pb-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           <CardCampList

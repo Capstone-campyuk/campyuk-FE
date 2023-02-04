@@ -3,12 +3,21 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 import { Btn } from "./Button";
-import { IoIosPerson, IoMdMenu, IoIosBookmark } from "react-icons/io";
+import {
+  IoIosPerson,
+  IoMdMenu,
+  IoIosBookmark,
+  IoIosCompass,
+} from "react-icons/io";
 
 export function NavbarGuest() {
   return (
     <nav className="navbar bg-primary text-white p-5">
-      <Link to="/" className="navbar-start items-center gap-2">
+      <Link
+        id="btn-home"
+        to="/"
+        className="navbar-start items-center gap-2"
+      >
         <h1 className="font-extrabold antialiased text-2xl">
           campyuk
         </h1>
@@ -20,7 +29,7 @@ export function NavbarGuest() {
       </Link>
       <div className="navbar-end">
         <Link to="/login">
-          <Btn label={"Login"} />
+          <Btn id="btn-login" label={"Login"} />
         </Link>
       </div>
     </nav>
@@ -48,13 +57,14 @@ export function NavbarLogin() {
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
-            <IoMdMenu className="text-3xl" />
+            <IoMdMenu id="btn-menu" className="text-3xl" />
           </label>
           <ul
             tabIndex={0}
             className="dropdown-content mt-3 p-2 shadow bg-primary rounded-box w-52"
           >
             <Link
+              id="btn-profile"
               to={`/profile/:id-username`}
               className="flex items-center gap-2"
             >
@@ -62,15 +72,28 @@ export function NavbarLogin() {
               <a>Profile</a>
             </Link>
             <Link
+              id="btn-booking"
               to="/booking-history"
               className="flex items-center gap-2"
             >
               <IoIosBookmark className="text-2xl" />
               <a>My Booking</a>
             </Link>
+            <Link
+              id="btn-camp"
+              to="/camplist"
+              className="flex items-center gap-2"
+            >
+              <IoIosCompass className="text-2xl" />
+              <a>Camp Site</a>
+            </Link>
           </ul>
         </div>
-        <Link to="/" className="flex items-center gap-2">
+        <Link
+          id="btn-home"
+          to="/"
+          className="flex items-center gap-2"
+        >
           <h1 className="font-extrabold antialiased text-2xl">
             campyuk
           </h1>
@@ -84,6 +107,7 @@ export function NavbarLogin() {
       <div className="navbar-end hidden lg:flex ">
         <ul className="flex gap-8">
           <Link
+            id="btn-profilelg"
             to={`/profile/:id-username`}
             className="flex items-center gap-2"
           >
@@ -91,39 +115,30 @@ export function NavbarLogin() {
             <a>Profile</a>
           </Link>
           <Link
+            id="btn-bookinglg"
             to="/booking-history"
             className="flex items-center gap-2"
           >
             <IoIosBookmark className="text-2xl" />
             <a>My Booking</a>
           </Link>
+          <Link
+            id="btn-camplg"
+            to="/camplist"
+            className="flex items-center gap-2"
+          >
+            <IoIosCompass className="text-2xl" />
+            <a>Camp Site</a>
+          </Link>
         </ul>
       </div>
       <div className="navbar-end lg:max-w-[120px]">
         <Btn
+          id="logout"
           onClick={handleLogOut}
           className="max-w-[90px]"
           label={"Logout"}
         />
-      </div>
-    </div>
-  );
-}
-
-export function NavbarForm() {
-  return (
-    <div className="navbar bg-primary text-white p-5">
-      <div className="navbar-start">
-        <Link to="/" className="flex items-center gap-2">
-          <h1 className="font-extrabold antialiased text-2xl">
-            campyuk
-          </h1>
-          <img
-            src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
-            alt="icon"
-            className="w-7"
-          />
-        </Link>
       </div>
     </div>
   );

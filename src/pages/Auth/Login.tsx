@@ -63,10 +63,12 @@ function Login() {
         <span className="hero-overlay bg-opacity-60" />
       </div>
       <div className="mx-auto bg-bgcard w-full max-h-[550px] max-w-md rounded-3xl p-5 my-10 shadow-lg">
-        <h1 className="text-3xl text-center mb-10">Login</h1>
+        <h1 id="login-page" className="text-3xl text-center mb-10">
+          Login
+        </h1>
         <form onSubmit={handleSubmit}>
           <Input
-            id="username"
+            id="input-username"
             title="Username"
             placeholder="Username"
             type="text"
@@ -74,7 +76,7 @@ function Login() {
             value={formLogin.username}
           />
           <Input
-            id="password"
+            id="input-password"
             title="Password"
             placeholder="Password"
             type="password"
@@ -82,6 +84,7 @@ function Login() {
             value={formLogin.password}
           />
           <Btn
+            id="btn-login"
             disabled={disabled}
             className="my-3 mt-10"
             label="Login"
@@ -89,7 +92,7 @@ function Login() {
         </form>
         <p className="text-center">Or</p>
         <Link to="/register">
-          <Btns className="my-3" label="Register" />
+          <Btns id="btn-register" className="my-3" label="Register" />
         </Link>
       </div>
     </div>

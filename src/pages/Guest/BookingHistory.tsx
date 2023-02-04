@@ -6,7 +6,7 @@ import { CardHistory } from "../../components/Card";
 function BookingHistory() {
   return (
     <Layout>
-      <h1 className="text-4xl p-5">Camp Site</h1>
+      <h1 id="bookinghistory-page" className="text-4xl p-5">Booking history</h1>
       <div className="flex flex-col items-center gap-10 px-2 lg:px-6 pb-6">
         <CardHistory
           image={`img-content.jpg`}
