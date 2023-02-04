@@ -194,7 +194,7 @@ export function CardSAdmin({
         </div>
         <div className="flex justify-between items-center">
           <h1 className="text-3xl">$ {price} /night</h1>
-          <Link to="/detail-admin/:id_camp">
+          <Link to="/camp-admin/:id_camp">
             <Btn id="btn-check" className="w-18" label="Check" />
           </Link>
         </div>
