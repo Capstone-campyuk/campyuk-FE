@@ -37,7 +37,10 @@ function DetailCamp() {
 
   return (
     <Layout>
-      <div className="flex flex-col lg:flex-row p-5 gap-5 justify-center">
+      <div
+        id="detail-camp-page"
+        className="flex flex-col lg:flex-row p-5 gap-5 justify-center"
+      >
         <div className="lg:w-4/6">
           <img src={content} alt="" className="w-full h-96 rounded-lg" />
         </div>

@@ -7,7 +7,9 @@ import { datacamp } from "../utils/const/datas";
 function BookingDetail() {
   return (
     <Layout>
-      <h1 className="font-bold text-3xl pt-5 px-20">Detail Transaction</h1>
+      <h1 id="booking-detail-page" className="font-bold text-3xl pt-5 px-20">
+        Detail Transaction
+      </h1>
       <div className="px-20 ">
         <div className="flex flex-col lg:flex-row m-5 bg-bgcard rounded-3xl shadow-lg">
           <img
