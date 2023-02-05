@@ -1,12 +1,19 @@
+import react, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import { ReactImageCarouselViewer } from "react-image-carousel-viewer";
 import { MapContainer, Marker, TileLayer, Popup } from "react-leaflet";
 import L, { LatLngExpression } from "leaflet";
-import { useState } from "react";
+
 import "leaflet/dist/leaflet.css";
 import tileLayer from "../../utils/const/tileLayer";
 import { Layout } from "../../components/Layout";
 import { Btn, Btns } from "../../components/Button";
 import { GiPositionMarker } from "react-icons/gi";
+import { CampTypes } from "../../utils/types/campsTypes";
 
 function DetailAdmin() {
   const content =
@@ -30,6 +37,32 @@ function DetailAdmin() {
       src: "https://images.tokopedia.net/img/JFrBQq/2022/6/22/56110566-f35c-43e4-93e3-b3ba554f0118.jpg",
     },
   ];
+
+  const [detailcamp, setDetail] = useState<CampTypes[]>([]);
+  const [cookie, setCookies] = useCookies();
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  useEffect(() => {
+    fetchDetail();
+  }, []);
+
+  function fetchDetail() {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${cookie.token}`,
+      },
+    };
+    axios
+      .get(`https://abiasa.site/camps/${id}`, config)
+      .then((res) => {
+        console.log("data detail", res);
+        const { data } = res.data.data;
+        setDetail(data);
+      })
+      .catch((err) => {});
+  }
+
   return (
     <Layout>
       <div
@@ -62,118 +95,115 @@ function DetailAdmin() {
           </div>
         </div>
       </div>
-      <div className="flex pt-10">
-        <div className="flex-row w-1/4 px-10">
-          <h1 className="font-bold text-2xl pb-3">Tanakita Camp</h1>
-          <div className="flex flex-rows pb-3">
-            <GiPositionMarker className="w-8 h-8" />
-            <span className="font-semibold text-xl">Alamat</span>
+      {detailcamp.map((data) => (
+        <div>
+          <div className="flex pt-10">
+            <div className="flex-row w-1/4 px-10">
+              <h1 className="font-bold text-2xl pb-3">{data.title}</h1>
+              <div className="flex flex-rows pb-3">
+                <GiPositionMarker className="w-8 h-8" />
+                <span className="font-semibold text-xl">{data.city}</span>
+              </div>
+              <p className="font-semibold text-xl pb-3">
+                {data.distance} km away from the city centre
+              </p>
+              <p className="font-bold text-3xl pb-3">
+                {data.price} <span className="font-normal text-xl">/night</span>
+              </p>
+            </div>
+            <div className="flex-row w-3/4 px-20">
+              <p className="text-xl">{data.description}</p>
+            </div>
           </div>
-          <p className="font-semibold text-xl pb-3">
-            5 km away from the city centre
-          </p>
-          <p className="font-bold text-3xl pb-3">
-            $ 60 <span className="font-normal text-xl">/night</span>
-          </p>
-        </div>
-        <div className="flex-row w-3/4 px-20">
-          <p className="text-xl">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-            molestie tempus purus, at tristique justo vehicula id. Sed non
-            mollis risus. Curabitur nisl risus, pretium vitae suscipit at,
-            mattis quis lacus. Phasellus in orci aliquet, ultrices turpis
-            feugiat, sagittis lacus. Vivamus mauris est, tincidunt in ipsum eu,
-            sagittis placerat justo. Donec vitae dui mollis, mattis mi eget,
-            semper quam. In tempus finibus vulputate. In sed est magna. Proin
-            sed lectus vel orci cursus dignissim.
-          </p>
-        </div>
-      </div>
-      <div className="grid grid-cols-4 gap-4 px-10 pt-10">
-        <div className="flex flex-col">
-          <h1 className="font-bold text-4xl pb-3">Tent</h1>
-          <p className="font-semibold text-xl pb-3">Small (1-2 person) </p>
-          <p className="font-semibold text-xl pb-3">Medium (3-4 person) </p>
-          <p className="font-semibold text-xl pb-3">Large (4-5 person) </p>
-        </div>
-        <div>
-          <h1 className="font-bold text-4xl pb-3">Stock</h1>
-          <p className="font-semibold text-xl pb-3 px-8">4</p>
-          <p className="font-semibold text-xl pb-3 px-8">4</p>
-          <p className="font-semibold text-xl pb-3 px-8">4</p>
-        </div>
+          <div className="grid grid-cols-4 gap-4 px-10 pt-10">
+            <div className="flex flex-col">
+              <h1 className="font-bold text-4xl pb-3">Tent</h1>
+              <p className="font-semibold text-xl pb-3">{data.items[0].name}</p>
+              <p className="font-semibold text-xl pb-3">Medium (3-4 person) </p>
+              <p className="font-semibold text-xl pb-3">Large (4-5 person) </p>
+            </div>
+            <div>
+              <h1 className="font-bold text-4xl pb-3">Stock</h1>
+              <p className="font-semibold text-xl pb-3 px-8">
+                {data.items[0].stock}
+              </p>
+              <p className="font-semibold text-xl pb-3 px-8">4</p>
+              <p className="font-semibold text-xl pb-3 px-8">4</p>
+            </div>
 
-        <div>
-          <h1 className="font-bold text-4xl pb-3">Price</h1>
-          <p className="font-semibold text-xl pb-3 px-8">$8</p>
-          <p className="font-semibold text-xl pb-3 px-8">$10</p>
-          <p className="font-semibold text-xl pb-3 px-8">$12</p>
-        </div>
-        <div className="mr-8">
-          <img
-            src={content}
-            alt=""
-            className="w-80 rounded-lg absolute"
-            id="more-image2"
-            onClick={() => {
-              setIndex(index);
-              setIsOpen(true);
-            }}
-          />
-          <p className="inline-block py-16 px-16 text-2xl font-bold opacity-75 text-white">
-            More image
-          </p>
+            <div>
+              <h1 className="font-bold text-4xl pb-3">Price</h1>
+              <p className="font-semibold text-xl pb-3 px-8">
+                {data.items[0].rent_price}
+              </p>
+              <p className="font-semibold text-xl pb-3 px-8">$10</p>
+              <p className="font-semibold text-xl pb-3 px-8">$12</p>
+            </div>
+            <div className="mr-8">
+              <img
+                src={content}
+                alt=""
+                className="w-80 rounded-lg absolute"
+                id="more-image2"
+                onClick={() => {
+                  setIndex(index);
+                  setIsOpen(true);
+                }}
+              />
+              <p className="inline-block py-16 px-16 text-2xl font-bold opacity-75 text-white">
+                More image
+              </p>
 
-          <ReactImageCarouselViewer
-            open={isOpen}
-            onClose={() => setIsOpen(false)}
-            images={images}
-            startIndex={index}
-          />
-        </div>
-      </div>
-      <div className="px-10">
-        <label htmlFor="" className="font-bold text-2xl text-sky-900">
-          Download Business License
-        </label>
-      </div>
-      <h1 className="px-10 py-5 text-2xl font-bold">Available Add On</h1>
-      <div className="flex flex-col lg:flex-row gap-10 px-10">
-        <div>
-          <h1 className="text-lg mb-2">Item Bonfire</h1>
-          <p>Stok</p>
-          <p>Price</p>
-        </div>
-        <div>
-          <h1 className="text-lg mb-2">Item Sleeping Bag</h1>
-          <p>Stok</p>
-          <p>Price</p>
-        </div>
-      </div>
-      <div className="flex px-10 pt-10 pb-10">
-        <div className="flex-row w-1/2">
-          <MapContainer
-            center={position}
-            zoom={20}
-            scrollWheelZoom={true}
-            style={{ height: "400px" }}
-          >
-            <TileLayer {...tileLayer} />
-            <Marker position={position}>
-              <Popup>Center Warsaw</Popup>
-            </Marker>
-          </MapContainer>
-        </div>
-        <div className="flex-row w-1/2 px-10">
-          <p className="text-3xl px-10 ">
-            Jl. Spartan No.IV, Gotham city, West Java, 53241 +62 985904
-          </p>
-          <div className="flex justify-end gap-20 pb-10 pt-60 ">
-            <Btns label="Unaccept" id="btn-unaccept" className="w-48" />
-            <Btn label="Accept" id="btn-accept" className="w-48" />
+              <ReactImageCarouselViewer
+                open={isOpen}
+                onClose={() => setIsOpen(false)}
+                images={images}
+                startIndex={index}
+              />
+            </div>
+          </div>
+          <div className="px-10">
+            <label htmlFor="" className="font-bold text-2xl text-sky-900">
+              Download Business License
+            </label>
+          </div>
+          <h1 className="px-10 py-5 text-2xl font-bold">Available Add On</h1>
+          <div className="flex flex-col lg:flex-row gap-10 px-10">
+            <div>
+              <h1 className="text-lg mb-2">Item Bonfire</h1>
+              <p>{data.items[1].stock}</p>
+              <p>{data.items[1].rent_price}</p>
+            </div>
+            <div>
+              <h1 className="text-lg mb-2">Item Sleeping Bag</h1>
+              <p>{data.items[2].stock}</p>
+              <p>{data.items[2].rent_price}</p>
+            </div>
+          </div>
+          <div className="flex px-10 pt-10 pb-10">
+            <div className="flex-row w-1/2">
+              <MapContainer
+                center={position}
+                zoom={20}
+                scrollWheelZoom={true}
+                style={{ height: "400px" }}
+              >
+                <TileLayer {...tileLayer} />
+                <Marker position={position}>
+                  <Popup>Center Warsaw</Popup>
+                </Marker>
+              </MapContainer>
+            </div>
+            <div className="flex-row w-1/2 px-10">
+              <p className="text-3xl px-10 ">{data.address}</p>
+              <div className="flex justify-end gap-20 pb-10 pt-60 ">
+                <Btns label="Unaccept" id="btn-unaccept" className="w-48" />
+                <Btn label="Accept" id="btn-accept" className="w-48" />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      ))}
     </Layout>
   );
 }
