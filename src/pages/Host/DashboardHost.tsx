@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useCookies } from "react-cookie";
 
 import { Layout } from "../../components/Layout";
 import { CardHost } from "../../components/Card";
@@ -12,6 +13,7 @@ import { CampsTypes } from "../../utils/types/campsTypes";
 function DashboardHost() {
   const [camps, setCamps] = useState<CampsTypes[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [cookie] = useCookies(["username"]);
 
   useEffect(() => {
     fetchData();
@@ -21,7 +23,7 @@ function DashboardHost() {
     axios
       .get("https://abiasa.site/camps")
       .then((res) => {
-        console.log(res)
+        console.log(res);
         setCamps(res.data.data);
       })
       .catch((err) => {
@@ -35,7 +37,7 @@ function DashboardHost() {
   return (
     <Layout>
       <h1 id="host-page" className="text-4xl p-5">
-        Uname Host
+        {`${cookie.username} site`}
       </h1>
       <div className="flex justify-center px-2 pb-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
