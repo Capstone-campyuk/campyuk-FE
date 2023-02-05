@@ -109,6 +109,7 @@ interface CardHostProps {
   loc: string;
   price: number;
   status: string;
+  deleteCamp?: () => void;
 }
 
 export function CardHost({
@@ -117,6 +118,7 @@ export function CardHost({
   loc,
   price,
   status,
+  deleteCamp,
 }: CardHostProps) {
   function handleDelete() {}
 
@@ -135,7 +137,10 @@ export function CardHost({
         <div className="flex flex-col justify-between">
           <h1 id="camp-title">$ {price} /night</h1>
           <br />
-          <p id="status" className="bg-primary text-bgcard text-center rounded-3xl p-2">
+          <p
+            id="status"
+            className="bg-primary text-bgcard text-center rounded-3xl p-2"
+          >
             {status}
           </p>
         </div>
@@ -144,11 +149,13 @@ export function CardHost({
         <Link id="btn-edit" to="/edit-camp/:id_camp">
           <HiOutlinePencilAlt />
         </Link>
-        <HiOutlineTrash
-          id="btn-delete"
-          className="text-btn cursor-pointer"
-          onClick={handleDelete}
-        />
+        <button onClick={deleteCamp}>
+          <HiOutlineTrash
+            id="btn-delete"
+            className="text-btn cursor-pointer"
+            onClick={handleDelete}
+          />
+        </button>
       </div>
     </div>
   );
@@ -157,8 +164,8 @@ interface CardSAdminProps {
   image: string;
   campsite: string;
   loc: string;
-  address: string;
-  id_camp: number;
+  address?: string;
+  host: string;
   price: number;
 }
 
@@ -168,32 +175,32 @@ export function CardSAdmin({
   loc,
   price,
   address,
-  id_camp,
+  host,
 }: CardSAdminProps) {
   return (
-    <div className="flex flex-col lg:flex-row bg-bgcard border-2 rounded-3xl shadow-lg">
+    <div className="flex bg-bgcard border-2 rounded-3xl shadow-lg lg:w-[70vw] lg:h-[50vh]">
       <img
-        className="rounded-t-2xl lg:rounded-l-3xl lg:w-2/3"
+        className="object-cover rounded-l-3xl w-2/3"
         src={image}
         alt={image}
       />
-      <div className="flex flex-col p-4 justify-evenly lg:w-1/3">
+      <div className="flex flex-col p-4 justify-evenly w-1/3">
         <div>
-          <h1 className="text-2xl">{campsite}</h1>
+          <h1 className="lg:text-2xl">{campsite}</h1>
           <p className="flex items-center">
             <ImLocation /> {loc}
           </p>
         </div>
         <div>
-          <h1 className="text-2xl">Address</h1>
+          <h1 className="lg:text-2xl">Address</h1>
           <p>{address}</p>
         </div>
         <div>
-          <h1 className="text-2xl">Camp Id</h1>
-          <p>{id_camp}</p>
+          <h1 className="lg:text-2xl">Host Name</h1>
+          <p>{host}</p>
         </div>
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl">$ {price} /night</h1>
+        <div className="flex flex-col lg:flex-row gap-2 justify-between items-center">
+          <h1 className="lg:text-3xl">$ {price} /night</h1>
           <Link to="/camp-admin/:id_camp">
             <Btn id="btn-check" className="w-18" label="Check" />
           </Link>

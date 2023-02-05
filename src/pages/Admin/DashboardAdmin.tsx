@@ -36,18 +36,20 @@ function DashboardAdmin() {
         Dashboard Admin
       </h1>
       <div className="flex flex-col items-center gap-10 px-2 lg:px-6 pb-6">
-        {loading ? (
-          <LoadingLong />
-        ) : (
-          <CardSAdmin
-            image={`img-content.jpg`}
-            campsite={`Tanakita Camp`}
-            loc={`Sukabumi`}
-            price={40}
-            address={`Jl. Tdiosfh, Hweiu City, West Java, 23623`}
-            id_camp={948239049}
-          />
-        )}
+        {loading
+          ? [...Array(4).keys()].map((index) => (
+              <LoadingLong key={index} />
+            ))
+          : camps.map((camp, index) => (
+              <CardSAdmin
+                key={index}
+                image={camp.image}
+                campsite={camp.title}
+                loc={camp.city}
+                price={camp.price}
+                host={camp.host_name}
+              />
+            ))}
       </div>
     </Layout>
   );

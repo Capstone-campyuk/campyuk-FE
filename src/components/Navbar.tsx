@@ -82,7 +82,7 @@ export function NavbarLogin() {
               <>
                 <Link
                   id="btn-profilelg"
-                  to={`/profile/:id-username`}
+                  to={`/profile/${cookie.username}`}
                   className="flex items-center gap-2"
                 >
                   <IoIosPerson className="text-2xl" />
@@ -142,7 +142,7 @@ export function NavbarLogin() {
         {checkRole === "host" ? (
           <Link
             id="btn-home"
-            to="/host/:id-username"
+            to={`/host/${cookie.username}`}
             className="flex items-center gap-2"
           >
             <h1 className="font-extrabold antialiased text-2xl">
@@ -183,7 +183,7 @@ export function NavbarLogin() {
             <>
               <Link
                 id="btn-profilelg"
-                to={`/profile/:id-username`}
+                to={`/profile/${cookie.username}`}
                 className="flex items-center gap-2"
               >
                 <IoIosPerson className="text-2xl" />

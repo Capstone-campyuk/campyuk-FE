@@ -46,7 +46,7 @@ function Login() {
         if (checkRole === "guest") {
           navigate("/");
         } else if (checkRole === "host") {
-          navigate("/host/:id-username");
+          navigate(`/host/${res.data.data.username}`);
         } else navigate("/admin");
 
         window.location.reload();

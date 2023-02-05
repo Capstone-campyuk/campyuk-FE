@@ -169,7 +169,7 @@ function DetailCamp() {
                   </tr>
                 </tbody>
               </table>
-              <Link to={"/order/:id_order"}>
+              <Link to={"/order"}>
                 <Btn className="mt-10" label="Reserve" />
               </Link>
             </div>
