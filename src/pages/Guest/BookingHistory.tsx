@@ -20,10 +20,10 @@ function BookingHistory() {
       .get("https://abiasa.site/bookings")
       .then((res) => {
         // console.log(res.data.data);
-        setBookings(res.data.data)
+        setBookings(res.data.data);
       })
       .catch((err) => {
-        err.response.data.message;
+        alert(err.response.data.message);
       })
       .finally(() => {
         setLoading(true);
