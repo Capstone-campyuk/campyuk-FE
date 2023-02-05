@@ -17,11 +17,26 @@ export interface BookingTypes {
   camp_title: string;
   camp_image: string;
   camp_city: string;
+  camp_price: number;
   check_in: string;
   check_out: string;
   guest: number;
   camp_cost: number;
   items: [
+    {
+      item_id: number;
+      name: string;
+      price: number;
+      quantity: number;
+      rent_cost: number;
+    },
+    {
+      item_id: number;
+      name: string;
+      price: number;
+      quantity: number;
+      rent_cost: number;
+    },
     {
       item_id: number;
       name: string;
