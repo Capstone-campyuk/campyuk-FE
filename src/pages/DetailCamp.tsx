@@ -1,16 +1,22 @@
+import react, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 import { ReactImageCarouselViewer } from "react-image-carousel-viewer";
 import { MapContainer, Marker, TileLayer, Popup } from "react-leaflet";
 
 import L, { LatLngExpression } from "leaflet";
-import { useState } from "react";
+
 import "leaflet/dist/leaflet.css";
 import tileLayer from "../utils/const/tileLayer";
 
 import { Layout } from "../components/Layout";
 import { Btn } from "../components/Button";
 import { ImLocation } from "react-icons/im";
+import { CampTypes } from "../utils/types/campsTypes";
 
 function DetailCamp() {
   const content =
@@ -34,6 +40,31 @@ function DetailCamp() {
       src: "https://images.tokopedia.net/img/JFrBQq/2022/6/22/56110566-f35c-43e4-93e3-b3ba554f0118.jpg",
     },
   ];
+
+  const [detailcamp, setDetail] = useState<CampTypes[]>([]);
+  const [cookie, setCookies] = useCookies();
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  useEffect(() => {
+    fetchDetail();
+  }, []);
+
+  function fetchDetail() {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${cookie.token}`,
+      },
+    };
+    axios
+      .get(`https://abiasa.site/camps/${id}`, config)
+      .then((res) => {
+        console.log("data detail", res);
+        const { data } = res.data.data;
+        setDetail(data);
+      })
+      .catch((err) => {});
+  }
 
   return (
     <Layout>
@@ -75,69 +106,76 @@ function DetailCamp() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col lg:flex-row justify-around p-5">
-        <div className="lg:w-4/6">
-          <h1 className="text-4xl">Danau Toba</h1>
-          <div className="flex items-center">
-            <ImLocation className="text-2xl" />
-            <p className="font-semibold text-xl">City</p>
+      {detailcamp.map((data) => (
+        <div className="flex flex-col lg:flex-row justify-around p-5">
+          <div className="lg:w-4/6">
+            <h1 className="text-4xl">{data.title}</h1>
+            <div className="flex items-center">
+              <ImLocation className="text-2xl" />
+              <p className="font-semibold text-xl">{data.city}</p>
+            </div>
+            <p className="pt-5">{data.description}</p>
+            <div className="py-10">
+              <MapContainer
+                center={position}
+                zoom={20}
+                scrollWheelZoom={true}
+                style={{ height: "400px" }}
+              >
+                <TileLayer {...tileLayer} />
+                <Marker position={position}>
+                  <Popup>Center Warsaw</Popup>
+                </Marker>
+              </MapContainer>
+            </div>
           </div>
-          <p className="pt-5">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-            molestie tempus purus, at tristique justo vehicula id. Sed non
-            mollis risus. Curabitur nisl risus, pretium vitae suscipit at,
-            mattis quis lacus. Phasellus in orci aliquet, ultrices turpis
-            feugiat, sagittis lacus. Vivamus mauris est, tincidunt in ipsum eu,
-            sagittis placerat justo.
-          </p>
-          <div className="py-10">
-            <MapContainer
-              center={position}
-              zoom={20}
-              scrollWheelZoom={true}
-              style={{ height: "400px" }}
-            >
-              <TileLayer {...tileLayer} />
-              <Marker position={position}>
-                <Popup>Center Warsaw</Popup>
-              </Marker>
-            </MapContainer>
+          <div className="lg:w-[25%]">
+            <div className="p-5 bg-white rounded-xl">
+              <h1 className="text-2xl">{data.price}/night</h1>
+              <br />
+              <h1 className="text-xl">Available Add On</h1>
+              <br />
+              <table className="border-collapse border border-slate-500 w-[90%] text-center mx-auto">
+                <thead>
+                  <tr>
+                    <th className="border border-slate-600">
+                      {data.items[0].name}
+                    </th>
+                    <th className="border border-slate-600">
+                      {data.items[0].rent_price}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="border border-slate-700">
+                      {data.items[1].name}
+                    </td>
+                    <td className="border border-slate-700">
+                      {data.items[1].rent_price}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-700">
+                      {data.items[2].rent_price}
+                    </td>
+                    <td className="border border-slate-700">
+                      {data.items[2].rent_price}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-slate-700">Sleeping Bag</td>
+                    <td className="border border-slate-700">$ 2</td>
+                  </tr>
+                </tbody>
+              </table>
+              <Link to={"/order/:id_order"}>
+                <Btn className="mt-10" label="Reserve" />
+              </Link>
+            </div>
           </div>
         </div>
-        <div className="lg:w-[25%]">
-          <div className="p-5 bg-white rounded-xl">
-            <h1 className="text-2xl">$ 50 /night</h1>
-            <br />
-            <h1 className="text-xl">Available Add On</h1>
-            <br />
-            <table className="border-collapse border border-slate-500 w-[90%] text-center mx-auto">
-              <thead>
-                <tr>
-                  <th className="border border-slate-600">Items</th>
-                  <th className="border border-slate-600">Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="border border-slate-700">Tent</td>
-                  <td className="border border-slate-700">$ 5</td>
-                </tr>
-                <tr>
-                  <td className="border border-slate-700">Bonfire</td>
-                  <td className="border border-slate-700">$ 3</td>
-                </tr>
-                <tr>
-                  <td className="border border-slate-700">Sleeping Bag</td>
-                  <td className="border border-slate-700">$ 2</td>
-                </tr>
-              </tbody>
-            </table>
-            <Link to={"/order/:id_order"}>
-              <Btn className="mt-10" label="Reserve" />
-            </Link>
-          </div>
-        </div>
-      </div>
+      ))}
     </Layout>
   );
 }
