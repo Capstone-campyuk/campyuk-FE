@@ -9,7 +9,7 @@ interface ButtonProps
   icon?: JSX.Element;
   className?: string;
   disabled?: boolean;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement> | any;
 }
 
 export function Btn({

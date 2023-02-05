@@ -23,7 +23,7 @@ function DashboardHost() {
     axios
       .get("https://abiasa.site/camps")
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
         setCamps(res.data.data);
       })
       .catch((err) => {
@@ -41,19 +41,20 @@ function DashboardHost() {
       </h1>
       <div className="flex justify-center px-2 pb-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          {loading ? (
-            <LoadingReg />
-          ) : (
-            <CardHost
-              image={
-                "https://images.unsplash.com/photo-1455496231601-e6195da1f841?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1222&q=80"
-              }
-              campsite={"Tanakita Camp"}
-              price={60}
-              loc={"Sukabumi"}
-              status={"Accepted"}
-            />
-          )}
+          {loading
+            ? [...Array(4).keys()].map((index) => (
+                <LoadingReg key={index} />
+              ))
+            : camps.map((camp, index) => (
+                <CardHost
+                  key={index}
+                  image={camp.image}
+                  campsite={camp.title}
+                  price={camp.price}
+                  loc={camp.city}
+                  status={camp.verification_status}
+                />
+              ))}
         </div>
       </div>
       <div className="flex justify-end p-5 gap-5">
@@ -64,7 +65,7 @@ function DashboardHost() {
             label="Order List"
           />
         </Link>
-        <Link to="/addtent">
+        <Link to="/addcamp">
           <Btn
             id="btn-addcamp"
             className="w-18"
