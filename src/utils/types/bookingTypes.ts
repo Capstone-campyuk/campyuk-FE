@@ -1,4 +1,4 @@
-export interface BookingTypes {
+export interface BookingsTypes {
   id: number;
   ticket: string;
   camp_title: string;
@@ -11,7 +11,7 @@ export interface BookingTypes {
   total_price: number;
 }
 
-export interface BookingIdTypes {
+export interface BookingTypes {
   id: number;
   ticket: string;
   camp_title: string;
@@ -21,15 +21,7 @@ export interface BookingIdTypes {
   check_out: string;
   guest: number;
   camp_cost: number;
-
   items: [
-    {
-      item_id: number;
-      name: string;
-      price: number;
-      quantity: number;
-      rent_cost: number;
-    },
     {
       item_id: number;
       name: string;

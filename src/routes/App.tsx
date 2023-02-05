@@ -95,7 +95,7 @@ function App() {
       element: <DashboardAdmin />,
     },
     {
-      path: "/detail-admin/:id_camp",
+      path: "/camp-admin/:id_camp",
       element: <DetailAdmin />,
     },
   ]);
