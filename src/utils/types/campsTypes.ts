@@ -29,6 +29,20 @@ export interface CampTypes {
       stock: number;
       rent_price: number;
       item_image: string;
+    },
+    {
+      item_id: number;
+      name: string;
+      stock: number;
+      rent_price: number;
+      item_image: string;
+    },
+    {
+      item_id: number;
+      name: string;
+      stock: number;
+      rent_price: number;
+      item_image: string;
     }
   ];
 }
