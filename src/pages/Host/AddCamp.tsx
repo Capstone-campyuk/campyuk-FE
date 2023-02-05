@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { MapContainer, useMap, TileLayer } from "react-leaflet";
+import { useCookies } from "react-cookie";
 
 import { Layout } from "../../components/Layout";
 import { Btn, Btns } from "../../components/Button";
@@ -10,6 +11,7 @@ import { InputSide } from "../../components/Input";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import tileLayer from "../../utils/const/tileLayer";
+import { Cookies } from "react-cookie";
 
 const GetCoordinates = () => {
   const map = useMap();
@@ -51,6 +53,8 @@ function AddCamp() {
   const [document, setDocument] = useState<any>({});
   const [images, setImages] = useState<any>({});
   const [disabled, setDisabled] = useState(true);
+  const [cookie] = useCookies(["username"]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -92,7 +96,7 @@ function AddCamp() {
       .post("https://abiasa.site/camps", formData)
       .then((res) => {
         alert("Success Add Camp");
-        navigate("/host/:id-username");
+        navigate(`/host/${cookie.username}`);
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -192,7 +196,7 @@ function AddCamp() {
         />
       </form>
       <div className="flex justify-end gap-5 p-5">
-        <Link to="/host/:id-username">
+        <Link to={`/host/${cookie.username}`}>
           <Btns id="btn-cancel" label="Cancel" className="w-18" />
         </Link>
         <Btn

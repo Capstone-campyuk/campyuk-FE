@@ -56,7 +56,7 @@ function App() {
       element: <DetailCamp />,
     },
     {
-      path: "/profile/:id-username",
+      path: "/profile/:id_username",
       element: checkRole === "guest" ? <Profile /> : <Home />,
     },
     {
@@ -72,7 +72,7 @@ function App() {
       element: checkToken ? <BookingDetail /> : <Home />,
     },
     {
-      path: "/host/:id-username",
+      path: "/host/:id_username",
       element: checkRole === "host" ? <DashboardHost /> : <Home />,
     },
     {
