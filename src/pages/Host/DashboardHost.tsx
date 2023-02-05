@@ -34,6 +34,22 @@ function DashboardHost() {
       });
   };
 
+  const deleteCamp = (id: number) => {
+    axios
+      .delete(`https://abiasa.site/camps/${id}`)
+      .then((res) => {
+        alert(`delete camps success`);
+        setCamps(
+          camps.filter((camp) => {
+            return camp.id !== id;
+          })
+        );
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
+  };
+
   return (
     <Layout>
       <h1 id="host-page" className="text-4xl p-5">
@@ -53,6 +69,7 @@ function DashboardHost() {
                   price={camp.price}
                   loc={camp.city}
                   status={camp.verification_status}
+                  deleteCamp={() => deleteCamp(camp.id)}
                 />
               ))}
         </div>

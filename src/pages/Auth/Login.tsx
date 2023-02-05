@@ -39,9 +39,17 @@ function Login() {
         setCookie("username", res.data.data.username);
         setCookie("token", res.data.token, { path: "/" });
         setCookie("role", res.data.data.role, { path: "/" });
+        const checkRole = res.data.data.role;
 
         alert("Success login");
-        navigate("/");
+
+        if (checkRole === "guest") {
+          navigate("/");
+        } else if (checkRole === "host") {
+          navigate(`/host/${res.data.data.username}`);
+        } else navigate("/admin");
+
+        window.location.reload();
       })
       .catch((err) => {
         alert(err.response.data.message);

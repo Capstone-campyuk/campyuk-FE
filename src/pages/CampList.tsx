@@ -17,15 +17,22 @@ function CampList() {
   }, []);
 
   const fethData = (page: number) => {
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer 111`,
+    //   },
+    // };
+
     axios
       .get("https://abiasa.site/camps")
       .then((res) => {
+        console.log(res.data);
         setCamps(res.data.data);
       })
       .catch((err) => {
         alert(err.response.data.message);
       })
-      .finally(() => setLoading(true));
+      .finally(() => setLoading(false));
   };
 
   function nextPage() {
@@ -60,17 +67,20 @@ function CampList() {
       </h1>
       <div className="flex justify-center px-2 pb-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          {loading ? (
-            <LoadingReg />
-          ) : (
-            <CardCampList
-              image={"img-content.jpg"}
-              campsite={"Tanakita Camp"}
-              price={60}
-              distance={5}
-              loc={"Sukabumi"}
-            />
-          )}
+          {loading
+            ? [...Array(4).keys()].map((index) => (
+                <LoadingReg key={index} />
+              ))
+            : camps.map((camp, index) => (
+                <CardCampList
+                  key={index}
+                  image={camp.image}
+                  campsite={camp.title}
+                  price={camp.price}
+                  distance={camp.distance}
+                  loc={camp.city}
+                />
+              ))}
         </div>
       </div>
       <button

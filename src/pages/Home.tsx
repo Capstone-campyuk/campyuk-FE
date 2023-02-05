@@ -11,8 +11,7 @@ function Home() {
       <div
         className="hero h-screen max-h-[90vh]"
         style={{
-          backgroundImage: `url(bg-landing.jpg
-        )`,
+          backgroundImage: `url(https://i.im.ge/2023/02/05/aiqfT8.bg-landing.jpg)`,
         }}
       >
         <span className="hero-overlay bg-opacity-60" />
