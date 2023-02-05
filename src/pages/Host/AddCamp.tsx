@@ -1,128 +1,207 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { MapContainer, useMap, TileLayer } from "react-leaflet";
+
 import { Layout } from "../../components/Layout";
-import { Btn } from "../../components/Button";
-import { ImLocation } from "react-icons/im";
+import { Btn, Btns } from "../../components/Button";
+import { InputSide } from "../../components/Input";
+
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import tileLayer from "../../utils/const/tileLayer";
+
+const GetCoordinates = () => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!map) return;
+    const info = L.DomUtil.create("div", "legend");
+
+    const positon = L.Control.extend({
+      options: {
+        position: "bottomleft",
+      },
+
+      onAdd: function () {
+        info.textContent = "Click on map";
+        return info;
+      },
+    });
+
+    map.on("click", (e) => {
+      info.textContent = e.latlng.toString();
+    });
+
+    map.addControl(new positon());
+  }, [map]);
+
+  return null;
+};
 
 function AddCamp() {
+  const [title, setTitle] = useState<string>("");
+  const [price, setPrice] = useState<number | Blob>();
+  const [description, setDescription] = useState<string>("");
+  const [latitude, setLatitude] = useState<number | Blob>();
+  const [longitude, setLongitude] = useState<number | Blob>();
+  const [address, setAddress] = useState<string>("");
+  const [city, setCity] = useState<string>("");
+  const [distance, setDistance] = useState<number | Blob>();
+  const [document, setDocument] = useState<any>({});
+  const [images, setImages] = useState<any>({});
+  const [disabled, setDisabled] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (
+      title &&
+      price &&
+      description &&
+      latitude &&
+      longitude &&
+      address &&
+      city &&
+      distance &&
+      document &&
+      images
+    ) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  });
+
+  const handleAddCamp = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    formData.append("title", title);
+    formData.append("price", JSON.stringify(price));
+    formData.append("description", description);
+    formData.append("latitude", JSON.stringify(latitude));
+    formData.append("longitude", JSON.stringify(longitude));
+    formData.append("address", address);
+    formData.append("city", city);
+    formData.append("distance", JSON.stringify(distance));
+    formData.append("document", document);
+    formData.append("images", images);
+
+    axios
+      .post("https://abiasa.site/camps", formData)
+      .then((res) => {
+        alert("Success Add Camp");
+        navigate("/host/:id-username");
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
+  };
+
+  console.log(images);
+  console.log(city);
+  console.log(document);
+
   return (
     <Layout>
-      <h1 id="add-camp-page" className="font-bold text-3xl pt-5 px-20">
+      <h1 id="add-camp-page" className="text-4xl p-5">
         Add Camp
       </h1>
-      <div className="px-20 pt-10 pb-10">
-        <div className="flex flex-col bg-bgcard  rounded-lg">
-          <form action="">
-            <div className="flex py-5 w-full px-10">
-              <label className="font-semibold text-black flex items-start justify-start w-1/3 text-center">
-                Title
-              </label>
-              <input
-                className="rounded-lg bg-[#cbd5e1] border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
-                type="text"
-                id="add-camp-title"
-                placeholder=""
-              />
-            </div>
-            <div className="flex py-2 w-full px-10">
-              <label className="font-semibold text-black flex items-start justify-start w-1/3 text-center">
-                Price
-              </label>
-              <input
-                className="rounded-lg bg-[#cbd5e1] border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
-                type="number"
-                id="add-camp-price"
-                placeholder=""
-              />
-            </div>
-            <div className="flex py-2 w-full px-10">
-              <label className="font-semibold text-black flex items-start justify-start w-1/3 text-center">
-                Description
-              </label>
-              <textarea
-                className="w-full overflow-y-auto h-36 bg-[#cbd5e1] rounded-lg"
-                style={{ resize: "none" }}
-                id="add-camp-description"
-              />
-            </div>
-            <div className="flex py-2 w-full px-10">
-              <label className="font-semibold text-black flex items-center justify-start w-1/3 text-center">
-                Location
-              </label>
-              <input
-                type="number"
-                id="add-camp-location"
-                className="input input-bordered bg-[#cbd5e1] w-full"
-                placeholder=""
-              />
-            </div>
-            <div className="flex py-2 w-full px-10">
-              <label className="font-semibold text-black flex items-center justify-start w-1/3 text-center">
-                Address
-              </label>
-              <input
-                type="text"
-                id="add-camp-address"
-                className="input input-bordered bg-[#cbd5e1] w-full"
-                placeholder=""
-              />
-            </div>
-            <div className="flex py-2 w-full px-10">
-              <label className="font-semibold text-black flex items-center justify-start w-1/3 text-center">
-                Add image
-              </label>
-              <input
-                id="add-camp-image"
-                type="file"
-                className="flex-row w-42 bg-white rounded-lg text-black"
-              />
-            </div>
-            <div className="flex py-2 w-full px-10">
-              <label className="font-semibold text-black flex items-center justify-start w-1/3 text-center">
-                Add business licance
-              </label>
-              <input
-                type="file"
-                id="add-camp-businessL"
-                className="flex-row w-42 bg-white rounded-lg text-black"
-              />
-            </div>
-            <div className="flex py-2 w-full px-10">
-              <label className="font-semibold text-black flex items-center justify-start w-1/3 text-center">
-                Latitude
-              </label>
-              <input
-                type="number"
-                id="add-camp-latitude"
-                className="input input-bordered bg-[#cbd5e1] w-full"
-                placeholder=""
-              />
-            </div>
-            <div className="flex py-2 w-full px-10">
-              <label className="font-semibold text-black flex items-center justify-start w-1/3 text-center">
-                Longtitude
-              </label>
-              <input
-                type="number"
-                id="add-camp-longtitude"
-                className="input input-bordered bg-[#cbd5e1] w-full"
-                placeholder=""
-              />
-            </div>
-            <div className="flex py-2 w-full px-10">
-              <label className="font-semibold text-black flex items-center justify-start w-1/3 text-center">
-                Distance
-              </label>
-              <input
-                type="number"
-                id="add-camp-distance"
-                className="input input-bordered bg-[#cbd5e1] w-full"
-                placeholder=""
-              />
-            </div>
-          </form>
+      <form
+        onSubmit={handleAddCamp}
+        encType="multipart/form-data"
+        className="bg-bgcard flex flex-col gap-5 m-5 py-8 rounded-3xl shadow-md"
+      >
+        <InputSide
+          title="Title"
+          id="input-title"
+          type="text"
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <InputSide
+          title="Price"
+          id="input-price"
+          type="number"
+          onChange={(e) => setPrice(parseInt(e.target.value))}
+        />
+        <div className="flex w-full px-10">
+          <label className="text-black font-bold flex items-start mt-2 w-1/3">
+            Description
+          </label>
+          <textarea
+            className="w-full overflow-y-auto h-36 rounded-lg bg-form px-2 p-2 border-2 focus:outline-none text-black"
+            style={{ resize: "none" }}
+            placeholder="Description"
+            id="add-camp-description"
+            onChange={(e) => setDescription(e.target.value)}
+          />
         </div>
-      </div>
-      <div className="flex justify-end p-5">
-        <Btn className="w-18" id="btn-addcamp" label="Add Camp" />
+        <InputSide
+          title="Latitude"
+          id="input-latitude"
+          type="number"
+          onChange={(e) => setLatitude(parseInt(e.target.value))}
+        />
+        <InputSide
+          title="Longitude"
+          id="input-longitude"
+          type="number"
+          onChange={(e) => setLongitude(parseInt(e.target.value))}
+        />
+        <div className="p-10 ">
+          <MapContainer
+            center={[-2.175, 114.408]}
+            zoom={5}
+            scrollWheelZoom={true}
+            style={{ height: "400px" }}
+          >
+            <TileLayer {...tileLayer} />
+            <GetCoordinates />
+          </MapContainer>
+        </div>
+        <InputSide
+          title="City"
+          id="input-city"
+          type="text"
+          onChange={(e) => setCity(e.target.value)}
+        />
+        <InputSide
+          title="Address"
+          id="input-address"
+          type="text"
+          onChange={(e) => setAddress(e.target.value)}
+        />
+        <InputSide
+          title="Image"
+          id="input-image"
+          type="file"
+          onChange={(e: any) => setImages(e.target.files[0])}
+        />
+        <InputSide
+          title="Business License"
+          id="input-license"
+          type="file"
+          onChange={(e: any) => setDocument(e.target.files[0])}
+        />
+        <InputSide
+          title="Distance"
+          id="input-distance"
+          type="number"
+          onChange={(e) => setDistance(parseInt(e.target.value))}
+        />
+      </form>
+      <div className="flex justify-end gap-5 p-5">
+        <Link to="/host/:id-username">
+          <Btns id="btn-cancel" label="Cancel" className="w-18" />
+        </Link>
+        <Btn
+          className="w-18"
+          id="btn-addcamp"
+          label="Add Camp"
+          disabled={disabled}
+          onClick={handleAddCamp}
+        />
       </div>
     </Layout>
   );

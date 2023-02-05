@@ -20,7 +20,7 @@ import Profile from "../pages/Guest/Profile";
 import DashboardAdmin from "../pages/Admin/DashboardAdmin";
 import DetailAdmin from "../pages/Admin/DetailAdmin";
 import OrderListHost from "../pages/Host/OrderListHost";
-import AddTent from "../pages/Host/AddCamp";
+import AddCamp from "../pages/Host/AddCamp";
 import EditCampHost from "../pages/Host/EditCampHost";
 
 function App() {
@@ -75,8 +75,8 @@ function App() {
       element: <DashboardHost />,
     },
     {
-      path: "/addtent",
-      element: <AddTent />,
+      path: "/addcamp",
+      element: <AddCamp />,
     },
     {
       path: "/camp-host/:id_camp",
