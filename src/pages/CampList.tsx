@@ -59,12 +59,10 @@ function CampList() {
         Camp Site
       </h1>
       <div className="flex justify-center px-2 pb-6">
-        {loading ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          {loading ? (
             <LoadingReg />
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          ) : (
             <CardCampList
               image={"img-content.jpg"}
               campsite={"Tanakita Camp"}
@@ -72,8 +70,8 @@ function CampList() {
               distance={5}
               loc={"Sukabumi"}
             />
-          </div>
-        )}
+          )}
+        </div>
       </div>
       <button
         className="text-3xl w-full flex justify-center p-3"
