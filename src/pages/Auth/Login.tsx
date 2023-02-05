@@ -38,7 +38,7 @@ function Login() {
         console.log(res.data.data);
         setCookie("username", res.data.data.username);
         setCookie("token", res.data.token, { path: "/" });
-        setCookie("role", res.data.role, { path: "/" });
+        setCookie("role", res.data.data.role, { path: "/" });
 
         alert("Success login");
         navigate("/");
