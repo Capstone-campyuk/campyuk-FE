@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +10,7 @@ import {
   IoIosBookmark,
   IoIosCompass,
 } from "react-icons/io";
+import { HiMenuAlt1 } from "react-icons/hi";
 
 export function NavbarGuest() {
   return (
@@ -37,19 +39,32 @@ export function NavbarGuest() {
 }
 
 export function NavbarLogin() {
+  const [isGuest, setIsGuest] = useState(true);
+  const navigate = useNavigate();
   const [cookie, setCookie, removeCookie] = useCookies([
-    "id",
     "username",
     "token",
+    "role",
   ]);
-  const navigate = useNavigate();
+
+  const checkRole = cookie.role;
+
+  useEffect(() => {
+    if (cookie.role === "guest") {
+      setIsGuest(true);
+    } else setIsGuest(false);
+  }, [isGuest]);
+
+  console.log(isGuest);
+  console.log(cookie.role);
 
   const handleLogOut = () => {
-    removeCookie("id");
     removeCookie("username");
     removeCookie("token");
+    removeCookie("role");
     alert("You've been log out");
-    navigate("/");
+    navigate("/login");
+    window.location.reload();
   };
 
   return (
@@ -63,73 +78,146 @@ export function NavbarLogin() {
             tabIndex={0}
             className="dropdown-content mt-3 p-2 shadow bg-primary rounded-box w-52"
           >
-            <Link
-              id="btn-profile"
-              to={`/profile/:id-username`}
-              className="flex items-center gap-2"
-            >
-              <IoIosPerson className="text-2xl" />
-              <a>Profile</a>
-            </Link>
-            <Link
-              id="btn-booking"
-              to="/booking-history"
-              className="flex items-center gap-2"
-            >
-              <IoIosBookmark className="text-2xl" />
-              <a>My Booking</a>
-            </Link>
-            <Link
-              id="btn-camp"
-              to="/camplist"
-              className="flex items-center gap-2"
-            >
-              <IoIosCompass className="text-2xl" />
-              <a>Camp Site</a>
-            </Link>
+            {isGuest ? (
+              <>
+                <Link
+                  id="btn-profilelg"
+                  to={`/profile/:id-username`}
+                  className="flex items-center gap-2"
+                >
+                  <IoIosPerson className="text-2xl" />
+                  <a>Profile</a>
+                </Link>
+                <Link
+                  id="btn-bookinglg"
+                  to="/booking-history"
+                  className="flex items-center gap-2"
+                >
+                  <IoIosBookmark className="text-2xl" />
+                  <a>My Booking</a>
+                </Link>
+                <Link
+                  id="btn-camplg"
+                  to="/camplist"
+                  className="flex items-center gap-2"
+                >
+                  <IoIosCompass className="text-2xl" />
+                  <a>Camp Site</a>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  id="btn-camplg"
+                  to="/camplist"
+                  className="flex items-center gap-2"
+                >
+                  <IoIosCompass className="text-2xl" />
+                  <a>Camp Site</a>
+                </Link>
+              </>
+            )}
           </ul>
         </div>
-        <Link
-          id="btn-home"
-          to="/"
-          className="flex items-center gap-2"
-        >
-          <h1 className="font-extrabold antialiased text-2xl">
-            campyuk
-          </h1>
-          <img
-            src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
-            alt="icon"
-            className="w-7"
-          />
-        </Link>
+
+        {checkRole === "guest" || checkRole === "" ? (
+          <Link
+            id="btn-home"
+            to="/"
+            className="flex items-center gap-2"
+          >
+            <h1 className="font-extrabold antialiased text-2xl">
+              campyuk
+            </h1>
+            <img
+              src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
+              alt="icon"
+              className="w-7"
+            />
+          </Link>
+        ) : (
+          <></>
+        )}
+
+        {checkRole === "host" ? (
+          <Link
+            id="btn-home"
+            to="/host/:id-username"
+            className="flex items-center gap-2"
+          >
+            <h1 className="font-extrabold antialiased text-2xl">
+              campyuk
+            </h1>
+            <img
+              src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
+              alt="icon"
+              className="w-7"
+            />
+          </Link>
+        ) : (
+          <></>
+        )}
+
+        {checkRole === "admin" ? (
+          <Link
+            id="btn-home"
+            to="/admin"
+            className="flex items-center gap-2"
+          >
+            <h1 className="font-extrabold antialiased text-2xl">
+              campyuk
+            </h1>
+            <img
+              src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
+              alt="icon"
+              className="w-7"
+            />
+          </Link>
+        ) : (
+          <></>
+        )}
       </div>
       <div className="navbar-end hidden lg:flex ">
         <ul className="flex gap-8">
-          <Link
-            id="btn-profilelg"
-            to={`/profile/:id-username`}
-            className="flex items-center gap-2"
-          >
-            <IoIosPerson className="text-2xl" />
-            <a>Profile</a>
-          </Link>
-          <Link
-            id="btn-bookinglg"
-            to="/booking-history"
-            className="flex items-center gap-2"
-          >
-            <IoIosBookmark className="text-2xl" />
-            <a>My Booking</a>
-          </Link>
-          <Link
-            id="btn-camplg"
-            to="/camplist"
-            className="flex items-center gap-2"
-          >
-            <IoIosCompass className="text-2xl" />
-            <a>Camp Site</a>
-          </Link>
+          {isGuest ? (
+            <>
+              <Link
+                id="btn-profilelg"
+                to={`/profile/:id-username`}
+                className="flex items-center gap-2"
+              >
+                <IoIosPerson className="text-2xl" />
+                <a>Profile</a>
+              </Link>
+              <Link
+                id="btn-bookinglg"
+                to="/booking-history"
+                className="flex items-center gap-2"
+              >
+                <IoIosBookmark className="text-2xl" />
+                <a>My Booking</a>
+              </Link>
+              <Link
+                id="btn-camplg"
+                to="/camplist"
+                className="flex items-center gap-2"
+              >
+                <IoIosCompass className="text-2xl" />
+                <a>Camp Site</a>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                id="btn-camplg"
+                to="/camplist"
+                className="flex items-center gap-2"
+              >
+                <IoIosCompass className="text-2xl" />
+                <a>Camp Site</a>
+              </Link>
+            </>
+          )}
         </ul>
       </div>
       <div className="navbar-end lg:max-w-[120px]">

@@ -14,8 +14,7 @@ export function Layout({ children }: LayoutProps) {
 
   return (
     <div>
-      {/* {checkToken ? <NavbarLogin /> : <NavbarGuest />} */}
-      <NavbarLogin />
+      {checkToken ? <NavbarLogin /> : <NavbarGuest />}
       <div className="min-h-[85vh]">{children}</div>
       <Footer />
     </div>

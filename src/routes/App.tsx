@@ -24,8 +24,9 @@ import AddCamp from "../pages/Host/AddCamp";
 import EditCampHost from "../pages/Host/EditCampHost";
 
 function App() {
-  const [cookie, , removeCookie] = useCookies(["token"]);
+  const [cookie, , removeCookie] = useCookies(["token", "role"]);
   const checkToken = cookie.token;
+  const checkRole = cookie.role;
 
   axios.interceptors.request.use(function (config) {
     config.headers = config.headers ?? {};
@@ -40,7 +41,7 @@ function App() {
     },
     {
       path: "/login",
-      element: <Login />,
+      element: checkToken ? <Home /> : <Login />,
     },
     {
       path: "/register",
@@ -56,47 +57,47 @@ function App() {
     },
     {
       path: "/profile/:id-username",
-      element: <Profile />,
+      element: checkRole === "guest" ? <Profile /> : <Home />,
     },
     {
-      path: "/order/:id_order",
-      element: <Order />,
+      path: "/order",
+      element: checkRole === "guest" ? <Order /> : <Home />,
     },
     {
       path: "/booking-history",
-      element: <BookingHistory />,
+      element: checkRole === "guest" ? <BookingHistory /> : <Home />,
     },
     {
       path: "/booking/:id_booking",
-      element: <BookingDetail />,
+      element: checkToken ? <BookingDetail /> : <Home />,
     },
     {
       path: "/host/:id-username",
-      element: <DashboardHost />,
+      element: checkRole === "host" ? <DashboardHost /> : <Home />,
     },
     {
       path: "/addcamp",
-      element: <AddCamp />,
+      element: checkRole === "host" ? <AddCamp /> : <Home />,
     },
     {
       path: "/camp-host/:id_camp",
-      element: <DetailCampHost />,
+      element: checkRole === "host" ? <DetailCampHost /> : <Home />,
     },
     {
       path: "/orderlist-host",
-      element: <OrderListHost />,
+      element: checkRole === "host" ? <OrderListHost /> : <Home />,
     },
     {
       path: "/edit-camp/:id_camp",
-      element: <EditCampHost />,
+      element: checkRole === "host" ? <EditCampHost /> : <Home />,
     },
     {
       path: "/admin",
-      element: <DashboardAdmin />,
+      element: checkRole === "admin" ? <DashboardAdmin /> : <Home />,
     },
     {
       path: "/camp-admin/:id_camp",
-      element: <DetailAdmin />,
+      element: checkRole === "admin" ? <DetailAdmin /> : <Home />,
     },
   ]);
 
