@@ -43,7 +43,7 @@ function Register() {
       });
   };
 
-  console.log(role)
+  console.log(role);
 
   return (
     <div className="flex min-h-screen items-center">

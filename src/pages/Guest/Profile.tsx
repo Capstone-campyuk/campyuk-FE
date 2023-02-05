@@ -22,6 +22,19 @@ function Profile() {
   const [editUsername, setEditUsername] = useState<string>("");
   const [editImageprofil, setEditImageprofil] = useState<any>();
 
+  const handleEditImage = (file: any) => {
+    setEditImageprofil(file);
+    const reader = new FileReader();
+    reader.onload = () => {
+      setNewPreviewImage(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  useEffect(() => {
+    getProfil();
+  }, []);
+
   function getProfil() {
     const config = {
       headers: {
@@ -29,9 +42,12 @@ function Profile() {
       },
     };
     axios
-      .get(`http://users`, config)
+      .get(`https://abiasa.site/users`, config)
       .then((res) => {
-        const { email, fullname, username, user_image, message } = res.data;
+        console.log(res);
+        const { email, fullname, username, user_image, message } =
+          res.data.data;
+
         setEmail(email);
         setFullname(fullname);
         setUsername(username);
@@ -55,7 +71,7 @@ function Profile() {
     formData.append("username", editUsername);
     formData.append("fullname", editFullname);
     formData.append("email", editEmail);
-    formData.append("image_profil", editImageprofil);
+    formData.append("user_image", editImageprofil);
 
     const config = {
       headers: {
@@ -63,17 +79,19 @@ function Profile() {
       },
     };
     axios
-      .put(`https://-/users`, formData, config)
+      .put(`https://abiasa.site/users`, formData, config)
       .then((res) => {
-        const { message } = res.data;
+        console.log("update profil", res);
         Swal.fire({
-          position: "center",
-          icon: "success",
-          text: message,
-          showConfirmButton: false,
-          timer: 1500,
+          title: "Success",
+          text: "Berhasil mengubah akun",
+          showCancelButton: false,
+          confirmButtonText: "Ok",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate(0);
+          }
         });
-        navigate(0);
       })
       .catch((error) => {
         Swal.fire({
@@ -86,7 +104,7 @@ function Profile() {
 
   function hapusAkun() {
     axios
-      .delete(`https://-/users`, {
+      .delete(`https://abiasa.site/users`, {
         headers: {
           Authorization: `Bearer ${cookie.token}`,
         },
@@ -97,7 +115,7 @@ function Profile() {
         removeCookie("username");
         removeCookie("fullname");
         removeCookie("email");
-        removeCookie("profil_image");
+        removeCookie("user_image");
         Swal.fire({
           title: "Are you sure want to delete account?",
 
@@ -130,10 +148,6 @@ function Profile() {
       });
   }
 
-  useEffect(() => {
-    getProfil();
-  }, []);
-
   return (
     <Layout>
       <h1 id="profil-page" className="text-4xl p-5">
@@ -164,91 +178,112 @@ function Profile() {
             <p>: {email}</p>
           </div>
           <div className="flex gap-20 pt-5 pb-1">
-            <label
-              id="update-profil"
-              htmlFor="my-modal-1"
-              className="normal-case bg-transparent"
-            >
-              <div className="flex flex-col cursor-pointer">
-                <div className="w-1/2 text-lg mx-10 capitalize bg-btn border-none shadow-lg text-white font-semibold rounded-lg btn hover:bg-btnh">
-                  Update
+            <form onSubmit={editProfil}>
+              <label
+                id="update-profil"
+                htmlFor="my-modal-1"
+                className="normal-case bg-transparent"
+              >
+                <div className="flex flex-col cursor-pointer">
+                  <div className="w-1/2 text-lg mx-10 capitalize bg-btn border-none shadow-lg text-white font-semibold rounded-lg btn hover:bg-btnh">
+                    Update
+                  </div>
+                </div>
+              </label>
+
+              <input type="checkbox" id="my-modal-1" className="modal-toggle" />
+              <div className="modal modal-middle sm:modal-middle">
+                <div className="modal-box bg-white  flex flex-col justify-center items-center">
+                  <h3 className="font-bold lg:text-2xl  text-base text-black text-center  ">
+                    Update Profile
+                  </h3>
+                  <div className="flex py-2 w-full">
+                    <label className="font-semibold text-black flex items-center justify-center w-1/3 text-center">
+                      Full Name
+                    </label>
+                    <input
+                      id="fullname-profil"
+                      className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
+                      type="text"
+                      placeholder={fullname}
+                      value={editFullname}
+                      onChange={(e) => setEditFullname(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex py-2 w-full">
+                    <label className="font-semibold text-black flex items-center justify-center w-1/3 text-center">
+                      User name
+                    </label>
+                    <input
+                      id="username-profil"
+                      className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
+                      type="text"
+                      placeholder={username}
+                      value={editUsername}
+                      onChange={(e) => setEditUsername(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex py-2 w-full">
+                    <label className="font-semibold text-black flex items-center justify-center w-1/3 text-center">
+                      Email
+                    </label>
+                    <input
+                      id="email-profil"
+                      className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
+                      type="email"
+                      placeholder={email}
+                      value={editEmail}
+                      onChange={(e) => setEditEmail(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex py-2 w-full">
+                    <label
+                      htmlFor="edit-photo"
+                      style={{ cursor: "pointer" }}
+                      className="font-semibold text-black flex items-center justify-center w-1/3 text-center"
+                    >
+                      Upload image
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      id="edit-photo"
+                      style={{ display: "none" }}
+                      onChange={(e) => {
+                        if (!e.target.files) return;
+                        handleEditImage(e.target.files[0]);
+                      }}
+                    />
+                    <img
+                      src={newPreviewImage}
+                      alt=""
+                      width={200}
+                      height={100}
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 w-2/3 md:w-full lg:w-full max-w-md mt-3">
+                    <label
+                      htmlFor="my-modal-1"
+                      className="btn bg-btn normal-case border-none mx-1 hover:btnh text-white"
+                    >
+                      Cancel
+                    </label>
+
+                    <button
+                      type="submit"
+                      className="btn bg-btn normal-case  border-none mx-1 hover:btnh text-white"
+                    >
+                      Save
+                    </button>
+                  </div>
                 </div>
               </div>
-            </label>
-
-            <input type="checkbox" id="my-modal-1" className="modal-toggle" />
-            <div className="modal modal-middle sm:modal-middle">
-              <div className="modal-box bg-white  flex flex-col justify-center items-center">
-                <h3 className="font-bold lg:text-2xl  text-base text-black text-center  ">
-                  Update Profile
-                </h3>
-                <div className="flex py-2 w-full">
-                  <label className="font-semibold text-black flex items-center justify-center w-1/3 text-center">
-                    Full Name
-                  </label>
-                  <input
-                    id="fullname-profil"
-                    className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
-                    type="text"
-                    placeholder="Full Name"
-                  />
-                </div>
-                <div className="flex py-2 w-full">
-                  <label className="font-semibold text-black flex items-center justify-center w-1/3 text-center">
-                    User name
-                  </label>
-                  <input
-                    id="username-profil"
-                    className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
-                    type="text"
-                    placeholder="username"
-                  />
-                </div>
-                <div className="flex py-2 w-full">
-                  <label className="font-semibold text-black flex items-center justify-center w-1/3 text-center">
-                    Email
-                  </label>
-                  <input
-                    id="email-profil"
-                    className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
-                    type="email"
-                    placeholder="email"
-                  />
-                </div>
-                <div className="flex py-2 w-full">
-                  <label className="font-semibold text-black flex items-center justify-center w-1/3"></label>
-                  <input
-                    id="picture-profil"
-                    className="file-input file:rounded-lg file:border-none file:text-white text-black rounded-lg border-2 border-[#e5e5e5] bg-white focus:outline-none w-full"
-                    type="file"
-                    placeholder="picture"
-                  />
-                </div>
-                <div className="grid grid-cols-2 w-2/3 md:w-full lg:w-full max-w-md mt-3">
-                  <label
-                    htmlFor="my-modal-1"
-                    className="btn bg-btn normal-case border-none mx-1 hover:btnh text-white"
-                  >
-                    Cancel
-                  </label>
-
-                  <label
-                    htmlFor="my-modal-1"
-                    id="save-update-profil"
-                    className="btn bg-btn normal-case  border-none mx-1 hover:btnh text-white"
-                    onClick={() => "haha"}
-                  >
-                    Save
-                  </label>
-                </div>
-              </div>
-            </div>
-
+            </form>
             <label className="normal-case bg-transparent" id="remove-profil">
               <div className="flex flex-col cursor-pointer">
                 <div
                   className="w-1/2 text-lg mx-10 capitalize bg-btn border-none shadow-lg text-white font-semibold rounded-lg btn hover:bg-btnh"
-                  onClick={() => "haha"}
+                  onClick={() => hapusAkun()}
                 >
                   Remove
                 </div>
