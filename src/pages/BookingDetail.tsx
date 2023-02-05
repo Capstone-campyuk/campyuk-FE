@@ -7,7 +7,7 @@ import { Layout } from "../components/Layout";
 import { Btns } from "../components/Button";
 import { ImLocation } from "react-icons/im";
 
-import { datacamp } from "../utils/const/datas";
+//import { datacamp } from "../utils/const/datas";
 import { BookingTypes } from "../utils/types/bookingTypes";
 
 function BookingDetail() {
