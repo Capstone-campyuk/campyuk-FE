@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import { Layout } from "../../components/Layout";
 import { CardHost } from "../../components/Card";
@@ -7,7 +8,6 @@ import { Btn, Btns } from "../../components/Button";
 import { LoadingReg } from "../../components/Loading";
 
 import { CampsTypes } from "../../utils/types/campsTypes";
-import axios from "axios";
 
 function DashboardHost() {
   const [camps, setCamps] = useState<CampsTypes[]>([]);
