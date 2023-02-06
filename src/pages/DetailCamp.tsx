@@ -38,7 +38,7 @@ function camp() {
     },
   ];
 
-  const [camp, setCamp] = useState<CampTypes>();
+  const [camp, setCamp] = useState<CampTypes>({});
   const [cookie, setCookies] = useCookies();
   const { id_camp } = useParams();
 
@@ -73,7 +73,7 @@ function camp() {
       >
         <div className="lg:w-4/6">
           <img
-            src={camp?.images[0].image}
+            src={camp.images?.[0].image}
             alt=""
             className="w-full h-96 rounded-lg"
           />
@@ -156,10 +156,10 @@ function camp() {
               <tbody>
                 <tr>
                   <td className="border border-slate-700">
-                    {camp?.items[0].name}
+                    {camp.items?.[0].name}
                   </td>
                   <td className="border border-slate-700">
-                    {camp?.items[0].rent_price}
+                    {camp.items?.[0].rent_price}
                   </td>
                 </tr>
                 {/* <tr>
