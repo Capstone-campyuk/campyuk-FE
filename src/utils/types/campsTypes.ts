@@ -15,6 +15,7 @@ export interface CampTypes {
   host_name: string;
   title: string;
   price: number;
+  document: string;
   description: string;
   latitude: number;
   longitude: number;
@@ -28,20 +29,6 @@ export interface CampTypes {
     }
   ];
   items: [
-    {
-      item_id: number;
-      name: string;
-      stock: number;
-      rent_price: number;
-      item_image: string;
-    },
-    {
-      item_id: number;
-      name: string;
-      stock: number;
-      rent_price: number;
-      item_image: string;
-    },
     {
       item_id: number;
       name: string;

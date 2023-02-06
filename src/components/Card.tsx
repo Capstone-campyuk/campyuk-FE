@@ -160,23 +160,30 @@ export function CardHost({
     </div>
   );
 }
-interface CardSAdminProps {
+interface CardAdminProps {
   image: string;
   campsite: string;
   loc: string;
   address?: string;
   host: string;
   price: number;
+  id: number;
 }
 
-export function CardSAdmin({
+export function CardAdmin({
   campsite,
   image,
   loc,
   price,
   address,
   host,
-}: CardSAdminProps) {
+  id,
+}: CardAdminProps) {
+  const navigate = useNavigate();
+  const onClickDetail = (id: number) => {
+    navigate(`/camp-admin/${id}`);
+  };
+
   return (
     <div className="flex bg-bgcard border-2 rounded-3xl shadow-lg lg:w-[70vw] lg:h-[50vh]">
       <img
@@ -201,9 +208,14 @@ export function CardSAdmin({
         </div>
         <div className="flex flex-col lg:flex-row gap-2 justify-between items-center">
           <h1 className="lg:text-3xl">$ {price} /night</h1>
-          <Link to="/camp-admin/:id_camp">
-            <Btn id="btn-check" className="w-18" label="Check" />
-          </Link>
+          <Btn
+            id="btn-check"
+            className="w-18"
+            label="Check"
+            onClick={() => {
+              onClickDetail(id);
+            }}
+          />
         </div>
       </div>
     </div>
