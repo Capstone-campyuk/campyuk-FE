@@ -204,7 +204,7 @@ function AddCamp() {
           id="btn-addcamp"
           label="Add Camp"
           disabled={disabled}
-          onClick={handleAddCamp}
+          onClick={() => handleAddCamp}
         />
       </div>
     </Layout>
