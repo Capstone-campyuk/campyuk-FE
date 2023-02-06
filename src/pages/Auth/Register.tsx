@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
+import Swal from 'sweetalert2/src/sweetalert2.js'
 import { Input } from "../../components/Input";
 import { Btn } from "../../components/Button";
 
@@ -35,15 +36,25 @@ function Register() {
     axios
       .post("https://abiasa.site/register", body)
       .then((res) => {
-        alert("Success signup");
-        navigate("/login");
+        Swal.fire({
+          title: "Success",
+          text: res.data.message,
+          showCancelButton: false,
+          confirmButtonText: "Ok",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate("/login");
+          }
+        });
       })
       .catch((err) => {
-        alert(err.response.data.message);
+        Swal.fire({
+          title: "Failed",
+          text: err.response.data.message,
+          showCancelButton: false,
+        });
       });
   };
-
-  console.log(role);
 
   return (
     <div className="flex min-h-screen items-center">

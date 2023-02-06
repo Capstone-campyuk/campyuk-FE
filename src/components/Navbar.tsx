@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
+import Swal from "sweetalert2/src/sweetalert2.js";
 import { Btn } from "./Button";
 import {
   IoIosPerson,
@@ -64,9 +65,14 @@ export function NavbarLogin() {
     removeCookie("username");
     removeCookie("token");
     removeCookie("role");
-    alert("You've been log out");
+
+    Swal.fire({
+      title: "Failed",
+      text: "You've been Log Out",
+      showCancelButton: false,
+    });
+
     navigate("/login");
-    navigate(0);
   };
 
   return (

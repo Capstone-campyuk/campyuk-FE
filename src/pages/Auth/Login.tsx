@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
+import Swal from 'sweetalert2/src/sweetalert2.js'
 import { Input } from "../../components/Input";
 import { Btn, Btns } from "../../components/Button";
 
@@ -41,18 +42,25 @@ function Login() {
         setCookie("role", res.data.data.role, { path: "/" });
         const checkRole = res.data.data.role;
 
-        alert("Success login");
+        Swal.fire({
+          title: "Success",
+          text: res.data.message,
+          showCancelButton: false,
+          confirmButtonText: "Ok",
+        });
 
         if (checkRole === "guest") {
           navigate("/");
         } else if (checkRole === "host") {
           navigate(`/host/${res.data.data.username}`);
         } else navigate("/admin");
-
-        window.location.reload();
       })
       .catch((err) => {
-        alert(err.response.data.message);
+        Swal.fire({
+          title: "Failed",
+          text: err.response.data.message,
+          showCancelButton: false,
+        });
       });
   };
 
