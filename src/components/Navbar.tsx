@@ -15,8 +15,14 @@ import { BsPencilSquare } from "react-icons/bs";
 export function NavbarGuest() {
   return (
     <nav className="navbar bg-primary text-white p-5">
-      <Link id="btn-home" to="/" className="navbar-start items-center gap-2">
-        <h1 className="font-extrabold antialiased text-2xl">campyuk</h1>
+      <Link
+        id="btn-home"
+        to="/"
+        className="navbar-start items-center gap-2"
+      >
+        <h1 className="font-extrabold antialiased text-2xl">
+          campyuk
+        </h1>
         <img
           src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
           alt="icon"
@@ -52,13 +58,15 @@ export function NavbarLogin() {
   console.log(isGuest);
   console.log(cookie.role);
 
-  const handleLogOut = () => {
+  const handleLogOut = (e: any) => {
+    e.preventDefault();
+
     removeCookie("username");
     removeCookie("token");
     removeCookie("role");
     alert("You've been log out");
     navigate("/login");
-    window.location.reload();
+    navigate(0);
   };
 
   return (
@@ -115,8 +123,14 @@ export function NavbarLogin() {
         </div>
 
         {checkRole === "guest" || checkRole === "" ? (
-          <Link id="btn-home" to="/" className="flex items-center gap-2">
-            <h1 className="font-extrabold antialiased text-2xl">campyuk</h1>
+          <Link
+            id="btn-home"
+            to="/"
+            className="flex items-center gap-2"
+          >
+            <h1 className="font-extrabold antialiased text-2xl">
+              campyuk
+            </h1>
             <img
               src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
               alt="icon"
@@ -133,7 +147,9 @@ export function NavbarLogin() {
             to={`/host/${cookie.username}`}
             className="flex items-center gap-2"
           >
-            <h1 className="font-extrabold antialiased text-2xl">campyuk</h1>
+            <h1 className="font-extrabold antialiased text-2xl">
+              campyuk
+            </h1>
             <img
               src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
               alt="icon"
@@ -145,8 +161,14 @@ export function NavbarLogin() {
         )}
 
         {checkRole === "admin" ? (
-          <Link id="btn-home" to="/admin" className="flex items-center gap-2">
-            <h1 className="font-extrabold antialiased text-2xl">campyuk</h1>
+          <Link
+            id="btn-home"
+            to="/admin"
+            className="flex items-center gap-2"
+          >
+            <h1 className="font-extrabold antialiased text-2xl">
+              campyuk
+            </h1>
             <img
               src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
               alt="icon"
