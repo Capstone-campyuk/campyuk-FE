@@ -52,19 +52,12 @@ function Profile() {
         setFullname(fullname);
         setUsername(username);
         setUserimage(user_image);
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          text: message,
-          showConfirmButton: false,
-          timer: 1500,
-        });
       })
       .catch((error) => {
         alert(error);
       });
   }
-
+  console.log(user_image);
   function editProfil(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData();

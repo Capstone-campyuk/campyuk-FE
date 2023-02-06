@@ -10,19 +10,13 @@ import {
   IoIosBookmark,
   IoIosCompass,
 } from "react-icons/io";
-import { HiMenuAlt1 } from "react-icons/hi";
+import { BsPencilSquare } from "react-icons/bs";
 
 export function NavbarGuest() {
   return (
     <nav className="navbar bg-primary text-white p-5">
-      <Link
-        id="btn-home"
-        to="/"
-        className="navbar-start items-center gap-2"
-      >
-        <h1 className="font-extrabold antialiased text-2xl">
-          campyuk
-        </h1>
+      <Link id="btn-home" to="/" className="navbar-start items-center gap-2">
+        <h1 className="font-extrabold antialiased text-2xl">campyuk</h1>
         <img
           src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
           alt="icon"
@@ -121,14 +115,8 @@ export function NavbarLogin() {
         </div>
 
         {checkRole === "guest" || checkRole === "" ? (
-          <Link
-            id="btn-home"
-            to="/"
-            className="flex items-center gap-2"
-          >
-            <h1 className="font-extrabold antialiased text-2xl">
-              campyuk
-            </h1>
+          <Link id="btn-home" to="/" className="flex items-center gap-2">
+            <h1 className="font-extrabold antialiased text-2xl">campyuk</h1>
             <img
               src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
               alt="icon"
@@ -145,9 +133,7 @@ export function NavbarLogin() {
             to={`/host/${cookie.username}`}
             className="flex items-center gap-2"
           >
-            <h1 className="font-extrabold antialiased text-2xl">
-              campyuk
-            </h1>
+            <h1 className="font-extrabold antialiased text-2xl">campyuk</h1>
             <img
               src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
               alt="icon"
@@ -159,14 +145,8 @@ export function NavbarLogin() {
         )}
 
         {checkRole === "admin" ? (
-          <Link
-            id="btn-home"
-            to="/admin"
-            className="flex items-center gap-2"
-          >
-            <h1 className="font-extrabold antialiased text-2xl">
-              campyuk
-            </h1>
+          <Link id="btn-home" to="/admin" className="flex items-center gap-2">
+            <h1 className="font-extrabold antialiased text-2xl">campyuk</h1>
             <img
               src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
               alt="icon"
@@ -208,6 +188,14 @@ export function NavbarLogin() {
             </>
           ) : (
             <>
+              <Link
+                id="btn-addcamp"
+                to="/addcamp"
+                className="flex items-center gap-2"
+              >
+                <BsPencilSquare className="text-2xl" />
+                <a>Add Camp</a>
+              </Link>
               <Link
                 id="btn-camplg"
                 to="/camplist"

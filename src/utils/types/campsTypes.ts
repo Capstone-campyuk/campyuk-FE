@@ -21,7 +21,12 @@ export interface CampTypes {
   address: string;
   city: string;
   distance: number;
-  images: [string];
+  images: [
+    {
+      image: string;
+      image_id: number;
+    }
+  ];
   items: [
     {
       item_id: number;
