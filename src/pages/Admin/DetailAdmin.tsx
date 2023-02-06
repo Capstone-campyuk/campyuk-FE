@@ -40,10 +40,7 @@ function DetailAdmin() {
     },
   ];
 
-
-  const [camp, setCamp] = useState<CampTypes>();
-
-
+  const [camp, setCamp] = useState<CampTypes>({});
   const [cookie, setCookies] = useCookies();
   const navigate = useNavigate();
   const { id_camp } = useParams();
@@ -80,10 +77,7 @@ function DetailAdmin() {
       });
   };
 
-
-  const declineCamp = (id: number) => {
-
-
+  const declineCamp = () => {
     axios
       .put(`https://abiasa.site/camps/${id_camp}/decline`)
       .then(() => {
@@ -109,36 +103,28 @@ function DetailAdmin() {
         />
         <div className="lg:w-4/6">
           <img
-
-
-            src={camp?.images[0].image}
-            alt={camp?.title}
-
-
+            src={camp.images?.[0].image}
+            alt={camp.title}
             className="object-cover w-full h-96 rounded-lg"
           />
         </div>
         <div className="hidden lg:block w-2/6">
           <div className="flex flex-col gap-5 h-full">
             <img
-
-              src={camp?.images[0].image}
-              alt={camp?.title}
-
+              src={camp.images?.[0].image}
+              alt={camp.title}
               className="object-cover w-full h-1/2 rounded-lg"
             />
             <div className="flex h-full gap-5">
               <img
-
-                src={camp?.images[0].image}
-                alt={camp?.title}
+                src={camp.images?.[0].image}
+                alt={camp.title}
                 className="object-cover w-[48%] rounded-lg"
               />
               <span
-                className="hero cursor-pointer"
+                className="hero cursor-pointer rounded-lg"
                 style={{
-                  backgroundImage: `url(${camp?.images[0].image})`,
-
+                  backgroundImage: `url(${camp.images?.[0].image})`,
                 }}
                 id="more-image"
                 onClick={() => {
@@ -146,9 +132,7 @@ function DetailAdmin() {
                   setIsOpen(true);
                 }}
               >
-
-                <span className="hero-overlay bg-opacity-30 text-white text-xl font-bold antialiased flex justify-center items-center">
-
+                <span className="hero-overlay bg-opacity-30 text-white text-xl font-bold antialiased flex justify-center items-center rounded-lg">
                   More Images
                 </span>
               </span>
@@ -159,37 +143,30 @@ function DetailAdmin() {
       <div>
         <div className="flex pt-10">
           <div className="flex-row w-1/4 px-10">
-
-            <h1 className="text-2xl pb-3">{camp?.title}</h1>
+            <h1 className="text-2xl pb-3">{camp.title}</h1>
             <div className="flex flex-rows pb-3">
               <GiPositionMarker className="w-8 h-8" />
               <span className="font-semibold text-xl">
-                {camp?.city}
+                {camp.city}
               </span>
             </div>
             <p className="font-semibold text-xl pb-3">
-              {camp?.distance} km away from the city centre
+              {camp.distance} km away from the city centre
             </p>
             <p className="font-bold text-3xl pb-3">
-              {camp?.price}
-
+              {camp.price}
               <span className="font-normal text-xl">/night</span>
             </p>
           </div>
           <div className="flex-row w-3/4 px-20">
-
-            <p className="text-xl">{camp?.description}</p>
-
+            <p className="text-xl">{camp.description}</p>
           </div>
         </div>
         <div className="grid grid-cols-4 gap-4 px-10 pt-10">
           <div className="flex flex-col">
             <h1 className=" text-4xl pb-3">Tent</h1>
             <p className="font-semibold text-xl pb-3">
-
-              {`camp?.items[0].name`}
-
-
+              {`camp.items[0].name`}
             </p>
             <p className="font-semibold text-xl pb-3">
               Medium (3-4 person)
@@ -201,9 +178,7 @@ function DetailAdmin() {
           <div>
             <h1 className="text-4xl pb-3">Stock</h1>
             <p className="font-semibold text-xl pb-3 px-8">
-
-              {`camp?.items[0].stock`}
-
+              {`camp.items[0].stock`}
             </p>
             <p className="font-semibold text-xl pb-3 px-8">4</p>
             <p className="font-semibold text-xl pb-3 px-8">4</p>
@@ -212,10 +187,7 @@ function DetailAdmin() {
           <div>
             <h1 className="text-4xl pb-3">Price</h1>
             <p className="font-semibold text-xl pb-3 px-8">
-
-              {`camp?.items[0].rent_price`}
-
-
+              {`camp.items[0].rent_price`}
             </p>
             <p className="font-semibold text-xl pb-3 px-8">$10</p>
             <p className="font-semibold text-xl pb-3 px-8">$12</p>
@@ -223,10 +195,7 @@ function DetailAdmin() {
         </div>
         <div className="px-10">
           <a
-
-            href={camp?.document}
-
-
+            href={camp.document}
             className="font-bold text-2xl text-sky-900"
           >
             Download Business License
@@ -236,16 +205,13 @@ function DetailAdmin() {
         <div className="flex flex-col lg:flex-row gap-10 px-10">
           <div>
             <h1 className="text-lg mb-2">Item Bonfire</h1>
-
-            <p>{`camp?.items[1].stock`}</p>
-            <p>{`camp?.items[1].rent_price`}</p>
+            <p>{`camp.items[1].stock`}</p>
+            <p>{`camp.items[1].rent_price`}</p>
           </div>
           <div>
             <h1 className="text-lg mb-2">Item Sleeping Bag</h1>
-            <p>{`camp?.items[2].stock`}</p>
-            <p>{`camp?.items[2].rent_price`}</p>
-
-
+            <p>{`camp.items[2].stock`}</p>
+            <p>{`camp.items[2].rent_price`}</p>
           </div>
         </div>
         <div className="flex px-10 pt-10 pb-10">
@@ -258,36 +224,24 @@ function DetailAdmin() {
             >
               <TileLayer {...tileLayer} />
               <Marker position={position}>
-
-                <Popup>{camp?.title}</Popup>
-
-
+                <Popup>{camp.title}</Popup>
               </Marker>
             </MapContainer>
           </div>
           <div className="flex-row w-1/2 px-10">
-
-            <p className="text-3xl px-10">{camp?.address}</p>
-
-
+            <p className="text-3xl px-10">{camp.address}</p>
             <div className="flex justify-end gap-20 pb-10 pt-60 ">
               <Btns
                 label="Decline"
                 id="btn-decline"
                 className="w-48"
-
-                onClick={declineCamp}
-
-
+                onClick={() => declineCamp()}
               />
               <Btn
                 label="Accept"
                 id="btn-accept"
                 className="w-48"
-
-                onClick={acceptCamp}
-
-
+                onClick={() => acceptCamp()}
               />
             </div>
           </div>
