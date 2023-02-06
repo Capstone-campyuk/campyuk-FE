@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 import { Layout } from "../../components/Layout";
-import { CardSAdmin } from "../../components/Card";
+import { CardAdmin } from "../../components/Card";
 import { LoadingLong } from "../../components/Loading";
 
 import { CampsTypes } from "../../utils/types/campsTypes";
@@ -41,8 +41,9 @@ function DashboardAdmin() {
               <LoadingLong key={index} />
             ))
           : camps.map((camp, index) => (
-              <CardSAdmin
+              <CardAdmin
                 key={index}
+                id={camp.id}
                 image={camp.image}
                 campsite={camp.title}
                 loc={camp.city}
