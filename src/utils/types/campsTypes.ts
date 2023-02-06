@@ -10,6 +10,7 @@ export interface CampsTypes {
 }
 
 export interface CampTypes {
+
   id?: number;
   verification_status?: string;
   host_name?: string;
@@ -37,4 +38,5 @@ export interface ItemTypes {
 export interface ImageTypes {
   image?: string;
   image_id?: number;
+
 }
