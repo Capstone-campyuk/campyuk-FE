@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@sweetalert2/theme-bulma": "^5.0.15",
+    "@uiball/loaders": "^1.2.6",
     "axios": "^1.2.6",
     "install": "^0.13.0",
     "leaflet": "^1.9.3",
