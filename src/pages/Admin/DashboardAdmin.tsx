@@ -1,35 +1,70 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
+import { useCookies } from "react-cookie";
 
 import { Layout } from "../../components/Layout";
-import { CardAdmin } from "../../components/Card";
+import { CardLong } from "../../components/Card";
 import { LoadingLong } from "../../components/Loading";
+import { MdArrowDropDownCircle } from "react-icons/md";
+import Swal from "sweetalert2";
 
 import { CampsTypes } from "../../utils/types/campsTypes";
 
 function DashboardAdmin() {
   const [camps, setCamps] = useState<CampsTypes[]>([]);
+  const [page, setPage] = useState<number>(2);
   const [loading, setLoading] = useState<boolean>(true);
+  const [cookie] = useCookies(["username", "token"]);
+  const path = useLocation().pathname;
+
 
   useEffect(() => {
-    fetchData();
+    fetchData(1);
   }, []);
 
-  const fetchData = () => {
+  const fetchData = (page: number) => {
     axios
-      .get("https://abiasa.site/camps")
+      .get(`https://abiasa.site/camps/?page=${page}`)
       .then((res) => {
-        console.log(res);
         setCamps(res.data.data);
       })
       .catch((err) => {
-        alert(err.response.data.message);
+        Swal.fire({
+          text: err.response.data.message,
+          showCancelButton: false,
+        });
       })
       .finally(() => {
         setLoading(false);
       });
   };
 
+  function nextPage() {
+    const request = {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${cookie.token}`,
+        "Content-Type": "application/json",
+      },
+    };
+    const newPage = page + 1;
+    fetch(`https://abiasa.site/camps/?page=${page}`, request)
+      .then((response) => response.json())
+      .then((res) => {
+        const results = res.data;
+        const result = camps.slice();
+        result.push(...results);
+        setCamps(result);
+        setPage(newPage);
+      })
+      .catch((err) => {
+        Swal.fire({
+          text: err.toString(),
+          showCancelButton: false,
+        });
+      });
+  }
   return (
     <Layout>
       <h1 id="admin-page" className="text-4xl p-5">
@@ -41,9 +76,10 @@ function DashboardAdmin() {
               <LoadingLong key={index} />
             ))
           : camps.map((camp, index) => (
-              <CardAdmin
+              <CardLong
                 key={index}
                 id={camp.id}
+                path={path}
                 image={camp.image}
                 campsite={camp.title}
                 loc={camp.city}
@@ -52,6 +88,10 @@ function DashboardAdmin() {
               />
             ))}
       </div>
+      <MdArrowDropDownCircle
+        className="text-primary text-6xl w-full flex justify-center my-5 cursor-pointer"
+        onClick={nextPage}
+      />
     </Layout>
   );
 }
