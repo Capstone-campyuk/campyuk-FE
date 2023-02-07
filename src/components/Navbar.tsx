@@ -56,19 +56,13 @@ export function NavbarLogin() {
     } else setIsGuest(false);
   }, [isGuest]);
 
-  console.log(isGuest);
-  console.log(cookie.role);
-
-  const handleLogOut = (e: any) => {
-    e.preventDefault();
-
+  const handleLogOut = () => {
     removeCookie("username");
     removeCookie("token");
     removeCookie("role");
 
     Swal.fire({
-      title: "Failed",
-      text: "You've been Log Out",
+      title: "You've been Log Out",
       showCancelButton: false,
     });
 
@@ -239,6 +233,7 @@ export function NavbarLogin() {
       <div className="navbar-end lg:max-w-[120px]">
         <Btn
           id="logout"
+          // onClick={(e) => handleLogOut(e)}
           onClick={handleLogOut}
           className="max-w-[90px]"
           label={"Logout"}

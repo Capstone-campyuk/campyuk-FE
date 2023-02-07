@@ -3,6 +3,7 @@ import axios, { AxiosHeaders } from "axios";
 import {
   createBrowserRouter,
   RouterProvider,
+  useLocation,
 } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
@@ -28,9 +29,13 @@ function App() {
   const checkToken = cookie.token;
   const checkRole = cookie.role;
 
+  const path = window.location.pathname;
+
   axios.interceptors.request.use(function (config) {
     config.headers = config.headers ?? {};
-    config.headers.Authorization = `Bearer ${cookie.token}`;
+    if (path !== "/camplist") {
+      config.headers.Authorization = `Bearer ${cookie.token}`;
+    }
     return config;
   });
 
@@ -60,7 +65,7 @@ function App() {
       element: checkRole === "guest" ? <Profile /> : <Home />,
     },
     {
-      path: "/order",
+      path: "/order/:id_camp",
       element: checkRole === "guest" ? <Order /> : <Home />,
     },
     {
