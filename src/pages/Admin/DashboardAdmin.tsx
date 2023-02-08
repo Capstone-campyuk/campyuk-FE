@@ -18,7 +18,6 @@ function DashboardAdmin() {
   const [cookie] = useCookies(["username", "token"]);
   const path = useLocation().pathname;
 
-
   useEffect(() => {
     fetchData(1);
   }, []);
@@ -31,7 +30,9 @@ function DashboardAdmin() {
       })
       .catch((err) => {
         Swal.fire({
-          text: err.response.data.message,
+          icon: "error",
+          text: err.data.message,
+          title: "Oops...",
           showCancelButton: false,
         });
       })
@@ -60,7 +61,9 @@ function DashboardAdmin() {
       })
       .catch((err) => {
         Swal.fire({
-          text: err.toString(),
+          icon: "error",
+          text: err.data.message,
+          title: "Oops...",
           showCancelButton: false,
         });
       });
@@ -72,9 +75,7 @@ function DashboardAdmin() {
       </h1>
       <div className="flex flex-col items-center gap-10 px-2 lg:px-6 pb-6">
         {loading
-          ? [...Array(4).keys()].map((index) => (
-              <LoadingLong key={index} />
-            ))
+          ? [...Array(4).keys()].map((index) => <LoadingLong key={index} />)
           : camps.map((camp, index) => (
               <CardLong
                 key={index}
@@ -85,6 +86,7 @@ function DashboardAdmin() {
                 loc={camp.city}
                 price={camp.price}
                 host={camp.host_name}
+                address={camp.address}
               />
             ))}
       </div>
