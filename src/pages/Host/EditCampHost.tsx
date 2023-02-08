@@ -1,139 +1,216 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import { useNavigate, useParams } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 import axios from "axios";
 
-import { MapContainer, useMap, TileLayer } from "react-leaflet";
 import { Layout } from "../../components/Layout";
-import { Btn, Btns } from "../../components/Button";
+import { Btn } from "../../components/Button";
 import { InputSide } from "../../components/Input";
 
-import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import tileLayer from "../../utils/const/tileLayer";
 
 function EditCampHost() {
-  const [cookie, setCookie, removeCookie] = useCookies();
-  const [gettitle, setTitleget] = useState<string>("");
-  const [getprice, setPriceget] = useState<any>();
-  const [getdescription, setDescriptionget] = useState<string>("");
-  const [getlatitude, setLatitudeget] = useState<any>();
-  const [getlongitude, setLongitudeget] = useState<any>();
-  const [getaddress, setAddressget] = useState<string>("");
-  const [getcity, setCityget] = useState<string>("");
-  const [getdistance, setDistanceget] = useState<any>();
-  const [getdocument, setDocumentget] = useState<any>({});
-  const { id } = useParams();
-
-  //edit
+  const [cookie] = useCookies();
+  const { id_camp }: any = useParams();
+  const navigate = useNavigate();
   const [title, setTitle] = useState<string>("");
-  const [price, setPrice] = useState<number | Blob>();
+  const [price, setPrice] = useState<any>();
   const [description, setDescription] = useState<string>("");
-  const [latitude, setLatitude] = useState<number | Blob>();
-  const [longitude, setLongitude] = useState<number | Blob>();
+  const [latitude, setLatitude] = useState<any>();
+  const [longitude, setLongitude] = useState<any>();
   const [address, setAddress] = useState<string>("");
   const [city, setCity] = useState<string>("");
-  const [distance, setDistance] = useState<number | Blob>();
+  const [distance, setDistance] = useState<any>();
   const [document, setDocument] = useState<any>({});
-  const [images, setImages] = useState<any>({});
-  const [newPreviewImage, setNewPreviewImage] = useState<any>();
+  const [images, setImages] = useState<any>([]);
+  const [disabled, setDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
+  //image
+  const [image, setEditImage] = useState<any>({});
+  const [newPreviewImage2, setNewPreviewImage2] = useState<any>();
+  // edit item
+  const [stock, setStock] = useState<number>(1);
+  const [priceItem, setPriceItem] = useState<number>(1);
+  const [name, setName] = useState<string>("");
 
-  const handleImage = (file: any) => {
-    setImages(file);
-    const reader = new FileReader();
-    reader.onload = () => {
-      setNewPreviewImage(reader.result);
-    };
-    reader.readAsDataURL(file);
-  };
+  const [position, setPosition] = useState({
+    lat: -2.175,
+    lng: 114.408,
+  });
+  const markerRef = useRef(null);
+  const eventHandlers = useMemo(
+    () => ({
+      dragend() {
+        const marker: any = markerRef.current;
+        if (marker != null) {
+          setPosition(marker.getLatLng());
+          setLatitude(marker.getLatLng().lat);
+          setLongitude(marker.getLatLng().lng);
+        }
+      },
+    }),
+    []
+  );
 
-  const GetCoordinates = () => {
-    const map = useMap();
-
-    useEffect(() => {
-      if (!map) return;
-      const info = L.DomUtil.create("div", "legend");
-
-      const positon = L.Control.extend({
-        options: {
-          position: "bottomleft",
-        },
-
-        onAdd: function () {
-          info.textContent = "Click on map";
-          return info;
-        },
-      });
-
-      map.on("click", (e) => {
-        info.textContent = e.latlng.toString();
-      });
-
-      map.addControl(new positon());
-      getCampHost();
-    }, [map]);
-
-    return null;
-  };
-
+  useEffect(() => {
+    getCampHost();
+  }, []);
   function getCampHost() {
+    console.log("id ", id_camp);
     const config = {
       headers: {
         Authorization: `Bearer ${cookie.token}`,
       },
     };
     axios
-      .get(`https://abiasa.site/camps/${id}`, config)
+      .get(`https://abiasa.site/camps/${id_camp}`, config)
       .then((res) => {
-        console.log(res);
         const {
-          gettitle,
-          getaddress,
-          getcity,
-          getdescription,
-          getdistance,
-          getdocument,
-          getlatitude,
-          getlongitude,
-          getprice,
+          title,
+          address,
+          city,
+          description,
+          distance,
+          latitude,
+          longitude,
+          price,
         } = res.data.data;
-        setTitleget(gettitle);
-        setAddressget(getaddress);
-        setCityget(getcity);
-        setDescriptionget(getdescription);
-        setDistanceget(getdistance);
-        setDocumentget(getdocument);
-        setLatitudeget(getlatitude);
-        setLongitudeget(getlongitude);
-        setPriceget(getprice);
+
+        setTitle(title);
+        setAddress(address);
+        setCity(city);
+        setDescription(description);
+        setDistance(distance);
+
+        setLatitude(latitude);
+        setLongitude(longitude);
+        setPrice(price);
       })
       .catch((error) => {
         alert(error);
       });
   }
+
   const editCamp = (e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true);
     e.preventDefault();
 
     const formData = new FormData();
-
-    formData.append("title", title);
-    formData.append("price", JSON.stringify(price));
-    formData.append("description", description);
-    formData.append("latitude", JSON.stringify(latitude));
-    formData.append("longitude", JSON.stringify(longitude));
-    formData.append("address", address);
-    formData.append("city", city);
-    formData.append("distance", JSON.stringify(distance));
-    formData.append("document", document);
-    formData.append("images", images);
-
+    if (title) {
+      formData.append("title", title);
+    }
+    if (price) {
+      formData.append("price", JSON.stringify(price));
+    }
+    if (description) {
+      formData.append("description", description);
+    }
+    if (latitude) {
+      formData.append("latitude", JSON.stringify(latitude));
+    }
+    if (longitude) {
+      formData.append("longitude", JSON.stringify(longitude));
+    }
+    if (address) {
+      formData.append("address", address);
+    }
+    if (city) {
+      formData.append("city", city);
+    }
+    if (distance) {
+      formData.append("distance", JSON.stringify(distance));
+    }
+    if (document) {
+      formData.append("document", document);
+    }
+    if (images) {
+      formData.append("images", images);
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${cookie.token}`,
+      },
+    };
     axios
-      .put(`https://abiasa.site/camps/${id}`, formData)
-      .then((res) => {})
+      .put(`https://abiasa.site/camps/${id_camp}`, formData, config)
+      .then((res) => {
+        Swal.fire({
+          title: "Success",
+          text: "successful change camp",
+          showCancelButton: false,
+          confirmButtonText: "Ok",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate(0);
+          }
+        });
+      })
       .catch((err) => {
         alert(err.response.data.message);
       });
   };
+
+  function addImage() {
+    setLoading(true);
+    const formData = new FormData();
+    for (let i = 0; i < image.length; i++) {
+      formData.append(`image`, image[i]);
+    }
+    formData.append("camp_id", id_camp);
+
+    axios
+      .post(`https://abiasa.site/images`, formData)
+      .then((res) => {
+        Swal.fire({
+          title: "Success",
+          text: "successful add iamge",
+          showCancelButton: false,
+          confirmButtonText: "Ok",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate(0);
+          }
+        });
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      });
+  }
+
+  function addItems() {
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("stock", JSON.stringify(stock));
+    formData.append("price", JSON.stringify(priceItem));
+    formData.append("name", name);
+    formData.append("camp_id", id_camp);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${cookie.token}`,
+      },
+    };
+    axios
+      .post(`https://abiasa.site/items`, formData, config)
+      .then((res) => {
+        Swal.fire({
+          title: "Success",
+          text: "successful add item",
+          showCancelButton: false,
+          confirmButtonText: "Ok",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate(0);
+          }
+        });
+      })
+      .catch((err) => {
+        alert(err.response.data.message);
+      })
+      .finally(() => setLoading(false));
+  }
 
   return (
     <Layout>
@@ -152,14 +229,14 @@ function EditCampHost() {
               id="input-title"
               type="text"
               onChange={(e) => setTitle(e.target.value)}
-              placeholder={gettitle}
+              value={title}
             />
             <InputSide
               title="Price"
               id="input-price"
               type="number"
               onChange={(e) => setPrice(parseInt(e.target.value))}
-              placeholder={getprice}
+              value={price}
             />
             <div className="flex w-full px-10">
               <label className="text-black font-bold flex items-start mt-2 w-1/3">
@@ -168,25 +245,12 @@ function EditCampHost() {
               <textarea
                 className="w-full overflow-y-auto h-36 rounded-lg bg-form px-2 p-2 border-2 focus:outline-none text-black"
                 style={{ resize: "none" }}
-                placeholder={getdescription}
+                value={description}
                 id="add-camp-description"
                 onChange={(e) => setDescription(e.target.value)}
               />
             </div>
-            <InputSide
-              title="Latitude"
-              id="input-latitude"
-              type="number"
-              placeholder={getlatitude}
-              onChange={(e) => setLatitude(parseInt(e.target.value))}
-            />
-            <InputSide
-              title="Longitude"
-              id="input-longitude"
-              type="number"
-              placeholder={getlongitude}
-              onChange={(e) => setLongitude(parseInt(e.target.value))}
-            />
+
             <div className="p-10 ">
               <MapContainer
                 center={[-2.175, 114.408]}
@@ -195,20 +259,25 @@ function EditCampHost() {
                 style={{ height: "400px" }}
               >
                 <TileLayer {...tileLayer} />
-                <GetCoordinates />
+                <Marker
+                  draggable={true}
+                  eventHandlers={eventHandlers}
+                  position={position}
+                  ref={markerRef}
+                ></Marker>
               </MapContainer>
             </div>
             <InputSide
               title="City"
               id="input-city"
               type="text"
-              placeholder={getcity}
+              value={city}
               onChange={(e) => setCity(e.target.value)}
             />
             <InputSide
               title="Address"
               id="input-address"
-              placeholder={getaddress}
+              value={address}
               type="text"
               onChange={(e) => setAddress(e.target.value)}
             />
@@ -217,21 +286,22 @@ function EditCampHost() {
               id="input-image"
               type="file"
               onChange={(e) => {
-                if (!e.target.files) return;
-                handleImage(e.target.files[0]);
+                if (!e.currentTarget.files) return;
+                setImages(e.target.files);
               }}
+              accept="image/jpg, image/jpeg, image/png"
+              multiple
             />
             <InputSide
               title="Business License"
               id="input-license"
-              placeholder={getdocument}
               type="file"
               onChange={(e: any) => setDocument(e.target.files[0])}
             />
             <InputSide
               title="Distance"
               id="input-distance"
-              placeholder={getdistance}
+              value={distance}
               type="number"
               onChange={(e) => setDistance(parseInt(e.target.value))}
             />
@@ -244,78 +314,47 @@ function EditCampHost() {
           id="edit-tent"
           className="btn bg-btns text-white hover:bg-btnsh border-none rounded-full"
         >
-          Edit Tent
+          Add image
         </label>
-        {/* modal edit tent*/}
+        {/* modal edit image*/}
         <input type="checkbox" id="edit-modal-tent" className="modal-toggle" />
         <div className="modal modal-bottom sm:modal-middle">
           <div className="modal-box">
-            <h3 className="font-bold text-lg">Add Tent</h3>
+            <h3 className="font-bold text-lg">Add Image</h3>
             <div className="flex py-5 w-full px-10">
-              <label className="font-semibold text-black flex items-start justify-start w-1/3 text-center">
-                Size
-              </label>
-              <select
-                name="size"
-                id="size"
-                className="bg-[#cbd5e1]  w-full rounded-lg text-black p-3 border focus:outline-none focus:border-black"
+              <form
+                onSubmit={addImage}
+                encType="multipart/form-data"
+                className="flex flex-row"
               >
-                <option value="small">S</option>
-                <option value="medium">M</option>
-                <option value="large">L</option>
-              </select>
-            </div>
-            <div className="flex py-5 w-full px-10">
-              <label className="font-semibold text-black flex items-start justify-start w-1/3 text-center">
-                Price
-              </label>
-              <input
-                className="rounded-lg bg-[#cbd5e1] border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
-                type="number"
-                id="edittent-price"
-                placeholder=""
-              />
-            </div>
-            <div className="flex py-5 w-full px-10">
-              <label className="font-semibold text-black flex items-start justify-start w-1/3 text-center">
-                Stok
-              </label>
-              <input
-                className="rounded-lg bg-[#cbd5e1] border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
-                type="number"
-                id="edittent-stok"
-                placeholder=""
-              />
+                <label
+                  htmlFor="edit-photo"
+                  style={{ cursor: "pointer" }}
+                  className="font-semibold text-black flex items-center justify-center w-1/3 text-center"
+                >
+                  Upload image
+                </label>
+                <input
+                  title="Image"
+                  id="input-image"
+                  type="file"
+                  onChange={(e) => {
+                    if (!e.currentTarget.files) return;
+                    setEditImage(e.target.files);
+                  }}
+                  accept="image/jpg, image/jpeg, image/png"
+                  multiple
+                />
+              </form>
             </div>
 
-            <div className="flex py-5 w-full px-10">
-              <label
-                htmlFor="edit-photo"
-                id="add-image"
-                style={{ cursor: "pointer" }}
-                className={
-                  "font-semibold text-black flex items-start justify-start w-1/3 text-center"
-                }
-              >
-                Add image
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                id="edit-photo"
-                style={{ display: "none" }}
-                onChange={(e) => {
-                  if (!e.target.files) return;
-                  handleImage(e.target.files[0]);
-                }}
-              />
-            </div>
             <div className="modal-action">
               <button
                 className="btn bg-btn text-white hover:bg-btnh border-none rounded-full "
                 id="btn-add-tent"
+                onClick={() => addImage()}
               >
-                Add Tent
+                Add Image
               </button>
               <label
                 htmlFor="edit-modal-tent"
@@ -327,75 +366,83 @@ function EditCampHost() {
             </div>
           </div>
         </div>
-        {/* akhir modal edit tent */}
+
+        {/* akhir modal edit iamge */}
         <label
           htmlFor="edit-modal-item"
           id="edit-item"
           className="btn bg-btns text-white hover:bg-btnsh border-none rounded-full"
         >
-          Edit Item
+          Add Item
         </label>
         {/* modal edit item*/}
         <input type="checkbox" id="edit-modal-item" className="modal-toggle" />
         <div className="modal modal-bottom sm:modal-middle">
           <div className="modal-box">
-            <h3 className="font-bold text-lg">Add Item</h3>
-            <div className="flex py-5 w-full px-10">
-              <label className="font-semibold text-black flex items-start justify-start w-1/3 text-center">
-                Size
-              </label>
-              <select
-                name="size"
-                id="size"
-                className="bg-[#cbd5e1]  w-full rounded-lg text-black p-3 border focus:outline-none focus:border-black"
-              >
-                <option value="small">Bonfire</option>
-                <option value="medium">Sleeping Bag</option>
-              </select>
-            </div>
-            <div className="flex py-5 w-full px-10">
-              <label className="font-semibold text-black flex items-start justify-start w-1/3 text-center">
-                Price
-              </label>
-              <input
-                className="rounded-lg bg-[#cbd5e1] border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
-                type="number"
-                id="edititem-price"
-                placeholder=""
-              />
-            </div>
-            <div className="flex py-5 w-full px-10">
-              <label className="font-semibold text-black flex items-start justify-start w-1/3 text-center">
-                Stok
-              </label>
-              <input
-                className="rounded-lg bg-[#cbd5e1] border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
-                type="number"
-                id="edititem-stok"
-                placeholder=""
-              />
-            </div>
+            <form onSubmit={addItems}>
+              <h3 className="font-bold text-lg">Add Item</h3>
+              <div className="flex py-5 w-full px-10">
+                <label className="font-semibold text-black flex items-start justify-start w-1/3 text-center">
+                  Name
+                </label>
+                <input
+                  className="rounded-lg bg-[#cbd5e1] border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
+                  type="text"
+                  id="edititem-price"
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+              <div className="flex py-5 w-full px-10">
+                <label className="font-semibold text-black flex items-start justify-start w-1/3 text-center">
+                  Price
+                </label>
+                <input
+                  className="rounded-lg bg-[#cbd5e1] border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
+                  type="number"
+                  id="edititem-price"
+                  onChange={(e) => setPriceItem(parseInt(e.target.value))}
+                />
+              </div>
+              <div className="flex py-5 w-full px-10">
+                <label className="font-semibold text-black flex items-start justify-start w-1/3 text-center">
+                  Stok
+                </label>
+                <input
+                  className="rounded-lg bg-[#cbd5e1] border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
+                  type="number"
+                  id="edititem-stok"
+                  placeholder=""
+                  onChange={(e) => setStock(parseInt(e.target.value))}
+                />
+              </div>
 
-            <div className="modal-action">
-              <button
-                className="btn bg-btn text-white hover:bg-btnh border-none rounded-full "
-                id="btn-add-item"
-              >
-                Add Item
-              </button>
-              <label
-                htmlFor="edit-modal-item"
-                id="cencel-edit-item"
-                className="btn bg-btn text-white hover:bg-btnh border-none rounded-full "
-              >
-                Cancel
-              </label>
-            </div>
+              <div className="modal-action">
+                <button
+                  className="btn bg-btn text-white hover:bg-btnh border-none rounded-full "
+                  id="btn-add-item"
+                  onClick={addItems}
+                >
+                  Add Item
+                </button>
+                <label
+                  htmlFor="edit-modal-item"
+                  id="cencel-edit-item"
+                  className="btn bg-btn text-white hover:bg-btnh border-none rounded-full "
+                >
+                  Cancel
+                </label>
+              </div>
+            </form>
           </div>
         </div>
-        {/* akhir modal edit item */}
 
-        <Btn className="w-18" label="Update Camp" id="update-camp" />
+        {/* akhir modal edit item */}
+        <Btn
+          className="w-18"
+          label="Update Camp"
+          id="update-camp"
+          onClick={() => editCamp()}
+        />
       </div>
     </Layout>
   );
