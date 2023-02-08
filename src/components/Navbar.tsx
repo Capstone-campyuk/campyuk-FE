@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import withReactContent from "sweetalert2-react-content";
 
-import Swal from "sweetalert2/src/sweetalert2.js";
 import { Btn } from "./Button";
 import {
   IoIosPerson,
@@ -11,19 +11,13 @@ import {
   IoIosBookmark,
   IoIosCompass,
 } from "react-icons/io";
-import { BsPencilSquare } from "react-icons/bs";
+import Swal from "../utils/Swal";
 
 export function NavbarGuest() {
   return (
     <nav className="navbar bg-primary text-white p-5">
-      <Link
-        id="btn-home"
-        to="/"
-        className="navbar-start items-center gap-2"
-      >
-        <h1 className="font-extrabold antialiased text-2xl">
-          campyuk
-        </h1>
+      <Link id="btn-home" to="/" className="navbar-start items-center gap-2">
+        <h1 className="font-extrabold antialiased text-2xl">campyuk</h1>
         <img
           src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
           alt="icon"
@@ -47,8 +41,8 @@ export function NavbarLogin() {
     "token",
     "role",
   ]);
-
   const checkRole = cookie.role;
+  const MySwal = withReactContent(Swal);
 
   useEffect(() => {
     if (cookie.role === "guest") {
@@ -56,18 +50,12 @@ export function NavbarLogin() {
     } else setIsGuest(false);
   }, [isGuest]);
 
-  console.log(isGuest);
-  console.log(cookie.role);
-
-  const handleLogOut = (e: any) => {
-    e.preventDefault();
-
+  const handleLogOut = () => {
     removeCookie("username");
     removeCookie("token");
     removeCookie("role");
 
-    Swal.fire({
-      title: "Failed",
+    MySwal.fire({
       text: "You've been Log Out",
       showCancelButton: false,
     });
@@ -129,14 +117,8 @@ export function NavbarLogin() {
         </div>
 
         {checkRole === "guest" || checkRole === "" ? (
-          <Link
-            id="btn-home"
-            to="/"
-            className="flex items-center gap-2"
-          >
-            <h1 className="font-extrabold antialiased text-2xl">
-              campyuk
-            </h1>
+          <Link id="btn-home" to="/" className="flex items-center gap-2">
+            <h1 className="font-extrabold antialiased text-2xl">campyuk</h1>
             <img
               src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
               alt="icon"
@@ -153,9 +135,7 @@ export function NavbarLogin() {
             to={`/host/${cookie.username}`}
             className="flex items-center gap-2"
           >
-            <h1 className="font-extrabold antialiased text-2xl">
-              campyuk
-            </h1>
+            <h1 className="font-extrabold antialiased text-2xl">campyuk</h1>
             <img
               src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
               alt="icon"
@@ -167,14 +147,8 @@ export function NavbarLogin() {
         )}
 
         {checkRole === "admin" ? (
-          <Link
-            id="btn-home"
-            to="/admin"
-            className="flex items-center gap-2"
-          >
-            <h1 className="font-extrabold antialiased text-2xl">
-              campyuk
-            </h1>
+          <Link id="btn-home" to="/admin" className="flex items-center gap-2">
+            <h1 className="font-extrabold antialiased text-2xl">campyuk</h1>
             <img
               src="https://i.im.ge/2023/02/02/a1ukPX.logo.png"
               alt="icon"
@@ -216,14 +190,6 @@ export function NavbarLogin() {
             </>
           ) : (
             <>
-              <Link
-                id="btn-addcamp"
-                to="/addcamp"
-                className="flex items-center gap-2"
-              >
-                <BsPencilSquare className="text-2xl" />
-                <a>Add Camp</a>
-              </Link>
               <Link
                 id="btn-camplg"
                 to="/camplist"

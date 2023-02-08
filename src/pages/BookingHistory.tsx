@@ -1,23 +1,21 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import axios from "axios";
-import { useCookies } from "react-cookie";
 import withReactContent from "sweetalert2-react-content";
+import { useCookies } from "react-cookie";
 
-import { Layout } from "../../components/Layout";
-import { CardLong } from "../../components/Card";
-import { LoadingLong } from "../../components/Loading";
+import { Layout } from "../components/Layout";
+import { CardLong } from "../components/Card";
+import { LoadingLong } from "../components/Loading";
 import { MdArrowDropDownCircle } from "react-icons/md";
 
-import Swal from "../../utils/Swal";
-import { CampsTypes } from "../../utils/types/campsTypes";
+import Swal from "../utils/Swal";
+import { BookingsTypes } from "../utils/types/bookingTypes";
 
-function DashboardAdmin() {
-  const [camps, setCamps] = useState<CampsTypes[]>([]);
-  const [page, setPage] = useState<number>(2);
+function OrderListHost() {
+  const [orders, setOrders] = useState<BookingsTypes[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [cookie] = useCookies(["username", "token"]);
-  const path = useLocation().pathname;
+  const [cookie] = useCookies(["token"]);
+  const [page, setPage] = useState<number>(2);
   const MySwal = withReactContent(Swal);
 
   useEffect(() => {
@@ -26,9 +24,9 @@ function DashboardAdmin() {
 
   const fetchData = (page: number) => {
     axios
-      .get(`https://abiasa.site/camps/?page=${page}`)
+      .get(`https://abiasa.site/bookings/?page=${page}`)
       .then((res) => {
-        setCamps(res.data.data);
+        setOrders(res.data.data);
       })
       .catch((err) => {
         MySwal.fire({
@@ -52,13 +50,13 @@ function DashboardAdmin() {
       },
     };
     const newPage = page + 1;
-    fetch(`https://abiasa.site/camps/?page=${page}`, request)
+    fetch(`https://abiasa.site/bookings/?page=${page}`, request)
       .then((response) => response.json())
       .then((res) => {
         const results = res.data;
-        const result = camps.slice();
+        const result = orders.slice();
         result.push(...results);
-        setCamps(result);
+        setOrders(result);
         setPage(newPage);
       })
       .catch((err) => {
@@ -70,27 +68,31 @@ function DashboardAdmin() {
         });
       });
   }
+
   return (
     <Layout>
-      <h1 id="admin-page" className="text-4xl p-5">
-        Dashboard Admin
+      <h1 id="orderhost-page" className="text-4xl p-5">
+        Booking History
       </h1>
       <div className="flex flex-col items-center gap-10 px-2 lg:px-6 pb-6">
-        {loading
-          ? [...Array(4).keys()].map((index) => <LoadingLong key={index} />)
-          : camps.map((camp, index) => (
-              <CardLong
-                key={index}
-                id={camp.id}
-                path={path}
-                image={camp.image}
-                campsite={camp.title}
-                loc={camp.city}
-                price={camp.price}
-                host={camp.host_name}
-                address={camp.address}
-              />
-            ))}
+        {loading ? (
+          <LoadingLong />
+        ) : (
+          orders.map((order, index) => (
+            <CardLong
+              key={index}
+              id={order.id}
+              image={order.camp_image}
+              campsite={order.camp_title}
+              loc={order.camp_city}
+              checkin={order.check_in}
+              checkout={order.check_out}
+              eticket={order.ticket}
+              totalprice={order.total_price}
+              status={order.status}
+            />
+          ))
+        )}
       </div>
       <MdArrowDropDownCircle
         className="text-primary text-6xl w-full flex justify-center my-5 cursor-pointer"
@@ -100,4 +102,4 @@ function DashboardAdmin() {
   );
 }
 
-export default DashboardAdmin;
+export default OrderListHost;

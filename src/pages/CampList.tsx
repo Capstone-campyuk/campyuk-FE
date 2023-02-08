@@ -1,52 +1,51 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 import { Layout } from "../components/Layout";
-import { CardCampList } from "../components/Card";
+import { CardReg } from "../components/Card";
 import { LoadingReg } from "../components/Loading";
+import { MdArrowDropDownCircle } from "react-icons/md";
+import Swal from "sweetalert2";
 
 import { CampsTypes } from "../utils/types/campsTypes";
 
 function CampList() {
   const [camps, setCamps] = useState<CampsTypes[]>([]);
   const [page, setPage] = useState<number>(2);
-  const [loading, setLoading] = useState<boolean>();
+  const [loading, setLoading] = useState<boolean>(true);
+  const path = useLocation().pathname;
 
   useEffect(() => {
-    fethData(1);
+    fetchData(1);
   }, []);
 
-  const fethData = (page: number) => {
-    // const config = {
-    //   headers: {
-    //     Authorization: `Bearer 111`,
-    //   },
-    // };
-
+  const fetchData = (page: number) => {
     axios
-      .get("https://abiasa.site/camps")
+      .get(`https://abiasa.site/camps/?page=${page}`)
       .then((res) => {
-        console.log(res.data);
         setCamps(res.data.data);
       })
       .catch((err) => {
-        alert(err.response.data.message);
+        Swal.fire({
+          text: err.response.data.message,
+          showCancelButton: false,
+        });
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   function nextPage() {
-    const requestOptions = {
+    const request = {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     };
     const newPage = page + 1;
-    fetch(
-      `https://onallo.store/products/?page=${page}`,
-      requestOptions
-    )
+    fetch(`https://abiasa.site/camps/?page=${page}`, request)
       .then((response) => response.json())
       .then((res) => {
         const results = res.data;
@@ -55,8 +54,11 @@ function CampList() {
         setCamps(result);
         setPage(newPage);
       })
-      .catch((error) => {
-        alert(error.toString());
+      .catch((err) => {
+        Swal.fire({
+          text: err.toString(),
+          showCancelButton: false,
+        });
       });
   }
 
@@ -72,8 +74,10 @@ function CampList() {
                 <LoadingReg key={index} />
               ))
             : camps.map((camp, index) => (
-                <CardCampList
+                <CardReg
                   key={index}
+                  id={camp.id}
+                  path={path}
                   image={camp.image}
                   campsite={camp.title}
                   price={camp.price}
@@ -83,12 +87,10 @@ function CampList() {
               ))}
         </div>
       </div>
-      <button
-        className="text-3xl w-full flex justify-center p-3"
-        onClick={() => nextPage()}
-      >
-        load more
-      </button>
+      <MdArrowDropDownCircle
+        className="text-primary text-6xl w-full flex justify-center my-5 cursor-pointer"
+        onClick={nextPage}
+      />
     </Layout>
   );
 }

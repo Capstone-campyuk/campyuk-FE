@@ -10,7 +10,7 @@ export function Input({ title, ...props }: Props) {
     <div className="my-3">
       <label className="my-1 font-bold text-lg">{title}</label>
       <input
-        className="bg-form w-full rounded-lg text-black p-3 border focus:outline-none focus:border-black"
+        className="bg-form w-full rounded-lg text-black p-3 border focus:outline-none"
         {...props}
       />
     </div>
@@ -20,7 +20,7 @@ export function Input({ title, ...props }: Props) {
 export function InputSolo({ className, ...props }: Props) {
   return (
     <input
-      className={`bg-form w-full rounded-lg text-black p-3 border focus:outline-none focus:border-black ${className}`}
+      className={`bg-form w-full rounded-lg text-black p-3 border focus:outline-none ${className}`}
       {...props}
     />
   );
@@ -28,7 +28,7 @@ export function InputSolo({ className, ...props }: Props) {
 
 export function InputSide({ title, className, ...props }: Props) {
   return (
-    <div className="flex items-center w-full px-10">
+    <div className="flex items-center w-full px-5 md:px-10">
       <label className="text-black font-bold flex items-start w-1/3">
         {title}
       </label>
