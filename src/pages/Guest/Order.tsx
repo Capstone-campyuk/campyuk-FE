@@ -1,81 +1,132 @@
 import React, { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import moment from "moment";
 import axios from "axios";
+
 import { Layout } from "../../components/Layout";
 import { InputSolo } from "../../components/Input";
 import { ImLocation } from "react-icons/im";
 import { Btn, Btns } from "../../components/Button";
-import { BookingTypes } from "../../utils/types/bookingTypes";
+import { CampTypes, ItemTypes } from "../../utils/types/campsTypes";
 
 function Order() {
-  const [order, setOrder] = useState<BookingTypes>();
-  const [Subtotal, SetSubtotal] = useState<number>();
-  const [totalPrice, setTotalPrice] = useState<number>();
-  const [cookie, setCookie, removeCookie] = useCookies();
-  const [camp_cost, setCampcost] = useState<any>();
+  const [totalAllPriceItem, setTotalAllPriceItem] = useState<number>(0);
+  const [totalHari, setTotalHari] = useState<number>();
+  const [sub_total, SetSubTotal] = useState<number>(0);
+  const [cart, setCart] = useState<ItemTypes[]>([]);
+  const [items, setItems] = useState<ItemTypes[]>([]);
+  const [order, setOrder] = useState<CampTypes>({});
   const [check_in, setCheckin] = useState<any>();
   const [check_out, setCheckout] = useState<any>();
-  const [guest, setGuest] = useState<any>();
-  const [item, setItem] = useState<any>();
-  const [price, setPrice] = useState<any>();
-  const [quantity, setQuantity] = useState<any>();
-  const { id } = useParams();
+  const [guest, setGuest] = useState<number>(0);
+  const [bank, setBank] = useState<string>("");
+  const { id_camp } = useParams();
+  const [id, setId] = useState<number>(0);
+
+  function total_days() {
+    var _second = 1000;
+    var _minute = _second * 60;
+    var _hour = _minute * 60;
+    var _day = _hour * 24;
+    const diffInMs = new Date(check_out) - new Date(check_in);
+    const days = Math.floor(diffInMs / _day);
+    setTotalHari(days);
+    if (guest) {
+      subtotal(days);
+    }
+  }
+
+  function subtotal(days: number) {
+    if (order.price) {
+      SetSubTotal(days * guest * order.price);
+    }
+  }
 
   useEffect(() => {
     fetchDetail();
   }, []);
 
-  function addPost(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  useEffect(() => {
+    if (check_out) {
+      total_days();
+    }
+  }, [check_in, check_out, guest]);
 
-    const formData = new FormData();
-    formData.append("camp_cost", camp_cost);
-    formData.append("check_in", check_in);
-    formData.append("check_out", check_out);
-    formData.append("guest", guest);
-    formData.append("item", item);
-    formData.append("price", price);
-    formData.append("quantity", quantity);
-    const config = {
-      headers: {
-        Authorization: `Bearer ${cookie.token}`,
-      },
+  useEffect(() => {
+    setTotalAllPriceItem(cart.reduce((acc, cur) => acc + cur.rent_cost, 0));
+  }, [cart]);
+
+  function fetchDetail() {
+    axios
+      .get(`https://abiasa.site/camps/${id_camp}`)
+      .then((res) => {
+        if (res.data.data.items) {
+          res.data.data.items?.forEach((item: any) => {
+            item.quantity = 0;
+            item.select = false;
+          });
+        }
+        setItems(res.data.data.items);
+        setOrder(res.data.data);
+        setId(res.data.data.id);
+      })
+      .catch((err) => {});
+  }
+  function handleOrder() {
+    const body = {
+      camp_id: id,
+      items: cart,
+      camp_cost: order.price,
+      total_price: sub_total + totalAllPriceItem,
+      check_in,
+      check_out,
+      guest,
+      bank,
     };
     axios
-      .post("https://abiasa.site/bookings", FormData, config)
+      .post("https://abiasa.site/bookings", body)
       .then((res) => {
-        setOrder(res.data.data);
-        console.log(res.data.data);
+        const { message } = res.data;
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          text: message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
       })
       .catch((err) => {
         alert(err.response.data.message);
       });
   }
 
-  function fetchDetail() {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${cookie.token}`,
-      },
-    };
-    axios
-      .get(`https://abiasa.site/bookings/${id}`, config)
-      .then((res) => {
-        setOrder(res.data.data);
-        console.log(res.data.data);
-        // const totalPrice = data.reduce((a: any, b: any) => {
-        //   return a + b.total_price;
-        // }, 0);
-
-        // const subtotal = data.reduce((price: any, quantity: any) => {
-        //   return price * quantity;
-        // }, 0);
-        // SetSubtotal(subtotal);
-
-        // setTotalPrice(totalPrice);
-      })
-      .catch((err) => {});
+  function handleQtyItem(
+    e: React.ChangeEvent<HTMLInputElement>,
+    item: ItemTypes
+  ) {
+    setItems(
+      items.map((el) =>
+        el.item_id === item.item_id
+          ? {
+              ...el,
+              quantity: e.target.valueAsNumber,
+              rent_cost: el.rent_price * e.target.valueAsNumber,
+            }
+          : el
+      )
+    );
+    setCart(
+      cart.map((el) =>
+        el.item_id === item.item_id
+          ? {
+              ...el,
+              quantity: e.target.valueAsNumber,
+              rent_cost: el.rent_price * e.target.valueAsNumber,
+            }
+          : el
+      )
+    );
   }
 
   return (
@@ -86,18 +137,19 @@ function Order() {
       <div className="flex flex-col lg:flex-row m-5 bg-bgcard rounded-3xl shadow-lg">
         <img
           className="lg:w-1/2 lg:rounded-l-3xl"
-          src={order?.camp_image}
+          src={order.images?.[0].image}
           alt={"title"}
         />
         <div className="lg:w-1/2 p-5 flex flex-col justify-around">
           <div className="flex justify-between text-xl">
-            <h1>{order?.camp_title}</h1>
-            <h1>$ {order?.camp_price} /night</h1>
+            <h1>{order.title}</h1>
+            <h1>$ {order.price} /night</h1>
           </div>
           <p className="flex items-center">
-            <ImLocation /> {order?.camp_city}
+            <ImLocation /> {order.city}
           </p>
-          <form onSubmit={addPost}>
+
+          <form>
             <div className="flex justify-around mt-4">
               <h1>Check-In</h1>
               <h1>Check-Out</h1>
@@ -108,19 +160,25 @@ function Order() {
                 className="w-[30%]"
                 id="Check-In"
                 type={"date"}
+                name="datemax"
+                max="today"
+                min={new Date().toISOString().split("T")[0]}
                 onChange={(e) => setCheckin(e.target.value)}
               />
               <InputSolo
                 className="w-[30%]"
                 id="Check-Out"
                 type={"date"}
+                name="datemin"
+                max="today"
+                min={new Date().toISOString().split("T")[0]}
                 onChange={(e) => setCheckout(e.target.value)}
               />
               <InputSolo
                 className="w-[30%]"
                 id="Guest"
                 type={"number"}
-                onChange={(e) => setGuest(e.target.value)}
+                onChange={(e) => setGuest(e.target.valueAsNumber)}
               />
             </div>
             <h1 className="text-lg mt-4">Add On</h1>
@@ -131,81 +189,44 @@ function Order() {
             </div>
 
             <div className="flex flex-col gap-2">
-              <div className="flex justify-around items-center">
-                <input
-                  className="w-[13%]"
-                  type={"checkbox"}
-                  onChange={(e) => setItem(e.target.value)}
-                />
-                <h1 className="w-1/4">{order?.items[0].name}</h1>
-                <h1 className="w-1/4">{order?.items[0].price}</h1>
-                <InputSolo
-                  className="w-1/4"
-                  id="number"
-                  type="number"
-                  onChange={(e) => setQuantity(e.target.value)}
-                />
-              </div>
-              <div className="flex justify-around items-center">
-                <input
-                  className="w-[13%]"
-                  type={"checkbox"}
-                  onChange={(e) => setItem(e.target.value)}
-                />
-                <h1 className="w-1/4">{order?.items[1].name}</h1>
-                <h1 className="w-1/4">{order?.items[1].price}</h1>
-                <InputSolo
-                  className="w-1/4"
-                  id="number"
-                  type="number"
-                  onChange={(e) => setQuantity(e.target.value)}
-                />
-              </div>
-              <div className="flex justify-around items-center">
-                <input
-                  className="w-[13%]"
-                  type={"checkbox"}
-                  onChange={(e) => setItem(e.target.value)}
-                />
-                <h1 className="w-1/4">{order?.items[2].name}</h1>
-                <h1 className="w-1/4">{order?.items[2].price}</h1>
-                <InputSolo
-                  className="w-1/4"
-                  id="number"
-                  type="number"
-                  onChange={(e) => setQuantity(e.target.value)}
-                />
-              </div>
-              <div className="flex justify-around items-center">
-                <input
-                  className="w-[13%]"
-                  type={"checkbox"}
-                  onChange={(e) => setItem(e.target.value)}
-                />
-                <h1 className="w-1/4">{order?.items[0].name}</h1>
-                <h1 className="w-1/4">{order?.items[0].price}</h1>
-                <InputSolo
-                  className="w-1/4"
-                  id="number"
-                  type="number"
-                  onChange={(e) => setQuantity(e.target.value)}
-                />
-              </div>
-              <div className="flex justify-around items-center">
-                <input
-                  className="w-[13%]"
-                  type={"checkbox"}
-                  onChange={(e) => setItem(e.target.value)}
-                />
-                <h1 className="w-1/4">{order?.items[0].name}</h1>
-                <h1 className="w-1/4">{order?.items[0].price}</h1>
-                <InputSolo
-                  className="w-1/4"
-                  id="number"
-                  type="number"
-                  onChange={(e) => setQuantity(e.target.value)}
-                />
-              </div>
+              {items.map((item) => (
+                <div
+                  className="flex justify-around items-center"
+                  key={item.item_id}
+                >
+                  <input
+                    className="w-[13%]"
+                    type={"checkbox"}
+                    onChange={(e) => {
+                      setItems(
+                        items.map((el) =>
+                          el.item_id === item.item_id
+                            ? { ...el, select: e.target.checked }
+                            : el
+                        )
+                      );
+                      if (e.target.checked) {
+                        setCart((prev) => [...prev, item]);
+                      } else {
+                        setCart((prev) =>
+                          prev.filter((i) => i.item_id !== item.item_id)
+                        );
+                      }
+                    }}
+                  />
+                  <h1 className="w-1/4">{item.name}</h1>
+                  <h1 className="w-1/4">{item.rent_price}</h1>
+                  <InputSolo
+                    className="w-1/4"
+                    id="number"
+                    type="number"
+                    min="1"
+                    max="999"
+                    onChange={(e) => handleQtyItem(e, item)}
+                    disabled={!item.select}
+                  />
+                </div>
+              ))}
             </div>
           </form>
         </div>
@@ -213,42 +234,42 @@ function Order() {
       <h1 className="text-4xl p-5">Price Details</h1>
       <div className="flex flex-col gap-3 p-5 m-5 bg-bgcard rounded-3xl shadow-lg border-2">
         <h1 className="text-xl">
-          Check In :{order?.check_in}
-          <span className="font-normal">{`2 February 2023`}</span>
+          Check In :
+          <span className="font-normal">
+            {moment(check_in).format("DD MMMM YYYY")}
+          </span>
         </h1>
         <h1 className="text-xl">
-          Check Out :{order?.check_out}
-          <span className="font-normal">{`5 February 2023`}</span>
+          Check Out :
+          <span className="font-normal">
+            {moment(check_out).format("DD MMMM YYYY")}
+          </span>
         </h1>
         <div className="flex flex-col lg:flex-row gap-10">
           <div>
             <h1 className="text-lg mb-2">Campsite Cost</h1>
-            <p>night</p>
-            <p>{order?.camp_price}</p>
-            <p>{order?.guest}</p>
-            <p>{order?.camp_cost}</p>
+
+            <p>Total hari:{totalHari} night</p>
+            <p>Price:$ {order.price}</p>
+            <p>Guest: {guest}</p>
+            <p>Sub total campsite: $ {sub_total}</p>
+            <p>Sub total item: ${totalAllPriceItem}</p>
+            <p>All total: $ {sub_total + totalAllPriceItem}</p>
           </div>
-          <div>
-            <h1 className="text-lg mb-2">{order?.items[0].name}</h1>
-            <p>Night</p>
-            <p>{order?.items[0].price}</p>
-            <p>{order?.guest}</p>
-            <p>{Subtotal}</p>
-          </div>
-          <div>
-            <h1 className="text-lg mb-2">{order?.items[0].name}</h1>
-            <p>Night</p>
-            <p>{order?.items[0].price}</p>
-            <p>{order?.guest}</p>
-            <p>{Subtotal}</p>
-          </div>
-          <div>
-            <h1 className="text-lg mb-2">{order?.items[0].name}</h1>
-            <p>Night</p>
-            <p>{order?.items[0].price}</p>
-            <p>{order?.guest}</p>
-            <p>{Subtotal}</p>
-          </div>
+          {cart.map((item, index) => (
+            <div key={item.item_id}>
+              <h1 className="text-lg mb-2">Item {item.name}</h1>
+              <p>{totalHari} night</p>
+              <p>$ {item.rent_price}</p>
+              <p>Quantity: {item.quantity}</p>
+              {/* <p>
+                harga sub total:
+                {item.rent_price && item.quantity
+                  ? setTotalPrice(item.rent_price * item.quantity)
+                  : 0}
+              </p> */}
+            </div>
+          ))}
         </div>
       </div>
       <h1 className="text-4xl p-5">Payment Method</h1>
@@ -263,7 +284,13 @@ function Order() {
               alt=""
             />
             <label>BCA Virtual Account</label>
-            <input type="radio" id="bca" value="bca" name="payment" />
+            <input
+              type="radio"
+              id="bca"
+              value="bca"
+              name="payment"
+              onChange={(e) => setBank(e.target.value)}
+            />
           </div>
           <div className="grid grid-cols-3 items-center">
             <img
@@ -271,7 +298,13 @@ function Order() {
               alt=""
             />
             <label>BNI Virtual Account</label>
-            <input type="radio" id="bni" value="bni" name="payment" />
+            <input
+              type="radio"
+              id="bni"
+              value="bni"
+              name="payment"
+              onChange={(e) => setBank(e.target.value)}
+            />
           </div>
           <div className="grid grid-cols-3 items-center">
             <img
@@ -279,7 +312,13 @@ function Order() {
               alt=""
             />
             <label>BRI Virtual Account</label>
-            <input type="radio" id="bri" value="bri" name="payment" />
+            <input
+              type="radio"
+              id="bri"
+              value="bri"
+              name="payment"
+              onChange={(e) => setBank(e.target.value)}
+            />
           </div>
         </form>
       </fieldset>
@@ -287,10 +326,19 @@ function Order() {
       <div className="flex flex-col lg:flex-row justify-between items-center gap-3 p-5 pb-12">
         <div className="flex lg:flex-row lg:items-center lg:w-4/6">
           <h1 className="text-lg lg:text-2xl">Total Price :</h1>
-          <p className="text-xl lg:text-2xl lg:ml-4">{totalPrice}</p>
+          <p className="text-xl lg:text-2xl lg:ml-4">
+            {sub_total + totalAllPriceItem}
+          </p>
         </div>
-        <Btns className="lg:w-1/6" id="btn-cancel" label="Cancel" />
-        <Btn className="lg:w-1/6" id="btn-booknow" label="Book Now" />
+        <Link to="/camplist">
+          <Btns id="btn-cancel" label="Cancel" />
+        </Link>
+        <Btn
+          className="lg:w-1/6"
+          id="btn-booknow"
+          label="Book Now"
+          onClick={() => handleOrder()}
+        />
       </div>
     </Layout>
   );
