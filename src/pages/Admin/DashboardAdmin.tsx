@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import withReactContent from "sweetalert2-react-content";
 
 import { Layout } from "../../components/Layout";
 import { CardLong } from "../../components/Card";
 import { LoadingLong } from "../../components/Loading";
 import { MdArrowDropDownCircle } from "react-icons/md";
-import Swal from "sweetalert2";
 
+import Swal from "../../utils/Swal";
 import { CampsTypes } from "../../utils/types/campsTypes";
 
 function DashboardAdmin() {
@@ -17,6 +18,7 @@ function DashboardAdmin() {
   const [loading, setLoading] = useState<boolean>(true);
   const [cookie] = useCookies(["username", "token"]);
   const path = useLocation().pathname;
+  const MySwal = withReactContent(Swal);
 
   useEffect(() => {
     fetchData(1);
@@ -29,7 +31,7 @@ function DashboardAdmin() {
         setCamps(res.data.data);
       })
       .catch((err) => {
-        Swal.fire({
+        MySwal.fire({
           icon: "error",
           text: err.data.message,
           title: "Oops...",
@@ -60,7 +62,7 @@ function DashboardAdmin() {
         setPage(newPage);
       })
       .catch((err) => {
-        Swal.fire({
+        MySwal.fire({
           icon: "error",
           text: err.data.message,
           title: "Oops...",

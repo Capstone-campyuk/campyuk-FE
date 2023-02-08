@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import withReactContent from "sweetalert2-react-content";
 
-import Swal from 'sweetalert2/src/sweetalert2.js'
+import Swal from "../../utils/Swal";
 import { Input } from "../../components/Input";
 import { Btn, Btns } from "../../components/Button";
 
@@ -12,11 +13,8 @@ function Login() {
   const [password, setPassword] = useState("");
   const [disabled, setDisabled] = useState(true);
   const navigate = useNavigate();
-  const [cookies, setCookie, removeCookie] = useCookies([
-    "username",
-    "token",
-    "role",
-  ]);
+  const [, setCookie] = useCookies(["username", "token", "role"]);
+  const MySwal = withReactContent(Swal);
 
   useEffect(() => {
     if (username && password) {
@@ -36,18 +34,10 @@ function Login() {
     axios
       .post("https://abiasa.site/login", body)
       .then((res) => {
-        console.log(res.data.data);
         setCookie("username", res.data.data.username);
         setCookie("token", res.data.token, { path: "/" });
         setCookie("role", res.data.data.role, { path: "/" });
         const checkRole = res.data.data.role;
-
-        Swal.fire({
-          title: "Success",
-          text: res.data.message,
-          showCancelButton: false,
-          confirmButtonText: "Ok",
-        });
 
         if (checkRole === "guest") {
           navigate("/");
@@ -56,7 +46,7 @@ function Login() {
         } else navigate("/admin");
       })
       .catch((err) => {
-        Swal.fire({
+        MySwal.fire({
           title: "Failed",
           text: err.response.data.message,
           showCancelButton: false,
@@ -74,7 +64,7 @@ function Login() {
       >
         <span className="hero-overlay bg-opacity-60" />
       </div>
-      <div className="mx-auto bg-bgcard w-full max-h-[550px] max-w-md rounded-3xl p-5 my-10 shadow-lg">
+      <div className="md:mx-auto bg-bgcard w-full max-h-[550px] max-w-md rounded-3xl p-5 my-10 shadow-lg m-5">
         <h1 id="login-page" className="text-3xl text-center mb-10">
           Login
         </h1>
