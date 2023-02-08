@@ -7,6 +7,7 @@ export interface CampsTypes {
   city: string;
   distance: number;
   image: string;
+  address: string;
 }
 
 export interface CampTypes {
