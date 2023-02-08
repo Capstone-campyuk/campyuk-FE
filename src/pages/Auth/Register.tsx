@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import withReactContent from "sweetalert2-react-content";
 
-import Swal from 'sweetalert2/src/sweetalert2.js'
+import Swal from "../../utils/Swal";
 import { Input } from "../../components/Input";
 import { Btn } from "../../components/Button";
 
@@ -14,6 +15,7 @@ function Register() {
   const [password, setPassword] = useState("");
   const [disabled, setDisabled] = useState(true);
   const navigate = useNavigate();
+  const MySwal = withReactContent(Swal);
 
   useEffect(() => {
     if (username && fullname && email && password) {
@@ -36,7 +38,7 @@ function Register() {
     axios
       .post("https://abiasa.site/register", body)
       .then((res) => {
-        Swal.fire({
+        MySwal.fire({
           title: "Success",
           text: res.data.message,
           showCancelButton: false,
@@ -48,7 +50,7 @@ function Register() {
         });
       })
       .catch((err) => {
-        Swal.fire({
+        MySwal.fire({
           title: "Failed",
           text: err.response.data.message,
           showCancelButton: false,
@@ -66,7 +68,7 @@ function Register() {
       >
         <span className="hero-overlay bg-opacity-60" />
       </div>
-      <div className="mx-auto bg-bgcard w-full max-w-md rounded-3xl p-5 my-5 shadow-lg">
+      <div className="m-5 lg:mx-auto bg-bgcard w-full max-w-md rounded-3xl p-5 my-5 shadow-lg">
         <h1 id="register-page" className="text-3xl text-center mb-10">
           Register
         </h1>

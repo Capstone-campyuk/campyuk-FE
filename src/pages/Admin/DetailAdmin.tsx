@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import axios from "axios";
 import { ReactImageCarouselViewer } from "react-image-carousel-viewer";
 import { MapContainer, Marker, TileLayer, Popup, useMap } from "react-leaflet";
+import withReactContent from "sweetalert2-react-content";
 
 import "leaflet/dist/leaflet.css";
 import { Layout } from "../../components/Layout";
 import { Btn, Btns } from "../../components/Button";
 import { ImLocation } from "react-icons/im";
 import { DotWave } from "@uiball/loaders";
-import Swal from "sweetalert2";
 
+import Swal from "../../utils/Swal";
 import tileLayer from "../../utils/const/tileLayer";
 import { CampTypes, ImageTypes } from "../../utils/types/campsTypes";
 
@@ -27,7 +27,6 @@ function DetailAdmin() {
   const [camp, setCamp] = useState<CampTypes>({});
   const [image, setImage] = useState<ImageTypes[] | any>([]);
   const [images, setImages] = useState<ImageTypes[]>([]);
-  const [cookie] = useCookies(["token"]);
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   const { id_camp } = useParams();
@@ -35,6 +34,8 @@ function DetailAdmin() {
   const [index, setIndex] = useState(0);
   const [lat, setLat] = useState<number>(0);
   const [lng, setLng] = useState<number>(0);
+  const MySwal = withReactContent(Swal);
+
 
   useEffect(() => {
     fetchDetail();
@@ -55,7 +56,7 @@ function DetailAdmin() {
         setLng(data.longitude);
       })
       .catch((err) => {
-        Swal.fire({
+        MySwal.fire({
           icon: "error",
           text: err.data.message,
           title: "Oops...",
@@ -73,7 +74,7 @@ function DetailAdmin() {
     axios
       .put(`https://abiasa.site/camps/${id_camp}/accept`)
       .then(() => {
-        Swal.fire({
+        MySwal.fire({
           icon: "success",
           title: "Done",
           text: "Accept Camp Success",
@@ -82,7 +83,7 @@ function DetailAdmin() {
         navigate(`/admin`);
       })
       .catch((err) => {
-        Swal.fire({
+        MySwal.fire({
           icon: "error",
           text: err.data.message,
           title: "Oops...",
@@ -97,8 +98,8 @@ function DetailAdmin() {
 
     axios
       .put(`https://abiasa.site/camps/${id_camp}/decline`)
-      .then((res) => {
-        Swal.fire({
+      .then(() => {
+        MySwal.fire({
           icon: "success",
           title: "Done",
           text: "Decline Camp Success",
@@ -107,7 +108,7 @@ function DetailAdmin() {
         navigate(`/admin`);
       })
       .catch((err) => {
-        Swal.fire({
+        MySwal.fire({
           icon: "error",
           text: err.data.message,
           title: "Oops...",
