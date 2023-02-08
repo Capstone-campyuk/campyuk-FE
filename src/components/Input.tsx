@@ -28,7 +28,7 @@ export function InputSolo({ className, ...props }: Props) {
 
 export function InputSide({ title, className, ...props }: Props) {
   return (
-    <div className="flex items-center w-full px-10">
+    <div className="flex items-center w-full px-5 md:px-10">
       <label className="text-black font-bold flex items-start w-1/3">
         {title}
       </label>

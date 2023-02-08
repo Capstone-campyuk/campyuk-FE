@@ -1,25 +1,16 @@
-import {
-  useEffect,
-  useState,
-  useRef,
-  useMemo,
-  useCallback,
-} from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-} from "react-leaflet";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import { useCookies } from "react-cookie";
+import withReactContent from "sweetalert2-react-content";
 
 import { Layout } from "../../components/Layout";
 import { Btn, Btns } from "../../components/Button";
 import { InputSide } from "../../components/Input";
 import { DotWave } from "@uiball/loaders";
 
+import Swal from "../../utils/Swal";
 import "leaflet/dist/leaflet.css";
 import tileLayer from "../../utils/const/tileLayer";
 
@@ -38,6 +29,7 @@ function AddCamp() {
   const [loading, setLoading] = useState(false);
   const [cookie] = useCookies(["username"]);
   const navigate = useNavigate();
+  const MySwal = withReactContent(Swal);
   const [position, setPosition] = useState({
     lat: -2.175,
     lng: 114.408,
@@ -97,11 +89,21 @@ function AddCamp() {
     axios
       .post("https://abiasa.site/camps", formData)
       .then((res) => {
-        alert("Success Add Camp");
+        MySwal.fire({
+          icon: "success",
+          title: "Done",
+          text: "Add Camp Success",
+          showCancelButton: false,
+        });
         navigate(`/host/${cookie.username}`);
       })
       .catch((err) => {
-        alert(err.response.data.message);
+        MySwal.fire({
+          icon: "error",
+          text: err.data.message,
+          title: "Oops...",
+          showCancelButton: false,
+        });
       })
       .finally(() => setLoading(false));
   };
@@ -133,7 +135,7 @@ function AddCamp() {
             type="number"
             onChange={(e) => setPrice(parseInt(e.target.value))}
           />
-          <div className="flex w-full px-10">
+          <div className="flex w-full px-5 md:px-10">
             <label className="text-black font-bold flex items-start mt-2 w-1/3">
               Description
             </label>
@@ -145,7 +147,8 @@ function AddCamp() {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
-          <div className="p-10 ">
+          <div className="p-5 md:p-10 ">
+            <p className="text-black font-bold py-5">Select Location</p>
             <MapContainer
               center={[-2.175, 114.408]}
               zoom={5}
@@ -183,6 +186,7 @@ function AddCamp() {
             }}
             accept="image/jpg, image/jpeg, image/png"
             multiple
+            min={3}
           />
           <InputSide
             title="Business License"

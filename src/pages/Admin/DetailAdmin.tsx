@@ -36,7 +36,6 @@ function DetailAdmin() {
   const [lng, setLng] = useState<number>(0);
   const MySwal = withReactContent(Swal);
 
-
   useEffect(() => {
     fetchDetail();
   }, []);
@@ -219,7 +218,7 @@ function DetailAdmin() {
                 {camp.city} | {camp.host_name}
               </p>
               <p>{camp.distance} from the city centre</p>
-              <h1 className="text-xl lg:m-5 lg:text-3xl">
+              <h1 className="text-xl lg:my-5 lg:text-3xl">
                 $ {camp.price} /night
               </h1>
             </div>

@@ -1,210 +1,244 @@
-import react, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useCookies } from "react-cookie";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import { ReactImageCarouselViewer } from "react-image-carousel-viewer";
-import { MapContainer, Marker, TileLayer, Popup } from "react-leaflet";
-import L, { LatLngExpression } from "leaflet";
+import { MapContainer, Marker, TileLayer, Popup, useMap } from "react-leaflet";
+import withReactContent from "sweetalert2-react-content";
 
 import "leaflet/dist/leaflet.css";
-import tileLayer from "../../utils/const/tileLayer";
-
 import { Layout } from "../../components/Layout";
-import { GiPositionMarker } from "react-icons/gi";
-import { CampTypes } from "../../utils/types/campsTypes";
+import { ImLocation } from "react-icons/im";
+import { DotWave } from "@uiball/loaders";
+
+import Swal from "../../utils/Swal";
+import tileLayer from "../../utils/const/tileLayer";
+import { CampTypes, ImageTypes } from "../../utils/types/campsTypes";
+
+const RecenterAutomatically = ({ lat, lng }: { lat: number; lng: number }) => {
+  const map = useMap();
+  useEffect(() => {
+    map.setView([lat, lng]);
+  }, [lat, lng]);
+  return null;
+};
 
 function DetailCampHost() {
-  const content =
-    "https://images.unsplash.com/photo-1632714395151-aa853eac30e1ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1128&q=80";
-
-  const position: LatLngExpression = [-6.8853, 107.61373];
-
+  const [camp, setCamp] = useState<CampTypes>({});
+  const [image, setImage] = useState<ImageTypes[] | any>([]);
+  const [images, setImages] = useState<ImageTypes[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const { id_camp } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const [index, setIndex] = useState(0);
-  const images = [
-    {
-      src: "https://images.tokopedia.net/img/JFrBQq/2022/6/22/307bcc9a-8564-49d9-999f-d47e7141320a.jpg",
-    },
-    {
-      src: "https://images.tokopedia.net/img/JFrBQq/2022/6/22/56110566-f35c-43e4-93e3-b3ba554f0118.jpg",
-    },
-    {
-      src: "https://images.tokopedia.net/img/JFrBQq/2022/6/22/307bcc9a-8564-49d9-999f-d47e7141320a.jpg",
-    },
-    {
-      src: "https://images.tokopedia.net/img/JFrBQq/2022/6/22/56110566-f35c-43e4-93e3-b3ba554f0118.jpg",
-    },
-  ];
-
-  const [camp, setCamp] = useState<CampTypes>({});
-  const [cookie, setCookies] = useCookies();
-  const navigate = useNavigate();
-  const { id } = useParams();
+  const [lat, setLat] = useState<number>(0);
+  const [lng, setLng] = useState<number>(0);
+  const MySwal = withReactContent(Swal);
 
   useEffect(() => {
     fetchDetail();
   }, []);
 
-  function fetchDetail() {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${cookie.token}`,
-      },
-    };
+  const fetchDetail = () => {
     axios
-      .get(`https://abiasa.site/camps/${id}`, config)
+      .get(`https://abiasa.site/camps/${id_camp}`)
       .then((res) => {
-        console.log("data detail", res.data.data);
-        // const { data } = res.data.data;
-        setCamp(res.data.data);
+        const { data } = res.data;
+        data.images.forEach((item: any) => {
+          item.src = item.image;
+        });
+        setCamp(data);
+        setImage(data.images);
+        setImages(data.images);
+        setLat(data.latitude);
+        setLng(data.longitude);
       })
-      .catch((err) => {});
-  }
+      .catch((err) => {
+        MySwal.fire({
+          icon: "error",
+          text: err.data.message,
+          title: "Oops...",
+          showCancelButton: false,
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   return (
     <Layout>
-      <div className="flex flex-col lg:flex-row p-5 gap-5 justify-center">
-        <div className="lg:w-4/6">
-          <img
-            src={camp.images?.[0].image}
-            alt=""
-            className="w-full h-96 rounded-lg"
-          />
+      {loading ? (
+        <div className="flex justify-center items-center h-[60vh]">
+          <DotWave size={100} color={"#1E3231"} />
         </div>
-        <div className="hidden lg:block w-2/6">
-          <div className="flex flex-col gap-5 h-full">
-            <img src={content} alt="" className="w-full h-1/2 rounded-lg" />
-            <div className="flex h-full gap-5">
-              <img src={content} alt="" className="w-[48%] rounded-lg" />
-
+      ) : (
+        <>
+          <ReactImageCarouselViewer
+            open={isOpen}
+            onClose={() => setIsOpen(false)}
+            images={image}
+            startIndex={index}
+          />
+          <div
+            id="detail-admin-page"
+            className="flex flex-col lg:flex-row p-5 gap-5 justify-center"
+          >
+            <div className="lg:w-4/6">
               <img
-                src={content}
-                alt=""
-                id="more-image"
-                className="w-[48%] rounded-lg static"
+                src={camp.images?.[0].image}
+                alt={camp.title}
+                className="object-cover w-full h-96 rounded-lg cursor-pointer"
                 onClick={() => {
                   setIndex(index);
                   setIsOpen(true);
                 }}
               />
-
-              <p className="absolute right-16 items-center text-2xl font-bold opacity-75 py-10 text-white">
-                More image
+            </div>
+            <div className="hidden lg:block w-2/6 h-96">
+              {images.length > 2 ? (
+                <div className="flex flex-col gap-5 h-full">
+                  <img
+                    src={camp.images?.[1].image}
+                    alt={camp.title}
+                    className="object-cover w-full h-1/2 rounded-lg"
+                  />
+                  <div className="flex h-full gap-5">
+                    <img
+                      src={camp.images?.[2].image}
+                      alt={camp.title}
+                      className="object-cover w-[48%] rounded-lg"
+                    />
+                    <span
+                      className="hero cursor-pointer rounded-lg"
+                      style={{
+                        backgroundImage: `url(${camp.images?.[0].image})`,
+                      }}
+                      id="more-image"
+                      onClick={() => {
+                        setIndex(index);
+                        setIsOpen(true);
+                      }}
+                    >
+                      <span className="hero-overlay bg-opacity-30 text-white text-xl font-bold antialiased flex justify-center items-center rounded-lg">
+                        More Images
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-5 h-full">
+                  <img
+                    src={camp.images?.[0].image}
+                    alt={camp.title}
+                    className="object-cover w-full h-1/2 rounded-lg"
+                  />
+                  <div className="flex h-full gap-5">
+                    <img
+                      src={camp.images?.[0].image}
+                      alt={camp.title}
+                      className="object-cover w-[48%] rounded-lg"
+                    />
+                    <span
+                      className="hero cursor-pointer rounded-lg"
+                      style={{
+                        backgroundImage: `url(${camp.images?.[0].image})`,
+                      }}
+                      id="more-image"
+                      onClick={() => {
+                        setIndex(index);
+                        setIsOpen(true);
+                      }}
+                    >
+                      <span className="hero-overlay bg-opacity-30 text-white text-xl font-bold antialiased flex justify-center items-center rounded-lg">
+                        More Images
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="flex flex-col lg:flex-row justify-center w-full py-4 lg:max-w-[70vw] m-5 lg:mx-auto">
+            <div className="flex flex-col lg:w-1/3 gap-2">
+              <div className="flex justify-between w-[90vw] lg:w-[70vw]">
+                <h1 className="text-2xl lg:text-4xl">{camp.title}</h1>
+                {camp.verification_status === "REJECTED" && (
+                  <p
+                    id="status"
+                    className="bg-red-600 text-bgcard text-center rounded-3xl p-2 h-11"
+                  >
+                    {camp.verification_status}
+                  </p>
+                )}
+                {camp.verification_status === "ACCEPTED" && (
+                  <p
+                    id="status"
+                    className="bg-green-600 text-bgcard text-center rounded-3xl p-2 h-11"
+                  >
+                    {camp.verification_status}
+                  </p>
+                )}
+                {camp.verification_status === "PENDING" && (
+                  <p
+                    id="status"
+                    className="bg-yellow-600 text-bgcard text-center rounded-3xl p-2 h-11"
+                  >
+                    {camp.verification_status}
+                  </p>
+                )}
+              </div>
+              <p className="flex items-center">
+                <ImLocation />
+                {camp.city} | {camp.host_name}
               </p>
-
-              <ReactImageCarouselViewer
-                open={isOpen}
-                onClose={() => setIsOpen(false)}
-                images={images}
-                startIndex={index}
-              />
+              <p>{camp.distance} from the city centre</p>
+              <h1 className="text-xl lg:my-5 lg:text-3xl">
+                $ {camp.price} /night
+              </h1>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex pt-10">
-        <div>
-          <div className="flex-row w-1/4 px-10">
-            <h1 className="font-bold text-2xl pb-3">{camp.title}</h1>
-            <div className="flex flex-rows pb-3">
-              <GiPositionMarker className="w-8 h-8" />
-              <span className="font-semibold text-xl">{camp.city}</span>
-            </div>
-            <p className="font-semibold text-xl pb-3">
-              {camp.distance} away from the city centre
-            </p>
-            <p className="font-bold text-3xl pb-3">
-              <span className="font-normal text-xl">{camp.price}/night</span>
+            <p className="w-[90vw] lg:w-2/3 text-justify mt-5 lg:mt-14">
+              {camp.description}
             </p>
           </div>
-          <div className="flex-row w-3/4 px-20">
-            <p className="text-xl">{camp.description}</p>
+          <div className="flex flex-col lg:flex-row justify-center w-full py-4 lg:max-w-[70vw] m-5 lg:mx-auto">
+            <h1 className="flex text-2xl lg:w-1/3">Add On Available</h1>
+            <table className="w-2/3 table-auto border-collapse border border-slate-600 mt-5 lg:mt-0">
+              <thead>
+                <tr className="font-bold text-center">
+                  <td className="border border-slate-700">Items</td>
+                  <td className="border border-slate-700">Price</td>
+                  <td className="border border-slate-700">Stock</td>
+                </tr>
+              </thead>
+              <tbody>
+                {camp.items?.map((item) => (
+                  <tr key={item.item_id} className="text-center">
+                    <td className="border border-slate-700">{item.name}</td>
+                    <td className="border border-slate-700">
+                      $ {item.rent_price}
+                    </td>
+                    <td className="border border-slate-700">{item.stock}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        </div>
-        <div className="grid grid-cols-4 gap-4 px-10 pt-10">
-          <div className="flex flex-col">
-            <h1 className="font-bold text-4xl pb-3">Tent</h1>
-            <p className="font-semibold text-xl pb-3">{camp.items?.[0].name}</p>
-            <p className="font-semibold text-xl pb-3">Medium (3-4 person) </p>
-            <p className="font-semibold text-xl pb-3">Large (4-5 person) </p>
-          </div>
-          <div>
-            <h1 className="font-bold text-4xl pb-3">Stock</h1>
-            <p className="font-semibold text-xl pb-3 px-8">
-              {camp.items?.[0].stock}
-            </p>
-            <p className="font-semibold text-xl pb-3 px-8">4</p>
-            <p className="font-semibold text-xl pb-3 px-8">4</p>
-          </div>
-
-          <div>
-            <h1 className="font-bold text-4xl pb-3">Price</h1>
-            <p className="font-semibold text-xl pb-3 px-8">
-              {camp.items?.[0].rent_price}
-            </p>
-            <p className="font-semibold text-xl pb-3 px-8">$10</p>
-            <p className="font-semibold text-xl pb-3 px-8">$12</p>
-          </div>
-          <div className="mr-8">
-            <img
-              src={content}
-              alt=""
-              id="more-image"
-              className="w-80 rounded-lg absolute"
-              onClick={() => {
-                setIndex(index);
-                setIsOpen(true);
-              }}
-            />
-            <p className="inline-block py-16 px-16 text-2xl font-bold opacity-75 text-white">
-              More image
-            </p>
-
-            <ReactImageCarouselViewer
-              id="carousel"
-              open={isOpen}
-              onClose={() => setIsOpen(false)}
-              images={images}
-              startIndex={index}
-            />
-          </div>
-        </div>
-        <h1 className="px-10 py-5 text-2xl font-bold">Available Add On</h1>
-        <div className="flex flex-col lg:flex-row gap-10 px-10">
-          <div>
-            <h1 className="text-lg mb-2">{camp.items?.[1].name}</h1>
-            <p>{camp.items?.[1].stock}</p>
-            <p>{camp.items?.[1].rent_price}</p>
-          </div>
-          <div>
-            <h1 className="text-lg mb-2">{camp.items?.[2].name}</h1>
-            <p>{camp.items?.[0].stock}</p>
-            <p>{camp.items?.[0].rent_price}</p>
-          </div>
-        </div>
-        <div className="flex px-10 pt-10">
-          <div className="flex-row w-1/2">
+          <div className="lg:max-w-[70vw] mx-auto py-10">
             <MapContainer
-              center={position}
-              zoom={20}
+              center={[lat, lng]}
+              zoom={10}
               scrollWheelZoom={true}
               style={{ height: "400px" }}
             >
               <TileLayer {...tileLayer} />
-              <Marker position={position}>
-                <Popup>Center Warsaw</Popup>
+              <Marker position={[lat, lng]}>
+                <Popup>{camp.title}</Popup>
               </Marker>
+              <RecenterAutomatically lat={lat} lng={lng} />
             </MapContainer>
           </div>
-          <div className="flex-row w-1/2 py-10">
-            <p className="text-3xl px-10 ">{camp.address}</p>
-            <h1 className="font-bold text-4xl pt-40 text-end">Accept</h1>
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </Layout>
   );
 }
