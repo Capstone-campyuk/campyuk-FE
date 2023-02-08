@@ -11,7 +11,6 @@ import {
   IoIosBookmark,
   IoIosCompass,
 } from "react-icons/io";
-import { BsPencilSquare } from "react-icons/bs";
 import Swal from "../utils/Swal";
 
 export function NavbarGuest() {
@@ -44,7 +43,6 @@ export function NavbarLogin() {
   ]);
   const checkRole = cookie.role;
   const MySwal = withReactContent(Swal);
-
 
   useEffect(() => {
     if (cookie.role === "guest") {
@@ -193,14 +191,6 @@ export function NavbarLogin() {
           ) : (
             <>
               <Link
-                id="btn-addcamp"
-                to="/addcamp"
-                className="flex items-center gap-2"
-              >
-                <BsPencilSquare className="text-2xl" />
-                <a>Add Camp</a>
-              </Link>
-              <Link
                 id="btn-camplg"
                 to="/camplist"
                 className="flex items-center gap-2"
@@ -215,7 +205,6 @@ export function NavbarLogin() {
       <div className="navbar-end lg:max-w-[120px]">
         <Btn
           id="logout"
-          // onClick={(e) => handleLogOut(e)}
           onClick={handleLogOut}
           className="max-w-[90px]"
           label={"Logout"}

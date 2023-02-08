@@ -30,8 +30,11 @@ export interface ItemTypes {
   item_id?: number;
   name?: string;
   stock?: number;
-  rent_price?: number;
+  rent_price: number;
   item_image?: string;
+  quantity?: number;
+  select?: boolean;
+  rent_cost: number;
 }
 
 export interface ImageTypes {

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import { useCookies } from "react-cookie";
 
 import { Layout } from "../components/Layout";
 import { CardReg } from "../components/Card";
@@ -14,8 +13,7 @@ import { CampsTypes } from "../utils/types/campsTypes";
 function CampList() {
   const [camps, setCamps] = useState<CampsTypes[]>([]);
   const [page, setPage] = useState<number>(2);
-  const [loading, setLoading] = useState<boolean>();
-  const [cookie] = useCookies(["token"]);
+  const [loading, setLoading] = useState<boolean>(true);
   const path = useLocation().pathname;
 
   useEffect(() => {

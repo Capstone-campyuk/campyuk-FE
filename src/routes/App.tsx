@@ -13,14 +13,13 @@ import Register from "../pages/Auth/Register";
 import CampList from "../pages/CampList";
 import DetailCamp from "../pages/DetailCamp";
 import Order from "../pages/Guest/Order";
-import BookingHistory from "../pages/Guest/BookingHistory";
+import BookingHistory from "../pages/BookingHistory";
 import BookingDetail from "../pages/BookingDetail";
 import DashboardHost from "../pages/Host/DashboardHost";
 import DetailCampHost from "../pages/Host/DetailCampHost";
 import Profile from "../pages/Guest/Profile";
 import DashboardAdmin from "../pages/Admin/DashboardAdmin";
 import DetailAdmin from "../pages/Admin/DetailAdmin";
-import OrderListHost from "../pages/Host/OrderListHost";
 import AddCamp from "../pages/Host/AddCamp";
 import EditCampHost from "../pages/Host/EditCampHost";
 
@@ -29,9 +28,8 @@ function App() {
   const checkToken = cookie.token;
   const checkRole = cookie.role;
 
-  const path = window.location.pathname;
-
   axios.interceptors.request.use(function (config) {
+    const path = window.location.pathname;
     config.headers = config.headers ?? {};
     if (path !== "/camplist") {
       config.headers.Authorization = `Bearer ${cookie.token}`;
@@ -69,8 +67,8 @@ function App() {
       element: checkRole === "guest" ? <Order /> : <Home />,
     },
     {
-      path: "/booking-history",
-      element: checkRole === "guest" ? <BookingHistory /> : <Home />,
+      path: "/booking-history/:id_username",
+      element: checkRole === "guest" || "host" ? <BookingHistory /> : <Home />,
     },
     {
       path: "/booking/:id_booking",
@@ -87,10 +85,6 @@ function App() {
     {
       path: "/camp-host/:id_camp",
       element: checkRole === "host" ? <DetailCampHost /> : <Home />,
-    },
-    {
-      path: "/orderlist-host",
-      element: checkRole === "host" ? <OrderListHost /> : <Home />,
     },
     {
       path: "/edit-camp/:id_camp",

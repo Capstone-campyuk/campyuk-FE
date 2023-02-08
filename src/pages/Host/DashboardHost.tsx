@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import withReactContent from "sweetalert2-react-content";
 
 import { Layout } from "../../components/Layout";
 import { CardReg } from "../../components/Card";
-import { Btns } from "../../components/Button";
+import { Btn, Btns } from "../../components/Button";
 import { LoadingReg } from "../../components/Loading";
 import { MdArrowDropDownCircle } from "react-icons/md";
-import Swal from "sweetalert2";
 
+import Swal from "../../utils/Swal";
 import { CampsTypes } from "../../utils/types/campsTypes";
 
 function DashboardHost() {
@@ -18,6 +19,7 @@ function DashboardHost() {
   const [loading, setLoading] = useState<boolean>(true);
   const [cookie] = useCookies(["username", "token"]);
   const path = useLocation().pathname;
+  const MySwal = withReactContent(Swal);
 
   useEffect(() => {
     fetchData(1);
@@ -30,8 +32,10 @@ function DashboardHost() {
         setCamps(res.data.data);
       })
       .catch((err) => {
-        Swal.fire({
-          text: err.response.data.message,
+        MySwal.fire({
+          icon: "error",
+          text: err.data.message,
+          title: "Oops...",
           showCancelButton: false,
         });
       })
@@ -59,8 +63,10 @@ function DashboardHost() {
         setPage(newPage);
       })
       .catch((err) => {
-        Swal.fire({
-          text: err.toString(),
+        MySwal.fire({
+          icon: "error",
+          text: err.data.message,
+          title: "Oops...",
           showCancelButton: false,
         });
       });
@@ -69,39 +75,48 @@ function DashboardHost() {
   const deleteCamp = (id: number) => {
     axios
       .delete(`https://abiasa.site/camps/${id}`)
-      .then((res) => {
-        alert(`delete camps success`);
+      .then(() => {
         setCamps(
           camps.filter((camp) => {
             return camp.id !== id;
           })
         );
+        MySwal.fire({
+          icon: "success",
+          title: "Done",
+          text: "Delete Camp Success",
+          showCancelButton: false,
+        });
       })
       .catch((err) => {
-        alert(err.response.data.message);
+        MySwal.fire({
+          icon: "error",
+          text: err.data.message,
+          title: "Oops...",
+          showCancelButton: false,
+        });
       });
   };
 
   return (
     <Layout>
-      <div className="flex justify-between items-center p-5">
+      <div className="flex flex-col md:flex-row justify-between items-center p-5 gap-4">
         <h1 id="host-page" className="text-4xl">
           {`${cookie.username} site`}
         </h1>
-        <Link to="/orderlist-host">
-          <Btns
-            id="btn-orderlist"
-            className="w-18"
-            label="Order List"
-          />
-        </Link>
+        <div className="flex gap-4">
+          <Link to="/addcamp">
+            <Btn id="btn-addcamp" className="w-18" label="Add Camp" />
+          </Link>
+          <Link to={`/booking-history/${cookie.username}`}>
+            <Btns id="btn-bookings" className="w-18" label="Booking List" />
+          </Link>
+        </div>
       </div>
       <div className="flex justify-center px-2 pb-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {loading
-            ? [...Array(4).keys()].map((index) => (
-                <LoadingReg key={index} />
-              ))
+            ? [...Array(4).keys()].map((index) => <LoadingReg key={index} />)
             : camps.map((camp, index) => (
                 <CardReg
                   key={index}
