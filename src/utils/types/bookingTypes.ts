@@ -12,42 +12,28 @@ export interface BookingsTypes {
 }
 
 export interface BookingTypes {
-  id: number;
-  ticket: string;
-  camp_title: string;
-  camp_image: string;
-  camp_city: string;
-  camp_price: number;
-  check_in: string;
-  check_out: string;
-  guest: number;
-  camp_cost: number;
-  items: [
-    {
-      item_id: number;
-      name: string;
-      price: number;
-      quantity: number;
-      rent_cost: number;
-    },
-    {
-      item_id: number;
-      name: string;
-      price: number;
-      quantity: number;
-      rent_cost: number;
-    },
-    {
-      item_id: number;
-      name: string;
-      price: number;
-      quantity: number;
-      rent_cost: number;
-    }
-  ];
-  total_price: number;
-  booking_date: string;
-  bank: string;
-  virtual_number: string;
-  status: string;
+  id?: number;
+  ticket?: string;
+  camp_title?: string;
+  camp_image?: string;
+  camp_city?: string;
+  camp_price?: number;
+  camp_address?: string;
+  check_in?: string;
+  check_out?: string;
+  guest?: number;
+  camp_cost?: number;
+  total_price?: number;
+  booking_date?: string;
+  bank?: string;
+  virtual_number?: string;
+  status?: string;
+  items?: ItemsTypes[];
+}
+
+export interface ItemsTypes {
+  name: string;
+  rent_price: number;
+  quantity: number;
+  rent_cost: number;
 }

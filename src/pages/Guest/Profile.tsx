@@ -1,19 +1,24 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import Swal from "sweetalert2";
-
+import withReactContent from "sweetalert2-react-content";
 import axios from "axios";
 
 import { Layout } from "../../components/Layout";
+import Swal from "../../utils/Swal";
 
 function Profile() {
-  const [cookie, setCookie, removeCookie] = useCookies();
+  const [cookie, setCookie, removeCookie] = useCookies([
+    "token",
+    "username",
+    "role",
+  ]);
   const [username, setUsername] = useState<string>("");
   const [user_image, setUserimage] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [fullname, setFullname] = useState<string>("");
   const navigate = useNavigate();
+  const MySwal = withReactContent(Swal);
 
   //edit profile
   const [newPreviewImage, setNewPreviewImage] = useState<any>();
@@ -36,15 +41,9 @@ function Profile() {
   }, []);
 
   function getProfil() {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${cookie.token}`,
-      },
-    };
     axios
-      .get(`https://abiasa.site/users`, config)
+      .get(`https://abiasa.site/users`)
       .then((res) => {
-        console.log(res);
         const { email, fullname, username, user_image, message } =
           res.data.data;
 
@@ -53,12 +52,17 @@ function Profile() {
         setUsername(username);
         setUserimage(user_image);
       })
-      .catch((error) => {
-        alert(error);
+      .catch((err) => {
+        MySwal.fire({
+          icon: "error",
+          text: err.data.message,
+          title: "Oops...",
+          showCancelButton: false,
+        });
       });
   }
-  console.log(user_image);
-  function editProfil(e: React.FormEvent<HTMLFormElement>) {
+
+  function updateProfile(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData();
     formData.append("username", editUsername);
@@ -66,18 +70,12 @@ function Profile() {
     formData.append("email", editEmail);
     formData.append("user_image", editImageprofil);
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${cookie.token}`,
-      },
-    };
     axios
-      .put(`https://abiasa.site/users`, formData, config)
+      .put(`https://abiasa.site/users`, formData)
       .then((res) => {
-        console.log("update profil", res);
-        Swal.fire({
+        MySwal.fire({
           title: "Success",
-          text: "Berhasil mengubah akun",
+          text: "Update profile success",
           showCancelButton: false,
           confirmButtonText: "Ok",
         }).then((result) => {
@@ -86,41 +84,32 @@ function Profile() {
           }
         });
       })
-      .catch((error) => {
-        Swal.fire({
+      .catch((err) => {
+        MySwal.fire({
           icon: "error",
+          text: err.data.message,
           title: "Oops...",
-          text: "Something Wrong Error",
+          showCancelButton: false,
         });
       });
   }
 
-  function hapusAkun() {
-    axios
-      .delete(`https://abiasa.site/users`, {
-        headers: {
-          Authorization: `Bearer ${cookie.token}`,
-        },
-      })
+  function deleteAcc() {
+    MySwal.fire({
+      title: "Are you sure want to delete account?",
 
-      .then((res) => {
-        removeCookie("token");
-        removeCookie("username");
-        removeCookie("fullname");
-        removeCookie("email");
-        removeCookie("user_image");
-        Swal.fire({
-          title: "Are you sure want to delete account?",
-
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Yes",
-          cancelButtonColor: "#d33",
-          cancelButtonText: "No",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Swal.fire({
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`https://abiasa.site/users`)
+          .then(() => {
+            MySwal.fire({
               position: "center",
               icon: "success",
               text: "Delete successfully",
@@ -128,17 +117,19 @@ function Profile() {
               timer: 1500,
             });
             removeCookie("token");
-            navigate("/");
-          }
-        });
-      })
-      .catch((error) => {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Delete account failed",
-        });
-      });
+            removeCookie("username");
+            removeCookie("role");
+            navigate("/login");
+          })
+          .catch(() => {
+            MySwal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Delete account failed",
+            });
+          });
+      }
+    });
   }
 
   return (
@@ -146,10 +137,10 @@ function Profile() {
       <h1 id="profil-page" className="text-4xl p-5">
         Profile
       </h1>
-      <div className="flex flex-col lg:flex-row justify-center items-center p-20">
+      <div className="flex flex-col lg:flex-row justify-center items-center lg:p-20">
         <div className="lg:w-1/3">
           <img
-            className="rounded-full"
+            className="rounded-full object-cover w-[300px] h-[300px]"
             src={
               user_image
                 ? user_image
@@ -157,7 +148,7 @@ function Profile() {
             }
           />
         </div>
-        <div className="bg-bgcard p-10 border-2 shadow-lg rounded-3xl lg:text-lg">
+        <div className="lg:bg-bgcard p-10 shadow-lg rounded-3xl max-w-[100vw] lg:text-lg">
           <div className="flex gap-10 pt-5 pb-1">
             <h1>Full Name </h1>
             <p>: {fullname}</p>
@@ -170,8 +161,8 @@ function Profile() {
             <h1>Email </h1>
             <p>: {email}</p>
           </div>
-          <div className="flex gap-20 pt-5 pb-1">
-            <form onSubmit={editProfil}>
+          <div className="flex lg:gap-20 pt-5 pb-1">
+            <form onSubmit={updateProfile}>
               <label
                 id="update-profil"
                 htmlFor="my-modal-1"
@@ -276,7 +267,7 @@ function Profile() {
               <div className="flex flex-col cursor-pointer">
                 <div
                   className="w-1/2 text-lg mx-10 capitalize bg-btn border-none shadow-lg text-white font-semibold rounded-lg btn hover:bg-btnh"
-                  onClick={() => hapusAkun()}
+                  onClick={() => deleteAcc()}
                 >
                   Remove
                 </div>

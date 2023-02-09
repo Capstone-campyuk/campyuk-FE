@@ -10,10 +10,7 @@ body {
   min-height: 100vh;
   font-family: "Montserrat", sans-serif;
   color: black;
-  background-image: linear-gradient(
-    to bottom,
-    var(--tw-gradient-stops)
-  );
+  background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
   --tw-gradient-from: #dddbcb;
   --tw-gradient-to: rgb(221 219 203 / 0);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
@@ -29,6 +26,7 @@ h1 {
   font-weight: bold;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-transform: capitalize;
 }
 
 ::-webkit-scrollbar {
