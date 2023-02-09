@@ -1,8 +1,9 @@
 import { useEffect, useState, useRef, useMemo } from "react";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import { useNavigate, useParams } from "react-router-dom";
+import withReactContent from "sweetalert2-react-content";
 import { useCookies } from "react-cookie";
-import Swal from "sweetalert2";
+import Swal from "../../utils/Swal";
 import axios from "axios";
 
 import { Layout } from "../../components/Layout";
@@ -13,9 +14,6 @@ import "leaflet/dist/leaflet.css";
 import tileLayer from "../../utils/const/tileLayer";
 
 function EditCampHost() {
-  const [cookie] = useCookies();
-  const { id_camp }: any = useParams();
-  const navigate = useNavigate();
   const [title, setTitle] = useState<string>("");
   const [price, setPrice] = useState<any>();
   const [description, setDescription] = useState<string>("");
@@ -26,11 +24,13 @@ function EditCampHost() {
   const [distance, setDistance] = useState<any>();
   const [document, setDocument] = useState<any>({});
   const [images, setImages] = useState<any>([]);
-  const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
+  const MySwal = withReactContent(Swal);
+  const [cookie] = useCookies();
+  const { id_camp }: any = useParams();
+  const navigate = useNavigate();
   //image
   const [image, setEditImage] = useState<any>({});
-  const [newPreviewImage2, setNewPreviewImage2] = useState<any>();
   // edit item
   const [stock, setStock] = useState<number>(1);
   const [priceItem, setPriceItem] = useState<number>(1);
@@ -59,14 +59,8 @@ function EditCampHost() {
     getCampHost();
   }, []);
   function getCampHost() {
-    console.log("id ", id_camp);
-    const config = {
-      headers: {
-        Authorization: `Bearer ${cookie.token}`,
-      },
-    };
     axios
-      .get(`https://abiasa.site/camps/${id_camp}`, config)
+      .get(`https://abiasa.site/camps/${id_camp}`)
       .then((res) => {
         const {
           title,
@@ -78,26 +72,27 @@ function EditCampHost() {
           longitude,
           price,
         } = res.data.data;
-
         setTitle(title);
         setAddress(address);
         setCity(city);
         setDescription(description);
         setDistance(distance);
-
         setLatitude(latitude);
         setLongitude(longitude);
         setPrice(price);
       })
       .catch((error) => {
-        alert(error);
+        MySwal.fire({
+          icon: "error",
+          text: error.data.message,
+          title: "Oops...",
+          showCancelButton: false,
+        });
       });
   }
 
-  const editCamp = (e: React.FormEvent<HTMLFormElement>) => {
+  const editCamp = () => {
     setLoading(true);
-    e.preventDefault();
-
     const formData = new FormData();
     if (title) {
       formData.append("title", title);
@@ -137,20 +132,22 @@ function EditCampHost() {
     axios
       .put(`https://abiasa.site/camps/${id_camp}`, formData, config)
       .then((res) => {
-        Swal.fire({
+        MySwal.fire({
           title: "Success",
           text: "successful change camp",
           showCancelButton: false,
           confirmButtonText: "Ok",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            navigate(0);
-          }
         });
       })
-      .catch((err) => {
-        alert(err.response.data.message);
-      });
+      .catch((error) => {
+        MySwal.fire({
+          icon: "error",
+          text: error.data.message,
+          title: "Oops...",
+          showCancelButton: false,
+        });
+      })
+      .finally(() => setLoading(false));
   };
 
   function addImage() {
@@ -164,7 +161,7 @@ function EditCampHost() {
     axios
       .post(`https://abiasa.site/images`, formData)
       .then((res) => {
-        Swal.fire({
+        MySwal.fire({
           title: "Success",
           text: "successful add iamge",
           showCancelButton: false,
@@ -175,9 +172,15 @@ function EditCampHost() {
           }
         });
       })
-      .catch((err) => {
-        alert(err.response.data.message);
-      });
+      .catch((error) => {
+        MySwal.fire({
+          icon: "error",
+          text: error.data.message,
+          title: "Oops...",
+          showCancelButton: false,
+        });
+      })
+      .finally(() => setLoading(false));
   }
 
   function addItems() {
@@ -187,15 +190,10 @@ function EditCampHost() {
     formData.append("price", JSON.stringify(priceItem));
     formData.append("name", name);
     formData.append("camp_id", id_camp);
-    const config = {
-      headers: {
-        Authorization: `Bearer ${cookie.token}`,
-      },
-    };
     axios
-      .post(`https://abiasa.site/items`, formData, config)
+      .post(`https://abiasa.site/items`, formData)
       .then((res) => {
-        Swal.fire({
+        MySwal.fire({
           title: "Success",
           text: "successful add item",
           showCancelButton: false,
@@ -420,7 +418,7 @@ function EditCampHost() {
                 <button
                   className="btn bg-btn text-white hover:bg-btnh border-none rounded-full "
                   id="btn-add-item"
-                  onClick={addItems}
+                  onClick={() => addItems()}
                 >
                   Add Item
                 </button>
@@ -435,7 +433,6 @@ function EditCampHost() {
             </form>
           </div>
         </div>
-
         {/* akhir modal edit item */}
         <Btn
           className="w-18"
