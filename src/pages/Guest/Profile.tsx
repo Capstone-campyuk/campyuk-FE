@@ -13,6 +13,8 @@ function Profile() {
     "username",
     "role",
   ]);
+
+  const [newPreviewImage, setNewPreviewImage] = useState<any>();
   const [username, setUsername] = useState<string>("");
   const [user_image, setUserimage] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -20,15 +22,8 @@ function Profile() {
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
 
-  //edit profile
-  const [newPreviewImage, setNewPreviewImage] = useState<any>();
-  const [editFullname, setEditFullname] = useState<string>("");
-  const [editEmail, setEditEmail] = useState<string>("");
-  const [editUsername, setEditUsername] = useState<string>("");
-  const [editImageprofil, setEditImageprofil] = useState<any>();
-
   const handleEditImage = (file: any) => {
-    setEditImageprofil(file);
+    setUserimage(file);
     const reader = new FileReader();
     reader.onload = () => {
       setNewPreviewImage(reader.result);
@@ -44,8 +39,7 @@ function Profile() {
     axios
       .get(`https://abiasa.site/users`)
       .then((res) => {
-        const { email, fullname, username, user_image, message } =
-          res.data.data;
+        const { email, fullname, username, user_image } = res.data.data;
 
         setEmail(email);
         setFullname(fullname);
@@ -65,11 +59,18 @@ function Profile() {
   function updateProfile(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("username", editUsername);
-    formData.append("fullname", editFullname);
-    formData.append("email", editEmail);
-    formData.append("user_image", editImageprofil);
-
+    if (username) {
+      formData.append("username", username);
+    }
+    if (fullname) {
+      formData.append("fullname", fullname);
+    }
+    if (email) {
+      formData.append("email", email);
+    }
+    if (user_image) {
+      formData.append("user_image", user_image);
+    }
     axios
       .put(`https://abiasa.site/users`, formData)
       .then((res) => {
@@ -162,69 +163,66 @@ function Profile() {
             <p>: {email}</p>
           </div>
           <div className="flex lg:gap-20 pt-5 pb-1">
-            <form onSubmit={updateProfile}>
-              <label
-                id="update-profil"
-                htmlFor="my-modal-1"
-                className="normal-case bg-transparent"
-              >
-                <div className="flex flex-col cursor-pointer">
-                  <div className="w-1/2 text-lg mx-10 capitalize bg-btn border-none shadow-lg text-white font-semibold rounded-lg btn hover:bg-btnh">
-                    Update
-                  </div>
+            <label
+              id="update-profil"
+              htmlFor="my-modal-1"
+              className="normal-case bg-transparent"
+            >
+              <div className="flex flex-col cursor-pointer">
+                <div className="w-1/2 text-lg mx-10 capitalize bg-btn border-none shadow-lg text-white font-semibold rounded-lg btn hover:bg-btnh">
+                  Update
                 </div>
-              </label>
+              </div>
+            </label>
 
-              <input type="checkbox" id="my-modal-1" className="modal-toggle" />
-              <div className="modal modal-middle sm:modal-middle">
-                <div className="modal-box bg-white  flex flex-col justify-center items-center">
-                  <h3 className="font-bold lg:text-2xl  text-base text-black text-center  ">
-                    Update Profile
-                  </h3>
+            <input type="checkbox" id="my-modal-1" className="modal-toggle" />
+            <div className="modal modal-middle sm:modal-middle">
+              <div className="modal-box bg-white  flex flex-col justify-center items-center">
+                <h3 className="font-bold lg:text-2xl  text-base text-black text-center  ">
+                  Update Profile
+                </h3>
+                <form onSubmit={updateProfile} encType="multipart/form-data">
                   <div className="flex py-2 w-full">
-                    <label className="font-semibold text-black flex items-center justify-center w-1/3 text-center">
+                    <label className="font-semibold text-black flex items-start justify-start w-1/2 text-start">
                       Full Name
                     </label>
                     <input
                       id="fullname-profil"
                       className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                       type="text"
-                      placeholder={fullname}
-                      value={editFullname}
-                      onChange={(e) => setEditFullname(e.target.value)}
+                      value={fullname}
+                      onChange={(e) => setFullname(e.target.value)}
                     />
                   </div>
                   <div className="flex py-2 w-full">
-                    <label className="font-semibold text-black flex items-center justify-center w-1/3 text-center">
+                    <label className="font-semibold text-black flex items-start justify-start w-1/2 text-start">
                       User name
                     </label>
                     <input
                       id="username-profil"
                       className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                       type="text"
-                      placeholder={username}
-                      value={editUsername}
-                      onChange={(e) => setEditUsername(e.target.value)}
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
                     />
                   </div>
                   <div className="flex py-2 w-full">
-                    <label className="font-semibold text-black flex items-center justify-center w-1/3 text-center">
+                    <label className="font-semibold text-black flex items-start justify-start w-1/2 text-start">
                       Email
                     </label>
                     <input
                       id="email-profil"
                       className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
                       type="email"
-                      placeholder={email}
-                      value={editEmail}
-                      onChange={(e) => setEditEmail(e.target.value)}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                   <div className="flex py-2 w-full">
                     <label
                       htmlFor="edit-photo"
                       style={{ cursor: "pointer" }}
-                      className="font-semibold text-black flex items-center justify-center w-1/3 text-center"
+                      className="font-semibold text-black flex items-start justify-start w-1/2 text-start"
                     >
                       Upload image
                     </label>
@@ -256,13 +254,15 @@ function Profile() {
                     <button
                       type="submit"
                       className="btn bg-btn normal-case  border-none mx-1 hover:btnh text-white"
+                      onClick={() => updateProfile}
                     >
                       Save
                     </button>
                   </div>
-                </div>
+                </form>
               </div>
-            </form>
+            </div>
+
             <label className="normal-case bg-transparent" id="remove-profil">
               <div className="flex flex-col cursor-pointer">
                 <div
