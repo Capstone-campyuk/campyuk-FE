@@ -50,18 +50,31 @@ export function NavbarLogin() {
     } else setIsGuest(false);
   }, [isGuest]);
 
-  const handleLogOut = () => {
-    removeCookie("username");
-    removeCookie("token");
-    removeCookie("role");
-
+  function handleLogOut() {
     MySwal.fire({
-      text: "You've been Log Out",
-      showCancelButton: false,
-    });
+      text: "Do you want to logout?",
 
-    navigate("/login");
-  };
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        MySwal.fire({
+          position: "center",
+          icon: "success",
+          text: "You've been logout",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        removeCookie("token");
+        removeCookie("username");
+        removeCookie("role");
+        navigate("/login");
+      }
+    });
+  }
 
   return (
     <div className="navbar bg-primary text-white p-5">
@@ -86,7 +99,7 @@ export function NavbarLogin() {
                 </Link>
                 <Link
                   id="btn-bookinglg"
-                  to="/booking-history"
+                  to={`/booking-history/${cookie.username}`}
                   className="flex items-center gap-2"
                 >
                   <IoIosBookmark className="text-2xl" />
@@ -173,7 +186,7 @@ export function NavbarLogin() {
               </Link>
               <Link
                 id="btn-bookinglg"
-                to="/booking-history"
+                to={`/booking-history/${cookie.username}`}
                 className="flex items-center gap-2"
               >
                 <IoIosBookmark className="text-2xl" />
