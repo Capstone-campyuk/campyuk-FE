@@ -191,9 +191,30 @@ export function CardLong({
           </div>
           <div className="flex justify-between">
             <h1 className="text-2xl text-end">$ {totalprice}</h1>
-            <p className="bg-primary text-bgcard text-center rounded-3xl p-2">
-              {status}
-            </p>
+            {status === "CANCELLED" && (
+              <p
+                id="status"
+                className="bg-red-600 text-bgcard text-center rounded-3xl p-2"
+              >
+                {status}
+              </p>
+            )}
+            {status === "SUCCESS" && (
+              <p
+                id="status"
+                className="bg-green-600 text-bgcard text-center rounded-3xl p-2"
+              >
+                {status}
+              </p>
+            )}
+            {status === "PENDING" && (
+              <p
+                id="status"
+                className="bg-yellow-600 text-bgcard text-center rounded-3xl p-2"
+              >
+                {status}
+              </p>
+            )}
           </div>
         </Link>
       )}
