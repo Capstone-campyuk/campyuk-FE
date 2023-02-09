@@ -38,11 +38,19 @@ function Order() {
     var _minute = _second * 60;
     var _hour = _minute * 60;
     var _day = _hour * 24;
-    const diffInMs = co.getTime() - ci.getTime();
-    const days = Math.floor(diffInMs / _day);
-    setTotalHari(days);
-    if (guest) {
-      subtotal(days);
+    if (ci <= co) {
+      const diffInMs = co.getTime() - ci.getTime();
+      const days = Math.floor(diffInMs / _day);
+      setTotalHari(days);
+      if (guest) {
+        subtotal(days);
+      }
+    } else {
+      MySwal.fire({
+        icon: "error",
+        title: "Oops...date invalid",
+        showCancelButton: false,
+      });
     }
   }
 
