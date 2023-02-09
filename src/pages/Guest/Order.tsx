@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
+import withReactContent from "sweetalert2-react-content";
 
 import { Layout } from "../../components/Layout";
 import { InputSolo } from "../../components/Input";
 import { ImLocation } from "react-icons/im";
 import { Btn, Btns } from "../../components/Button";
+import { DotWave } from "@uiball/loaders";
+
+import Swal from "../../utils/Swal";
 import { CampTypes, ItemTypes } from "../../utils/types/campsTypes";
 
 function Order() {
@@ -21,15 +25,20 @@ function Order() {
   const [check_out, setCheckout] = useState<any>();
   const [guest, setGuest] = useState<number>(0);
   const [bank, setBank] = useState<string>("");
-  const { id_camp } = useParams();
+  const [loading, setLoading] = useState(true);
   const [id, setId] = useState<number>(0);
+  const MySwal = withReactContent(Swal);
+  const navigate = useNavigate();
+  const { id_camp } = useParams();
 
   function total_days() {
+    const co = new Date(check_out);
+    const ci = new Date(check_in);
     var _second = 1000;
     var _minute = _second * 60;
     var _hour = _minute * 60;
     var _day = _hour * 24;
-    const diffInMs = new Date(check_out) - new Date(check_in);
+    const diffInMs = co.getTime() - ci.getTime();
     const days = Math.floor(diffInMs / _day);
     setTotalHari(days);
     if (guest) {
@@ -71,9 +80,22 @@ function Order() {
         setOrder(res.data.data);
         setId(res.data.data.id);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        MySwal.fire({
+          icon: "error",
+          text: err.data.message,
+          title: "Oops...",
+          showCancelButton: false,
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
+
   function handleOrder() {
+    setLoading(true);
+
     const body = {
       camp_id: id,
       items: cart,
@@ -87,17 +109,26 @@ function Order() {
     axios
       .post("https://abiasa.site/bookings", body)
       .then((res) => {
+        const book_id = res.data.data.booking_id;
         const { message } = res.data;
-        Swal.fire({
-          position: "center",
+        MySwal.fire({
           icon: "success",
+          title: "Done",
           text: message,
-          showConfirmButton: false,
-          timer: 1500,
+          showCancelButton: false,
         });
+        navigate(`/booking/${book_id}`);
       })
       .catch((err) => {
-        alert(err.response.data.message);
+        MySwal.fire({
+          icon: "error",
+          text: err.data.message,
+          title: "Oops...",
+          showCancelButton: false,
+        });
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }
 
@@ -134,212 +165,214 @@ function Order() {
       <h1 id="order-page" className="text-4xl p-5">
         Order
       </h1>
-      <div className="flex flex-col lg:flex-row m-5 bg-bgcard rounded-3xl shadow-lg">
-        <img
-          className="lg:w-1/2 lg:rounded-l-3xl"
-          src={order.images?.[0].image}
-          alt={"title"}
-        />
-        <div className="lg:w-1/2 p-5 flex flex-col justify-around">
-          <div className="flex justify-between text-xl">
-            <h1>{order.title}</h1>
-            <h1>$ {order.price} /night</h1>
-          </div>
-          <p className="flex items-center">
-            <ImLocation /> {order.city}
-          </p>
+      {loading ? (
+        <div className="flex justify-center items-center h-[60vh]">
+          <DotWave size={100} color={"#1E3231"} />
+        </div>
+      ) : (
+        <>
+          <div className="flex flex-col lg:flex-row m-5 bg-bgcard rounded-3xl shadow-lg">
+            <img
+              className="lg:w-1/2 lg:rounded-l-3xl"
+              src={order.images?.[0].image}
+              alt={"title"}
+            />
+            <div className="lg:w-1/2 p-5 flex flex-col justify-around">
+              <div className="flex justify-between text-xl">
+                <h1>{order.title}</h1>
+                <h1>$ {order.price} /night</h1>
+              </div>
+              <p className="flex items-center">
+                <ImLocation /> {order.city}
+              </p>
 
-          <form>
-            <div className="flex justify-around mt-4">
-              <h1>Check-In</h1>
-              <h1>Check-Out</h1>
-              <h1>Guest</h1>
-            </div>
-            <div className="flex justify-around">
-              <InputSolo
-                className="w-[30%]"
-                id="Check-In"
-                type={"date"}
-                name="datemax"
-                max="today"
-                min={new Date().toISOString().split("T")[0]}
-                onChange={(e) => setCheckin(e.target.value)}
-              />
-              <InputSolo
-                className="w-[30%]"
-                id="Check-Out"
-                type={"date"}
-                name="datemin"
-                max="today"
-                min={new Date().toISOString().split("T")[0]}
-                onChange={(e) => setCheckout(e.target.value)}
-              />
-              <InputSolo
-                className="w-[30%]"
-                id="Guest"
-                type={"number"}
-                onChange={(e) => setGuest(e.target.valueAsNumber)}
-              />
-            </div>
-            <h1 className="text-lg mt-4">Add On</h1>
-            <div className="flex justify-around ml-10 mb-2">
-              <h1>Items</h1>
-              <h1>Price</h1>
-              <h1>Quantity</h1>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              {items.map((item) => (
-                <div
-                  className="flex justify-around items-center"
-                  key={item.item_id}
-                >
-                  <input
-                    className="w-[13%]"
-                    type={"checkbox"}
-                    onChange={(e) => {
-                      setItems(
-                        items.map((el) =>
-                          el.item_id === item.item_id
-                            ? { ...el, select: e.target.checked }
-                            : el
-                        )
-                      );
-                      if (e.target.checked) {
-                        setCart((prev) => [...prev, item]);
-                      } else {
-                        setCart((prev) =>
-                          prev.filter((i) => i.item_id !== item.item_id)
-                        );
-                      }
-                    }}
-                  />
-                  <h1 className="w-1/4">{item.name}</h1>
-                  <h1 className="w-1/4">{item.rent_price}</h1>
+              <form>
+                <div className="flex justify-around mt-4">
+                  <h1>Check-In</h1>
+                  <h1>Check-Out</h1>
+                  <h1>Guest</h1>
+                </div>
+                <div className="flex justify-around">
                   <InputSolo
-                    className="w-1/4"
-                    id="number"
-                    type="number"
-                    min="1"
-                    max="999"
-                    onChange={(e) => handleQtyItem(e, item)}
-                    disabled={!item.select}
+                    className="w-[30%]"
+                    id="Check-In"
+                    type={"date"}
+                    name="datemax"
+                    max="today"
+                    min={new Date().toISOString().split("T")[0]}
+                    onChange={(e) => setCheckin(e.target.value)}
                   />
+                  <InputSolo
+                    className="w-[30%]"
+                    id="Check-Out"
+                    type={"date"}
+                    name="datemin"
+                    max="today"
+                    min={new Date().toISOString().split("T")[0]}
+                    onChange={(e) => setCheckout(e.target.value)}
+                  />
+                  <InputSolo
+                    className="w-[30%]"
+                    id="Guest"
+                    min={1}
+                    type={"number"}
+                    onChange={(e) => setGuest(e.target.valueAsNumber)}
+                  />
+                </div>
+                <h1 className="text-lg mt-4">Add On</h1>
+                <div className="flex justify-around ml-10 mb-2">
+                  <h1>Items</h1>
+                  <h1>Price</h1>
+                  <h1>Quantity</h1>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  {items.map((item) => (
+                    <div
+                      className="flex justify-around items-center"
+                      key={item.item_id}
+                    >
+                      <input
+                        className="w-[13%]"
+                        type={"checkbox"}
+                        onChange={(e) => {
+                          setItems(
+                            items.map((el) =>
+                              el.item_id === item.item_id
+                                ? { ...el, select: e.target.checked }
+                                : el
+                            )
+                          );
+                          if (e.target.checked) {
+                            setCart((prev) => [...prev, item]);
+                          } else {
+                            setCart((prev) =>
+                              prev.filter((i) => i.item_id !== item.item_id)
+                            );
+                          }
+                        }}
+                      />
+                      <h1 className="w-1/4">{item.name}</h1>
+                      <h1 className="w-1/4">{item.rent_price}</h1>
+                      <InputSolo
+                        className="w-1/4"
+                        id="number"
+                        type="number"
+                        min="1"
+                        max={item.stock}
+                        onChange={(e) => handleQtyItem(e, item)}
+                        disabled={!item.select}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </form>
+            </div>
+          </div>
+          <h1 className="text-4xl p-5">Price Details</h1>
+          <div className="flex flex-col gap-3 p-5 m-5 bg-bgcard rounded-3xl shadow-lg border-2">
+            <h1 className="text-xl">
+              Check In :
+              <span className="font-normal">
+                {moment(check_in).format("DD MMMM YYYY")}
+              </span>
+            </h1>
+            <h1 className="text-xl">
+              Check Out :
+              <span className="font-normal">
+                {moment(check_out).format("DD MMMM YYYY")}
+              </span>
+            </h1>
+            <div className="flex flex-col lg:flex-row gap-10">
+              <div>
+                <h1 className="text-lg mb-2">Campsite Cost</h1>
+
+                <p>Total hari:{totalHari} night</p>
+                <p>Price:$ {order.price}</p>
+                <p>Guest: {guest} Person</p>
+                <p>Sub total campsite: $ {sub_total}</p>
+                <p>Sub total item: $ {totalAllPriceItem}</p>
+                <p>All total: $ {sub_total + totalAllPriceItem}</p>
+              </div>
+              {cart.map((item, index) => (
+                <div key={item.item_id}>
+                  <h1 className="text-lg mb-2">Item {item.name}</h1>
+                  <p>{totalHari} night</p>
+                  <p>$ {item.rent_price}</p>
+                  <p>Quantity: {item.quantity}</p>
                 </div>
               ))}
             </div>
-          </form>
-        </div>
-      </div>
-      <h1 className="text-4xl p-5">Price Details</h1>
-      <div className="flex flex-col gap-3 p-5 m-5 bg-bgcard rounded-3xl shadow-lg border-2">
-        <h1 className="text-xl">
-          Check In :
-          <span className="font-normal">
-            {moment(check_in).format("DD MMMM YYYY")}
-          </span>
-        </h1>
-        <h1 className="text-xl">
-          Check Out :
-          <span className="font-normal">
-            {moment(check_out).format("DD MMMM YYYY")}
-          </span>
-        </h1>
-        <div className="flex flex-col lg:flex-row gap-10">
-          <div>
-            <h1 className="text-lg mb-2">Campsite Cost</h1>
-
-            <p>Total hari:{totalHari} night</p>
-            <p>Price:$ {order.price}</p>
-            <p>Guest: {guest}</p>
-            <p>Sub total campsite: $ {sub_total}</p>
-            <p>Sub total item: ${totalAllPriceItem}</p>
-            <p>All total: $ {sub_total + totalAllPriceItem}</p>
           </div>
-          {cart.map((item, index) => (
-            <div key={item.item_id}>
-              <h1 className="text-lg mb-2">Item {item.name}</h1>
-              <p>{totalHari} night</p>
-              <p>$ {item.rent_price}</p>
-              <p>Quantity: {item.quantity}</p>
-              {/* <p>
-                harga sub total:
-                {item.rent_price && item.quantity
-                  ? setTotalPrice(item.rent_price * item.quantity)
-                  : 0}
-              </p> */}
+          <h1 className="text-4xl p-5">Payment Method</h1>
+          <fieldset>
+            <form
+              action=""
+              className="flex flex-col gap-5 p-5 m-5 bg-bgcard rounded-3xl shadow-lg border-2"
+            >
+              <div className="grid grid-cols-3 items-center">
+                <img
+                  src="https://images.tokopedia.net/img/toppay/sprites/bca.png"
+                  alt=""
+                />
+                <label>BCA Virtual Account</label>
+                <input
+                  type="radio"
+                  id="bca"
+                  value="bca"
+                  name="payment"
+                  onChange={(e) => setBank(e.target.value)}
+                />
+              </div>
+              <div className="grid grid-cols-3 items-center">
+                <img
+                  src="https://images.tokopedia.net/img/toppay/sprites/bni.png"
+                  alt=""
+                />
+                <label>BNI Virtual Account</label>
+                <input
+                  type="radio"
+                  id="bni"
+                  value="bni"
+                  name="payment"
+                  onChange={(e) => setBank(e.target.value)}
+                />
+              </div>
+              <div className="grid grid-cols-3 items-center">
+                <img
+                  src="https://images.tokopedia.net/img/toppay/bank-bri.png"
+                  alt=""
+                />
+                <label>BRI Virtual Account</label>
+                <input
+                  type="radio"
+                  id="bri"
+                  value="bri"
+                  name="payment"
+                  onChange={(e) => setBank(e.target.value)}
+                />
+              </div>
+            </form>
+          </fieldset>
+          <div className="flex flex-col lg:flex-row justify-between items-center gap-3 p-5 pb-12">
+            <div className="flex lg:flex-row lg:items-center lg:w-4/6">
+              <h1 className="text-lg lg:text-2xl">Total Price :</h1>
+              <p className="text-xl lg:text-2xl lg:ml-4">
+                $ {sub_total + totalAllPriceItem}
+              </p>
             </div>
-          ))}
-        </div>
-      </div>
-      <h1 className="text-4xl p-5">Payment Method</h1>
-      <fieldset>
-        <form
-          action=""
-          className="flex flex-col gap-5 p-5 m-5 bg-bgcard rounded-3xl shadow-lg border-2"
-        >
-          <div className="grid grid-cols-3 items-center">
-            <img
-              src="https://images.tokopedia.net/img/toppay/sprites/bca.png"
-              alt=""
-            />
-            <label>BCA Virtual Account</label>
-            <input
-              type="radio"
-              id="bca"
-              value="bca"
-              name="payment"
-              onChange={(e) => setBank(e.target.value)}
+            <Link to="/camplist">
+              <Btns className="lg:w-32" id="btn-cancel" label="Cancel" />
+            </Link>
+            <Btn
+              className="lg:w-32"
+              id="btn-booknow"
+              label="Book Now"
+              onClick={() => handleOrder()}
             />
           </div>
-          <div className="grid grid-cols-3 items-center">
-            <img
-              src="https://images.tokopedia.net/img/toppay/sprites/bni.png"
-              alt=""
-            />
-            <label>BNI Virtual Account</label>
-            <input
-              type="radio"
-              id="bni"
-              value="bni"
-              name="payment"
-              onChange={(e) => setBank(e.target.value)}
-            />
-          </div>
-          <div className="grid grid-cols-3 items-center">
-            <img
-              src="https://images.tokopedia.net/img/toppay/bank-bri.png"
-              alt=""
-            />
-            <label>BRI Virtual Account</label>
-            <input
-              type="radio"
-              id="bri"
-              value="bri"
-              name="payment"
-              onChange={(e) => setBank(e.target.value)}
-            />
-          </div>
-        </form>
-      </fieldset>
-
-      <div className="flex flex-col lg:flex-row justify-between items-center gap-3 p-5 pb-12">
-        <div className="flex lg:flex-row lg:items-center lg:w-4/6">
-          <h1 className="text-lg lg:text-2xl">Total Price :</h1>
-          <p className="text-xl lg:text-2xl lg:ml-4">
-            {sub_total + totalAllPriceItem}
-          </p>
-        </div>
-        <Link to="/camplist">
-          <Btns id="btn-cancel" label="Cancel" />
-        </Link>
-        <Btn
-          className="lg:w-1/6"
-          id="btn-booknow"
-          label="Book Now"
-          onClick={() => handleOrder()}
-        />
-      </div>
+        </>
+      )}
     </Layout>
   );
 }
