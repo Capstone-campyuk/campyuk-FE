@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import moment from "moment";
+import moment, { max } from "moment";
 import axios from "axios";
 import withReactContent from "sweetalert2-react-content";
 
@@ -21,9 +21,10 @@ function Order() {
   const [cart, setCart] = useState<ItemTypes[]>([]);
   const [items, setItems] = useState<ItemTypes[]>([]);
   const [order, setOrder] = useState<CampTypes>({});
+  const [disabled, setDisabled] = useState(true);
   const [check_in, setCheckin] = useState<any>();
   const [check_out, setCheckout] = useState<any>();
-  const [guest, setGuest] = useState<number>(0);
+  const [guest, setGuest] = useState<number>(1);
   const [bank, setBank] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [id, setId] = useState<number>(0);
@@ -48,7 +49,8 @@ function Order() {
     } else {
       MySwal.fire({
         icon: "error",
-        title: "Oops...date invalid",
+        title: "Oops... ",
+        text: "Date invalid",
         showCancelButton: false,
       });
     }
@@ -59,7 +61,19 @@ function Order() {
       SetSubTotal(days * guest * order.price);
     }
   }
+  const preventMinus = (e: any) => {
+    if (e.code === "Minus") {
+      e.preventDefault();
+    }
+  };
 
+  useEffect(() => {
+    if (check_in && check_out && guest && bank) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  });
   useEffect(() => {
     fetchDetail();
   }, []);
@@ -103,7 +117,6 @@ function Order() {
 
   function handleOrder() {
     setLoading(true);
-
     const body = {
       camp_id: id,
       items: cart,
@@ -130,7 +143,7 @@ function Order() {
       .catch((err) => {
         MySwal.fire({
           icon: "error",
-          text: err.data.message,
+          text: err.response.data.message,
           title: "Oops...",
           showCancelButton: false,
         });
@@ -144,37 +157,47 @@ function Order() {
     e: React.ChangeEvent<HTMLInputElement>,
     item: ItemTypes
   ) {
-    setItems(
-      items.map((el) =>
-        el.item_id === item.item_id
-          ? {
-              ...el,
-              quantity: e.target.valueAsNumber,
-              rent_cost: el.rent_price * e.target.valueAsNumber,
-            }
-          : el
-      )
-    );
-    setCart(
-      cart.map((el) =>
-        el.item_id === item.item_id
-          ? {
-              ...el,
-              quantity: e.target.valueAsNumber,
-              rent_cost: el.rent_price * e.target.valueAsNumber,
-            }
-          : el
-      )
-    );
+    if (e.target.valueAsNumber <= item.stock) {
+      setItems(
+        items.map((el) =>
+          el.item_id === item.item_id
+            ? {
+                ...el,
+                quantity: e.target.valueAsNumber,
+                rent_cost: el.rent_price * e.target.valueAsNumber,
+              }
+            : el
+        )
+      );
+      setCart(
+        cart.map((el) =>
+          el.item_id === item.item_id
+            ? {
+                ...el,
+                quantity: e.target.valueAsNumber,
+                rent_cost: el.rent_price * e.target.valueAsNumber,
+              }
+            : el
+        )
+      );
+    } else {
+      MySwal.fire({
+        icon: "error",
+        title: "Oops... ",
+        text: "Stock invalid",
+        showCancelButton: false,
+      });
+    }
   }
 
   return (
     <Layout>
-      <h1 id="order-page" className="text-4xl p-5">
-        Order
-      </h1>
+      <h1 className="text-4xl p-5">Order</h1>
       {loading ? (
-        <div className="flex justify-center items-center h-[60vh]">
+        <div
+          className="flex justify-center items-center h-[60vh]"
+          id="order-page"
+        >
           <DotWave size={100} color={"#1E3231"} />
         </div>
       ) : (
@@ -224,6 +247,8 @@ function Order() {
                     id="Guest"
                     min={1}
                     type={"number"}
+                    // value={guest && Math.max(1, guest)}
+                    onKeyPress={preventMinus}
                     onChange={(e) => setGuest(e.target.valueAsNumber)}
                   />
                 </div>
@@ -266,10 +291,11 @@ function Order() {
                         className="w-1/4"
                         id="number"
                         type="number"
-                        min="1"
+                        min={0}
                         max={item.stock}
                         onChange={(e) => handleQtyItem(e, item)}
                         disabled={!item.select}
+                        onKeyPress={preventMinus}
                       />
                     </div>
                   ))}
@@ -298,9 +324,13 @@ function Order() {
                 <p>Total hari:{totalHari} night</p>
                 <p>Price:$ {order.price}</p>
                 <p>Guest: {guest} Person</p>
-                <p>Sub total campsite: $ {sub_total}</p>
-                <p>Sub total item: $ {totalAllPriceItem}</p>
-                <p>All total: $ {sub_total + totalAllPriceItem}</p>
+                <p className="font-semibold">
+                  Sub total campsite: $ {sub_total}
+                </p>
+                <p className="font-semibold">
+                  Sub total item: $ {totalAllPriceItem}
+                </p>
+                <h1>All total: $ {sub_total + totalAllPriceItem}</h1>
               </div>
               {cart.map((item, index) => (
                 <div key={item.item_id}>
@@ -370,13 +400,14 @@ function Order() {
               </p>
             </div>
             <Link to="/camplist">
-              <Btns className="lg:w-32" id="btn-cancel" label="Cancel" />
+              <Btns className="w-32" id="btn-cancel" label="Cancel" />
             </Link>
             <Btn
-              className="lg:w-32"
+              className="w-32"
               id="btn-booknow"
               label="Book Now"
               onClick={() => handleOrder()}
+              disabled={disabled}
             />
           </div>
         </>
