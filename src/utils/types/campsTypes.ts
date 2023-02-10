@@ -30,7 +30,7 @@ export interface CampTypes {
 export interface ItemTypes {
   item_id?: number;
   name?: string;
-  stock?: number;
+  stock: number;
   rent_price: number;
   item_image?: string;
   quantity?: number;
