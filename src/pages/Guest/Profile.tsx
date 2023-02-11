@@ -115,11 +115,11 @@ function Profile() {
               icon: "success",
               text: "Delete successfully",
               showConfirmButton: false,
-              timer: 1500,
+              timer: 1000,
             });
-            removeCookie("token");
-            removeCookie("username");
-            removeCookie("role");
+            removeCookie("token", { path: "/" });
+            removeCookie("username", { path: "/" });
+            removeCookie("role", { path: "/" });
             navigate("/login");
           })
           .catch(() => {
