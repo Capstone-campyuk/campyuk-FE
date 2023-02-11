@@ -32,7 +32,7 @@ export function CardReg({
     <div className="flex flex-col bg-bgcard rounded-3xl shadow-lg max-w-xl">
       {path === "/camplist" ? (
         <>
-          <img className="rounded-t-3xl h-3/4" src={image} alt={image} />
+          <img className="object-cover rounded-t-3xl w-full h-[330px]" src={image} alt={image} />
           <div className="flex justify-between p-4">
             <div className="flex flex-col">
               <h1>{campsite}</h1>
@@ -53,7 +53,7 @@ export function CardReg({
       ) : (
         <>
           <Link className="h-3/4" id="detail-camphost" to={`/camp-host/${id}`}>
-            <img className="rounded-t-3xl h-full" src={image} alt={image} />
+            <img className="object-cover rounded-t-3xl w-full h-[330px]" src={image} alt={image} />
           </Link>
           <div className="flex justify-between p-4">
             <div className="flex flex-col">
