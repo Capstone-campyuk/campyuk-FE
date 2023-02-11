@@ -11,7 +11,6 @@ import { InputSide } from "../../components/Input";
 import { DotWave } from "@uiball/loaders";
 
 import Swal from "../../utils/Swal";
-import "leaflet/dist/leaflet.css";
 import tileLayer from "../../utils/const/tileLayer";
 
 function AddCamp() {
@@ -24,7 +23,7 @@ function AddCamp() {
   const [city, setCity] = useState<string>("");
   const [distance, setDistance] = useState<number | Blob>();
   const [document, setDocument] = useState<any>();
-  const [images, setImages] = useState<any>([]);
+  const [images, setImages] = useState<any>();
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [cookie] = useCookies(["username"]);
@@ -100,12 +99,18 @@ function AddCamp() {
       .catch((err) => {
         MySwal.fire({
           icon: "error",
-          text: err.data.message,
+          text: err.response.data.message,
           title: "Oops...",
           showCancelButton: false,
         });
       })
       .finally(() => setLoading(false));
+  };
+
+  const preventMinus = (e: any) => {
+    if (e.code === "Minus") {
+      e.preventDefault();
+    }
   };
 
   return (
@@ -133,6 +138,8 @@ function AddCamp() {
             title="Price"
             id="input-price"
             type="number"
+            min="1"
+            onKeyDown={preventMinus}
             onChange={(e) => setPrice(parseInt(e.target.value))}
           />
           <div className="flex w-full px-5 md:px-10">
@@ -150,6 +157,7 @@ function AddCamp() {
           <div className="p-5 md:p-10 ">
             <p className="text-black font-bold py-5">Select Location</p>
             <MapContainer
+              id="map"
               center={[-2.175, 114.408]}
               zoom={5}
               scrollWheelZoom={true}
@@ -188,6 +196,9 @@ function AddCamp() {
             multiple
             min={3}
           />
+          <p className="px-5 md:px-10 text-sm relative top-[-20px]">
+            Please upload at least 3 files
+          </p>
           <InputSide
             title="Business License"
             id="input-license"
@@ -202,6 +213,8 @@ function AddCamp() {
             title="Distance"
             id="input-distance"
             type="number"
+            min="1"
+            onKeyDown={preventMinus}
             onChange={(e) => setDistance(parseInt(e.target.value))}
           />
           <div className="flex justify-end gap-5 p-5">

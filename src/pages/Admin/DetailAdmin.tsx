@@ -5,7 +5,6 @@ import { ReactImageCarouselViewer } from "react-image-carousel-viewer";
 import { MapContainer, Marker, TileLayer, Popup, useMap } from "react-leaflet";
 import withReactContent from "sweetalert2-react-content";
 
-import "leaflet/dist/leaflet.css";
 import { Layout } from "../../components/Layout";
 import { Btn, Btns } from "../../components/Button";
 import { ImLocation } from "react-icons/im";
@@ -57,7 +56,7 @@ function DetailAdmin() {
       .catch((err) => {
         MySwal.fire({
           icon: "error",
-          text: err.data.message,
+          text: err.response.data.message,
           title: "Oops...",
           showCancelButton: false,
         });
@@ -84,7 +83,7 @@ function DetailAdmin() {
       .catch((err) => {
         MySwal.fire({
           icon: "error",
-          text: err.data.message,
+          text: err.response.data.message,
           title: "Oops...",
           showCancelButton: false,
         });
@@ -109,7 +108,7 @@ function DetailAdmin() {
       .catch((err) => {
         MySwal.fire({
           icon: "error",
-          text: err.data.message,
+          text: err.response.data.message,
           title: "Oops...",
           showCancelButton: false,
         });
@@ -228,26 +227,32 @@ function DetailAdmin() {
           </div>
           <div className="flex flex-col lg:flex-row justify-center w-full py-4 lg:max-w-[70vw] m-5 lg:mx-auto">
             <h1 className="flex text-2xl lg:w-1/3">Add On Available</h1>
-            <table className="w-2/3 table-auto border-collapse border border-slate-600 mt-5 lg:mt-0">
-              <thead>
-                <tr className="font-bold text-center">
-                  <td className="border border-slate-700">Items</td>
-                  <td className="border border-slate-700">Price</td>
-                  <td className="border border-slate-700">Stock</td>
-                </tr>
-              </thead>
-              <tbody>
-                {camp.items?.map((item) => (
-                  <tr key={item.item_id} className="text-center">
-                    <td className="border border-slate-700">{item.name}</td>
-                    <td className="border border-slate-700">
-                      $ {item.rent_price}
-                    </td>
-                    <td className="border border-slate-700">{item.stock}</td>
+            {camp.items?.length === 0 ? (
+              <p className="lg:text-center lg:w-2/3">
+                This camp has no additional items
+              </p>
+            ) : (
+              <table className="w-2/3 table-auto border-collapse border border-slate-600 mt-5 lg:mt-0">
+                <thead>
+                  <tr className="font-bold text-center">
+                    <td className="border border-slate-700">Items</td>
+                    <td className="border border-slate-700">Price</td>
+                    <td className="border border-slate-700">Stock</td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {camp.items?.map((item) => (
+                    <tr key={item.item_id} className="text-center">
+                      <td className="border border-slate-700">{item.name}</td>
+                      <td className="border border-slate-700">
+                        $ {item.rent_price}
+                      </td>
+                      <td className="border border-slate-700">{item.stock}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
           <div className="lg:max-w-[70vw] mx-auto">
             <a className="font-bold text-xl text-blue-700" href={camp.document}>
@@ -256,6 +261,7 @@ function DetailAdmin() {
           </div>
           <div className="lg:max-w-[70vw] mx-auto py-10">
             <MapContainer
+              id="map"
               center={[lat, lng]}
               zoom={10}
               scrollWheelZoom={true}
