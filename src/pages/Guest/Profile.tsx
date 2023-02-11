@@ -49,7 +49,7 @@ function Profile() {
       .catch((err) => {
         MySwal.fire({
           icon: "error",
-          text: err.data.message,
+          text: err.response.data.message,
           title: "Oops...",
           showCancelButton: false,
         });
@@ -88,7 +88,7 @@ function Profile() {
       .catch((err) => {
         MySwal.fire({
           icon: "error",
-          text: err.data.message,
+          text: err.response.data.message,
           title: "Oops...",
           showCancelButton: false,
         });
