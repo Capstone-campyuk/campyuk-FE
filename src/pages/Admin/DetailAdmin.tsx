@@ -5,7 +5,6 @@ import { ReactImageCarouselViewer } from "react-image-carousel-viewer";
 import { MapContainer, Marker, TileLayer, Popup, useMap } from "react-leaflet";
 import withReactContent from "sweetalert2-react-content";
 
-import "leaflet/dist/leaflet.css";
 import { Layout } from "../../components/Layout";
 import { Btn, Btns } from "../../components/Button";
 import { ImLocation } from "react-icons/im";
@@ -262,6 +261,7 @@ function DetailAdmin() {
           </div>
           <div className="lg:max-w-[70vw] mx-auto py-10">
             <MapContainer
+              id="map"
               center={[lat, lng]}
               zoom={10}
               scrollWheelZoom={true}

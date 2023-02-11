@@ -6,7 +6,6 @@ import { MapContainer, Marker, TileLayer, Popup, useMap } from "react-leaflet";
 import withReactContent from "sweetalert2-react-content";
 import { useCookies } from "react-cookie";
 
-import "leaflet/dist/leaflet.css";
 import { Layout } from "../components/Layout";
 import { Btn } from "../components/Button";
 import { ImLocation } from "react-icons/im";
@@ -191,7 +190,9 @@ function DetailCampHost() {
           <div className="flex flex-col lg:flex-row justify-center w-full py-4 lg:max-w-[70vw] m-5 lg:mx-auto">
             <h1 className="flex text-2xl lg:w-1/3">Add On Available</h1>
             {camp.items?.length === 0 ? (
-              <p className="lg:text-center lg:w-2/3">This camp has no additional items</p>
+              <p className="lg:text-center lg:w-2/3">
+                This camp has no additional items
+              </p>
             ) : (
               <table className="w-2/3 table-auto border-collapse border border-slate-600 mt-5 lg:mt-0">
                 <thead>
@@ -217,6 +218,7 @@ function DetailCampHost() {
           </div>
           <div className="lg:max-w-[70vw] mx-auto py-10">
             <MapContainer
+              id="map"
               center={[lat, lng]}
               zoom={10}
               scrollWheelZoom={true}

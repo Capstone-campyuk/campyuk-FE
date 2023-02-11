@@ -11,7 +11,6 @@ import { InputSide } from "../../components/Input";
 import { DotWave } from "@uiball/loaders";
 
 import Swal from "../../utils/Swal";
-import "leaflet/dist/leaflet.css";
 import tileLayer from "../../utils/const/tileLayer";
 
 function AddCamp() {
@@ -158,6 +157,7 @@ function AddCamp() {
           <div className="p-5 md:p-10 ">
             <p className="text-black font-bold py-5">Select Location</p>
             <MapContainer
+              id="map"
               center={[-2.175, 114.408]}
               zoom={5}
               scrollWheelZoom={true}

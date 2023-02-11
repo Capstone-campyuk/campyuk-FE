@@ -10,7 +10,6 @@ import { Layout } from "../../components/Layout";
 import { Btn } from "../../components/Button";
 import { InputSide } from "../../components/Input";
 
-import "leaflet/dist/leaflet.css";
 import tileLayer from "../../utils/const/tileLayer";
 
 function EditCampHost() {
@@ -251,6 +250,7 @@ function EditCampHost() {
 
             <div className="p-10 ">
               <MapContainer
+                id="map"
                 center={[-2.175, 114.408]}
                 zoom={5}
                 scrollWheelZoom={true}
