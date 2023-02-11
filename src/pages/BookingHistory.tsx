@@ -31,7 +31,7 @@ function OrderListHost() {
       .catch((err) => {
         MySwal.fire({
           icon: "error",
-          text: err.data.message,
+          text: err.response.data.message,
           title: "Oops...",
           showCancelButton: false,
         });
@@ -62,7 +62,7 @@ function OrderListHost() {
       .catch((err) => {
         MySwal.fire({
           icon: "error",
-          text: err.data.message,
+          text: err.response.data.message,
           title: "Oops...",
           showCancelButton: false,
         });
