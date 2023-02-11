@@ -77,7 +77,7 @@ function DashboardAdmin() {
       </h1>
       <div className="flex flex-col items-center gap-10 px-2 lg:px-6 pb-6">
         {loading
-          ? [...Array(4).keys()].map((index) => <LoadingLong key={index} />)
+          ? [...Array(2).keys()].map((index) => <LoadingLong key={index} />)
           : camps.map((camp, index) => (
               <CardLong
                 key={index}
