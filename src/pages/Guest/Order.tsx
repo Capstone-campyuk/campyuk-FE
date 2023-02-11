@@ -206,17 +206,18 @@ function Order() {
             <img
               className="lg:w-1/2 lg:rounded-l-3xl"
               src={order.images?.[0].image}
-              alt={"title"}
+              alt={order.title}
             />
-            <div className="lg:w-1/2 p-5 flex flex-col justify-around">
+            <div className="lg:w-1/2 p-5 flex flex-col gap-4">
               <div className="flex justify-between text-xl">
-                <h1>{order.title}</h1>
+                <div>
+                  <h1>{order.title}</h1>
+                  <p className="flex items-center text-md">
+                    <ImLocation /> {order.city}
+                  </p>
+                </div>
                 <h1>$ {order.price} /night</h1>
               </div>
-              <p className="flex items-center">
-                <ImLocation /> {order.city}
-              </p>
-
               <form>
                 <div className="flex justify-around mt-4">
                   <h1>Check-In</h1>
@@ -247,7 +248,6 @@ function Order() {
                     id="Guest"
                     min={1}
                     type={"number"}
-                    // value={guest && Math.max(1, guest)}
                     onKeyPress={preventMinus}
                     onChange={(e) => setGuest(e.target.valueAsNumber)}
                   />
@@ -260,45 +260,53 @@ function Order() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  {items.map((item) => (
-                    <div
-                      className="flex justify-around items-center"
-                      key={item.item_id}
-                    >
-                      <input
-                        className="w-[13%]"
-                        type={"checkbox"}
-                        onChange={(e) => {
-                          setItems(
-                            items.map((el) =>
-                              el.item_id === item.item_id
-                                ? { ...el, select: e.target.checked }
-                                : el
-                            )
-                          );
-                          if (e.target.checked) {
-                            setCart((prev) => [...prev, item]);
-                          } else {
-                            setCart((prev) =>
-                              prev.filter((i) => i.item_id !== item.item_id)
-                            );
-                          }
-                        }}
-                      />
-                      <h1 className="w-1/4">{item.name}</h1>
-                      <h1 className="w-1/4">{item.rent_price}</h1>
-                      <InputSolo
-                        className="w-1/4"
-                        id="number"
-                        type="number"
-                        min={0}
-                        max={item.stock}
-                        onChange={(e) => handleQtyItem(e, item)}
-                        disabled={!item.select}
-                        onKeyPress={preventMinus}
-                      />
-                    </div>
-                  ))}
+                  {items.length === 0 ? (
+                    <p className="text-center">
+                      This camp has no additional items
+                    </p>
+                  ) : (
+                    <>
+                      {items.map((item) => (
+                        <div
+                          className="flex justify-around items-center"
+                          key={item.item_id}
+                        >
+                          <input
+                            className="w-[13%]"
+                            type={"checkbox"}
+                            onChange={(e) => {
+                              setItems(
+                                items.map((el) =>
+                                  el.item_id === item.item_id
+                                    ? { ...el, select: e.target.checked }
+                                    : el
+                                )
+                              );
+                              if (e.target.checked) {
+                                setCart((prev) => [...prev, item]);
+                              } else {
+                                setCart((prev) =>
+                                  prev.filter((i) => i.item_id !== item.item_id)
+                                );
+                              }
+                            }}
+                          />
+                          <h1 className="w-1/4">{item.name}</h1>
+                          <h1 className="w-1/4">{item.rent_price}</h1>
+                          <InputSolo
+                            className="w-1/4"
+                            id="number"
+                            type="number"
+                            min={0}
+                            max={item.stock}
+                            onChange={(e) => handleQtyItem(e, item)}
+                            disabled={!item.select}
+                            onKeyPress={preventMinus}
+                          />
+                        </div>
+                      ))}
+                    </>
+                  )}
                 </div>
               </form>
             </div>
