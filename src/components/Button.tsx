@@ -23,7 +23,7 @@ export function Btn({
   return (
     <Button
       id={id}
-      className={`bg-btn text-white hover:bg-btnh border-none rounded-full w-full disabled:bg-btnh disabled:text-gray-200 ${className}`}
+      className={`bg-btn text-white hover:bg-btnh border-none rounded-full w-full disabled:bg-btn/60 disabled:text-gray-200 ${className}`}
       disabled={disabled}
       onClick={onClick}
     >
@@ -43,7 +43,7 @@ export function Btns({
   return (
     <Button
       id={id}
-      className={`bg-btns text-white hover:bg-btnsh border-none rounded-full w-full ${className}`}
+      className={`bg-btns text-white hover:bg-btns/60 border-none rounded-full w-full ${className}`}
       disabled={disabled}
       onClick={onClick}
     >
