@@ -5,6 +5,7 @@ import withReactContent from "sweetalert2-react-content";
 import axios from "axios";
 
 import { Layout } from "../../components/Layout";
+import { DotWave } from "@uiball/loaders";
 import Swal from "../../utils/Swal";
 
 function Profile() {
@@ -15,6 +16,7 @@ function Profile() {
   ]);
 
   const [newPreviewImage, setNewPreviewImage] = useState<any>();
+  const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState<string>("");
   const [user_image, setUserimage] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -181,85 +183,91 @@ function Profile() {
                 <h3 className="font-bold lg:text-2xl  text-base text-black text-center  ">
                   Update Profile
                 </h3>
-                <form onSubmit={updateProfile} encType="multipart/form-data">
-                  <div className="flex py-2 w-full">
-                    <label className="font-semibold text-black flex items-start justify-start w-1/2 text-start">
-                      Full Name
-                    </label>
-                    <input
-                      id="fullname-profil"
-                      className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
-                      type="text"
-                      value={fullname}
-                      onChange={(e) => setFullname(e.target.value)}
-                    />
+                {loading ? (
+                  <div className="flex justify-center items-center h-[60vh]">
+                    <DotWave size={100} color={"#1E3231"} />
                   </div>
-                  <div className="flex py-2 w-full">
-                    <label className="font-semibold text-black flex items-start justify-start w-1/2 text-start">
-                      User name
-                    </label>
-                    <input
-                      id="username-profil"
-                      className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
-                      type="text"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                    />
-                  </div>
-                  <div className="flex py-2 w-full">
-                    <label className="font-semibold text-black flex items-start justify-start w-1/2 text-start">
-                      Email
-                    </label>
-                    <input
-                      id="email-profil"
-                      className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </div>
-                  <div className="flex py-2 w-full">
-                    <label
-                      htmlFor="edit-photo"
-                      style={{ cursor: "pointer" }}
-                      className="font-semibold text-black flex items-start justify-start w-1/2 text-start"
-                    >
-                      Upload image
-                    </label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      id="edit-photo"
-                      style={{ display: "none" }}
-                      onChange={(e) => {
-                        if (!e.target.files) return;
-                        handleEditImage(e.target.files[0]);
-                      }}
-                    />
-                    <img
-                      src={newPreviewImage}
-                      alt=""
-                      width={200}
-                      height={100}
-                    />
-                  </div>
-                  <div className="grid grid-cols-2 w-2/3 md:w-full lg:w-full max-w-md mt-3">
-                    <label
-                      htmlFor="my-modal-1"
-                      className="btn bg-btn normal-case border-none mx-1 hover:btnh text-white"
-                    >
-                      Cancel
-                    </label>
+                ) : (
+                  <form onSubmit={updateProfile} encType="multipart/form-data">
+                    <div className="flex py-2 w-full">
+                      <label className="font-semibold text-black flex items-start justify-start w-1/2 text-start">
+                        Full Name
+                      </label>
+                      <input
+                        id="fullname-profil"
+                        className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
+                        type="text"
+                        value={fullname}
+                        onChange={(e) => setFullname(e.target.value)}
+                      />
+                    </div>
+                    <div className="flex py-2 w-full">
+                      <label className="font-semibold text-black flex items-start justify-start w-1/2 text-start">
+                        User name
+                      </label>
+                      <input
+                        id="username-profil"
+                        className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                      />
+                    </div>
+                    <div className="flex py-2 w-full">
+                      <label className="font-semibold text-black flex items-start justify-start w-1/2 text-start">
+                        Email
+                      </label>
+                      <input
+                        id="email-profil"
+                        className="rounded-lg bg-white border-[#e5e5e5] px-5 p-2 border-2 focus:outline-none text-black w-full"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </div>
+                    <div className="flex py-2 w-full">
+                      <label
+                        htmlFor="edit-photo"
+                        style={{ cursor: "pointer" }}
+                        className="font-semibold text-black flex items-start justify-start w-1/2 text-start"
+                      >
+                        Upload image
+                      </label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        id="edit-photo"
+                        style={{ display: "none" }}
+                        onChange={(e) => {
+                          if (!e.target.files) return;
+                          handleEditImage(e.target.files[0]);
+                        }}
+                      />
+                      <img
+                        src={newPreviewImage}
+                        alt=""
+                        width={200}
+                        height={100}
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 w-2/3 md:w-full lg:w-full max-w-md mt-3">
+                      <label
+                        htmlFor="my-modal-1"
+                        className="btn bg-btn normal-case border-none mx-1 hover:btnh text-white"
+                      >
+                        Cancel
+                      </label>
 
-                    <button
-                      type="submit"
-                      className="btn bg-btn normal-case  border-none mx-1 hover:btnh text-white"
-                      onClick={() => updateProfile}
-                    >
-                      Save
-                    </button>
-                  </div>
-                </form>
+                      <button
+                        type="submit"
+                        className="btn bg-btn normal-case  border-none mx-1 hover:btnh text-white"
+                        onClick={() => updateProfile}
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </form>
+                )}
               </div>
             </div>
 
