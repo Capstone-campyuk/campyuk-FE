@@ -34,7 +34,7 @@ function Login() {
     axios
       .post("https://abiasa.site/login", body)
       .then((res) => {
-        setCookie("username", res.data.data.username);
+        setCookie("username", res.data.data.username, { path: "/" });
         setCookie("token", res.data.token, { path: "/" });
         setCookie("role", res.data.data.role, { path: "/" });
         const checkRole = res.data.data.role;
@@ -44,6 +44,7 @@ function Login() {
         } else if (checkRole === "host") {
           navigate(`/host/${res.data.data.username}`);
         } else navigate("/admin");
+        navigate(0);
       })
       .catch((err) => {
         MySwal.fire({
