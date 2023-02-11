@@ -24,7 +24,7 @@ function AddCamp() {
   const [city, setCity] = useState<string>("");
   const [distance, setDistance] = useState<number | Blob>();
   const [document, setDocument] = useState<any>();
-  const [images, setImages] = useState<any>([]);
+  const [images, setImages] = useState<any>();
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [cookie] = useCookies(["username"]);
@@ -108,6 +108,12 @@ function AddCamp() {
       .finally(() => setLoading(false));
   };
 
+  const preventMinus = (e: any) => {
+    if (e.code === "Minus") {
+      e.preventDefault();
+    }
+  };
+
   return (
     <Layout>
       <h1 id="add-camp-page" className="text-4xl p-5">
@@ -133,6 +139,8 @@ function AddCamp() {
             title="Price"
             id="input-price"
             type="number"
+            min="1"
+            onKeyDown={preventMinus}
             onChange={(e) => setPrice(parseInt(e.target.value))}
           />
           <div className="flex w-full px-5 md:px-10">
@@ -188,6 +196,9 @@ function AddCamp() {
             multiple
             min={3}
           />
+          <p className="px-5 md:px-10 text-sm relative top-[-20px]">
+            Please upload at least 3 files
+          </p>
           <InputSide
             title="Business License"
             id="input-license"
@@ -202,6 +213,8 @@ function AddCamp() {
             title="Distance"
             id="input-distance"
             type="number"
+            min="1"
+            onKeyDown={preventMinus}
             onChange={(e) => setDistance(parseInt(e.target.value))}
           />
           <div className="flex justify-end gap-5 p-5">
