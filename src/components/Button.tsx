@@ -43,7 +43,7 @@ export function Btns({
   return (
     <Button
       id={id}
-      className={`bg-btns text-white hover:bg-btns/60 border-none rounded-full w-full ${className}`}
+      className={`bg-btns text-white hover:bg-btnsh border-none rounded-full w-full ${className}`}
       disabled={disabled}
       onClick={onClick}
     >
