@@ -74,36 +74,34 @@ function OrderListHost() {
       <h1 id="orderhost-page" className="text-4xl p-5">
         Booking History
       </h1>
-      {orders.length === 0 ? (
-        <p className="lg:text-center">
-          You don't have an any booking history
-        </p>
-      ) : (
-        <>
-          <div className="flex flex-col items-center gap-10 px-2 lg:px-6 pb-6">
-            {loading
-              ? [...Array(2).keys()].map((index) => <LoadingLong key={index} />)
-              : orders.map((order, index) => (
-                  <CardLong
-                    key={index}
-                    id={order.id}
-                    image={order.camp_image}
-                    campsite={order.camp_title}
-                    loc={order.camp_city}
-                    checkin={order.check_in}
-                    checkout={order.check_out}
-                    eticket={order.ticket}
-                    totalprice={order.total_price}
-                    status={order.status}
-                  />
-                ))}
-          </div>
-          <MdArrowDropDownCircle
-            className="text-primary text-6xl w-full flex justify-center my-5 cursor-pointer"
-            onClick={nextPage}
-          />
-        </>
-      )}
+      <div className="flex flex-col items-center gap-10 px-2 lg:px-6 pb-6">
+        {loading ? (
+          [...Array(2).keys()].map((index) => <LoadingLong key={index} />)
+        ) : orders.length === 0 ? (
+          <p className="lg:text-center">
+            You don't have an any booking history
+          </p>
+        ) : (
+          orders.map((order, index) => (
+            <CardLong
+              key={index}
+              id={order.id}
+              image={order.camp_image}
+              campsite={order.camp_title}
+              loc={order.camp_city}
+              checkin={order.check_in}
+              checkout={order.check_out}
+              eticket={order.ticket}
+              totalprice={order.total_price}
+              status={order.status}
+            />
+          ))
+        )}
+      </div>
+      <MdArrowDropDownCircle
+        className="text-primary text-6xl w-full flex justify-center my-5 cursor-pointer"
+        onClick={nextPage}
+      />
     </Layout>
   );
 }

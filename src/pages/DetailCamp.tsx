@@ -104,7 +104,7 @@ function DetailCampHost() {
                     alt={camp.title}
                     className="object-cover w-full h-1/2 rounded-lg"
                   />
-                  <div className="flex h-full gap-5">
+                  <div className="flex h-1/2 gap-5">
                     <img
                       src={camp.images?.[2].image}
                       alt={camp.title}

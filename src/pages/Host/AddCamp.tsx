@@ -107,11 +107,8 @@ function AddCamp() {
       .finally(() => setLoading(false));
   };
 
-  const preventMinus = (e: any) => {
-    if (e.code === "Minus") {
-      e.preventDefault();
-    }
-  };
+  const preventChar = (e: React.KeyboardEvent) =>
+    ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
 
   return (
     <Layout>
@@ -139,7 +136,7 @@ function AddCamp() {
             id="input-price"
             type="number"
             min="1"
-            onKeyDown={preventMinus}
+            onKeyDown={preventChar}
             onChange={(e) => setPrice(parseInt(e.target.value))}
           />
           <div className="flex w-full px-5 md:px-10">
@@ -154,7 +151,7 @@ function AddCamp() {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
-          <div className="p-5 md:p-10 ">
+          <div className="p-5 md:p-10">
             <p className="text-black font-bold py-5">Select Location</p>
             <MapContainer
               id="map"
@@ -214,7 +211,7 @@ function AddCamp() {
             id="input-distance"
             type="number"
             min="1"
-            onKeyDown={preventMinus}
+            onKeyDown={preventChar}
             onChange={(e) => setDistance(parseInt(e.target.value))}
           />
           <div className="flex justify-end gap-5 p-5">
