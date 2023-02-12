@@ -222,7 +222,15 @@ export function CardLong({
               >
                 {status}
               </p>
-            )}
+            )}            
+            {status === "EXPIRE" && (
+                <p
+                  id="status"
+                  className="bg-gray-500 text-bgcard text-center rounded-3xl p-2"
+                >
+                  {status}
+                </p>
+              )}
           </div>
         </Link>
       )}
