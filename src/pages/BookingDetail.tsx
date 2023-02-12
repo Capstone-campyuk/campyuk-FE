@@ -56,7 +56,7 @@ function BookingDetail() {
           text: "Accept Booking Success",
           showCancelButton: false,
         });
-        navigate(`/host/${cookie.username}`);
+        navigate(`/booking-history/${cookie.username}`);
       })
       .catch((err) => {
         MySwal.fire({
@@ -78,9 +78,7 @@ function BookingDetail() {
           text: "Cancel Booking Success",
           showCancelButton: false,
         });
-        cookie.username === "host"
-          ? navigate(`/host/${cookie.username}`)
-          : navigate(`/profile/${cookie.username}`);
+        navigate(`/booking-history/${cookie.username}`);
       })
       .catch((err) => {
         MySwal.fire({
@@ -148,10 +146,18 @@ function BookingDetail() {
                     {booking.status}
                   </p>
                 )}
+                {booking.status === "EXPIRE" && (
+                  <p
+                    id="status"
+                    className="bg-gray-500 text-bgcard text-center rounded-3xl p-2"
+                  >
+                    {booking.status}
+                  </p>
+                )}
               </div>
             </div>
           </div>
-          <div className="flex flex-col bg-bgcard shadow-lg p-5 rounded-3xl lg:w-[70vw] lg:min-h-[50vh] w-[95vw] md:my-10 md:mx-auto gap-5">
+          <div className="flex flex-col bg-bgcard shadow-lg p-5 rounded-3xl lg:w-[70vw] w-[95vw] md:my-10 md:mx-auto gap-5">
             <div className="flex flex-col md:flex-row md:justify-between w-full text-xl">
               <h1>Check In: {booking.check_in}</h1>
               <h1>Check Out: {booking.check_out} </h1>
@@ -163,20 +169,22 @@ function BookingDetail() {
                 <p>Guest: {booking.guest} Person</p>
                 <p>Sub Total: $ {booking.camp_cost}</p>
               </div>
-              <div>
-                <h1 className="text-xl">Add On</h1>
-                <div className="flex gap-4">
-                  {items.map((item, index) => (
-                    <div key={index}>
-                      <p>Item: {item.name}</p>
-                      <p>Price: $ {item.rent_price}</p>
-                      <p>Quantity: {item.quantity}</p>
-                    </div>
-                  ))}
+              {items.length > 0 && (
+                <div>
+                  <h1 className="text-xl">Add On</h1>
+                  <div className="flex gap-4">
+                    {items.map((item, index) => (
+                      <div key={index}>
+                        <p>Item: {item.name}</p>
+                        <p>Price: $ {item.rent_price}</p>
+                        <p>Quantity: {item.quantity}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
-            {booking.status === "PENDING" && (
+            {booking.status === "PENDING" && cookie.role === "guest" && (
               <div className="flex flex-col justify-between">
                 <h1 className="text-xl">Payment</h1>
                 <p className="capitalize">Bank: {booking.bank}</p>
@@ -204,7 +212,7 @@ function BookingDetail() {
                     onClick={() => handleAccept()}
                   />
                 </div>
-              ) : (
+              ) : cookie.role === "guest" && booking.status === "PENDING" ? (
                 <div className="flex gap-4">
                   <Btn
                     id="btn-cancel"
@@ -213,6 +221,13 @@ function BookingDetail() {
                     onClick={() => handleCancel()}
                   />
                 </div>
+              ) : (
+                cookie.role === "guest" &&
+                booking.status === "SUCCESS" && (
+                  <a href={`https://abiasa.site/bookings/${id_booking}/oauth`}>
+                    <Btn id="btn-reminder" className="w-24" label="Reminder" />
+                  </a>
+                )
               )}
             </div>
           </div>
