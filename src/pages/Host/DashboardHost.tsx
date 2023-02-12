@@ -114,34 +114,30 @@ function DashboardHost() {
         </div>
       </div>
       <div className="flex justify-center px-2 pb-6">
-        {camps.length === 0 ? (
-          <p className="lg:text-center">
-            You don't have a camp site, please add camp first
-          </p>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-              {loading
-                ? [...Array(4).keys()].map((index) => (
-                    <LoadingReg key={index} />
-                  ))
-                : camps.map((camp, index) => (
-                    <CardReg
-                      key={index}
-                      id={camp.id}
-                      uname={cookie.username}
-                      path={path}
-                      image={camp.image}
-                      campsite={camp.title}
-                      price={camp.price}
-                      loc={camp.city}
-                      status={camp.verification_status}
-                      deleteCamp={() => deleteCamp(camp.id)}
-                    />
-                  ))}
-            </div>
-          </>
-        )}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          {loading ? (
+            [...Array(4).keys()].map((index) => <LoadingReg key={index} />)
+          ) : camps.length === 0 ? (
+            <p className="lg:text-center">
+              You don't have a camp site, please add camp first
+            </p>
+          ) : (
+            camps.map((camp, index) => (
+              <CardReg
+                key={index}
+                id={camp.id}
+                uname={cookie.username}
+                path={path}
+                image={camp.image}
+                campsite={camp.title}
+                price={camp.price}
+                loc={camp.city}
+                status={camp.verification_status}
+                deleteCamp={() => deleteCamp(camp.id)}
+              />
+            ))
+          )}
+        </div>
       </div>
       <MdArrowDropDownCircle
         className="text-primary text-6xl w-full flex justify-center my-5 cursor-pointer"
