@@ -22,8 +22,8 @@ function Order() {
   const [items, setItems] = useState<ItemTypes[]>([]);
   const [order, setOrder] = useState<CampTypes>({});
   const [disabled, setDisabled] = useState(true);
-  const [check_in, setCheckin] = useState<any>();
-  const [check_out, setCheckout] = useState<any>();
+  const [check_in, setCheckin] = useState<string>("");
+  const [check_out, setCheckout] = useState<string>("");
   const [guest, setGuest] = useState<number>(1);
   const [bank, setBank] = useState<string>("");
   const [loading, setLoading] = useState(true);
@@ -61,11 +61,8 @@ function Order() {
       SetSubTotal(days * guest * order.price);
     }
   }
-  const preventMinus = (e: any) => {
-    if (e.code === "Minus") {
-      e.preventDefault();
-    }
-  };
+  const preventChar = (e: React.KeyboardEvent) =>
+    ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
 
   useEffect(() => {
     if (check_in && check_out && guest && bank) {
@@ -206,17 +203,18 @@ function Order() {
             <img
               className="lg:w-1/2 lg:rounded-l-3xl"
               src={order.images?.[0].image}
-              alt={"title"}
+              alt={order.title}
             />
-            <div className="lg:w-1/2 p-5 flex flex-col justify-around">
+            <div className="lg:w-1/2 p-5 flex flex-col gap-4">
               <div className="flex justify-between text-xl">
-                <h1>{order.title}</h1>
+                <div>
+                  <h1>{order.title}</h1>
+                  <p className="flex items-center text-md">
+                    <ImLocation /> {order.city}
+                  </p>
+                </div>
                 <h1>$ {order.price} /night</h1>
               </div>
-              <p className="flex items-center">
-                <ImLocation /> {order.city}
-              </p>
-
               <form>
                 <div className="flex justify-around mt-4">
                   <h1>Check-In</h1>
@@ -229,7 +227,6 @@ function Order() {
                     id="Check-In"
                     type={"date"}
                     name="datemax"
-                    max="today"
                     min={new Date().toISOString().split("T")[0]}
                     onChange={(e) => setCheckin(e.target.value)}
                   />
@@ -238,8 +235,7 @@ function Order() {
                     id="Check-Out"
                     type={"date"}
                     name="datemin"
-                    max="today"
-                    min={new Date().toISOString().split("T")[0]}
+                    min={check_in}
                     onChange={(e) => setCheckout(e.target.value)}
                   />
                   <InputSolo
@@ -247,7 +243,7 @@ function Order() {
                     id="Guest"
                     type="number"
                     min="1"
-                    onKeyDown={preventMinus}
+                    onKeyDown={preventChar}
                     onChange={(e) => setGuest(e.target.valueAsNumber)}
                   />
                 </div>
@@ -259,45 +255,53 @@ function Order() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  {items.map((item) => (
-                    <div
-                      className="flex justify-around items-center"
-                      key={item.item_id}
-                    >
-                      <input
-                        className="w-[13%]"
-                        type={"checkbox"}
-                        onChange={(e) => {
-                          setItems(
-                            items.map((el) =>
-                              el.item_id === item.item_id
-                                ? { ...el, select: e.target.checked }
-                                : el
-                            )
-                          );
-                          if (e.target.checked) {
-                            setCart((prev) => [...prev, item]);
-                          } else {
-                            setCart((prev) =>
-                              prev.filter((i) => i.item_id !== item.item_id)
-                            );
-                          }
-                        }}
-                      />
-                      <h1 className="w-1/4">{item.name}</h1>
-                      <h1 className="w-1/4">{item.rent_price}</h1>
-                      <InputSolo
-                        className="w-1/4"
-                        id="number"
-                        type="number"
-                        min="1"
-                        max={item.stock}
-                        onChange={(e) => handleQtyItem(e, item)}
-                        disabled={!item.select}
-                        onKeyDown={preventMinus}
-                      />
-                    </div>
-                  ))}
+                  {items.length === 0 ? (
+                    <p className="text-center">
+                      This camp has no additional items
+                    </p>
+                  ) : (
+                    <>
+                      {items.map((item) => (
+                        <div
+                          className="flex justify-around items-center"
+                          key={item.item_id}
+                        >
+                          <input
+                            className="w-[13%]"
+                            type={"checkbox"}
+                            onChange={(e) => {
+                              setItems(
+                                items.map((el) =>
+                                  el.item_id === item.item_id
+                                    ? { ...el, select: e.target.checked }
+                                    : el
+                                )
+                              );
+                              if (e.target.checked) {
+                                setCart((prev) => [...prev, item]);
+                              } else {
+                                setCart((prev) =>
+                                  prev.filter((i) => i.item_id !== item.item_id)
+                                );
+                              }
+                            }}
+                          />
+                          <h1 className="w-1/4">{item.name}</h1>
+                          <h1 className="w-1/4">{item.rent_price}</h1>
+                          <InputSolo
+                            className="w-1/4"
+                            id="number"
+                            type="number"
+                            min="1"
+                            max={item.stock}
+                            onChange={(e) => handleQtyItem(e, item)}
+                            disabled={!item.select}
+                            onKeyDown={preventChar}
+                          />
+                        </div>
+                      ))}
+                    </>
+                  )}
                 </div>
               </form>
             </div>
@@ -319,7 +323,6 @@ function Order() {
             <div className="flex flex-col lg:flex-row gap-10">
               <div>
                 <h1 className="text-lg mb-2">Campsite Cost</h1>
-
                 <p>Total hari:{totalHari} night</p>
                 <p>Price:$ {order.price}</p>
                 <p>Guest: {guest} Person</p>
@@ -350,7 +353,7 @@ function Order() {
               <div className="grid grid-cols-3 items-center">
                 <img
                   src="https://images.tokopedia.net/img/toppay/sprites/bca.png"
-                  alt=""
+                  alt="bca-logo"
                 />
                 <label>BCA Virtual Account</label>
                 <input
@@ -364,7 +367,7 @@ function Order() {
               <div className="grid grid-cols-3 items-center">
                 <img
                   src="https://images.tokopedia.net/img/toppay/sprites/bni.png"
-                  alt=""
+                  alt="bni-logo"
                 />
                 <label>BNI Virtual Account</label>
                 <input
@@ -378,7 +381,7 @@ function Order() {
               <div className="grid grid-cols-3 items-center">
                 <img
                   src="https://images.tokopedia.net/img/toppay/bank-bri.png"
-                  alt=""
+                  alt="bri-logo"
                 />
                 <label>BRI Virtual Account</label>
                 <input
