@@ -19,13 +19,13 @@ import { CampTypes, ImageTypes } from "../../utils/types/campsTypes";
 function EditCampHost() {
   const [camp, setCamp] = useState<CampTypes>({});
   const [title, setTitle] = useState<string>("");
-  const [price, setPrice] = useState<any>();
+  const [price, setPrice] = useState<number>();
   const [description, setDescription] = useState<string>("");
-  const [latitude, setLatitude] = useState<any>();
-  const [longitude, setLongitude] = useState<any>();
+  const [latitude, setLatitude] = useState<number>(0);
+  const [longitude, setLongitude] = useState<number>(0);
   const [address, setAddress] = useState<string>("");
   const [city, setCity] = useState<string>("");
-  const [distance, setDistance] = useState<any>();
+  const [distance, setDistance] = useState<number>();
   const [document, setDocument] = useState<any>({});
   const [image, setImage] = useState<ImageTypes[] | any>([]);
   const [loading, setLoading] = useState(false);

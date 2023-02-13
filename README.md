@@ -20,8 +20,8 @@
 
 ### 🌟 As Guest
 
-- Register/Login / Logout
 - Landing Page
+- Register/Login / Logout
 - Profile
 - Camping List
 - Detail camping List
@@ -44,19 +44,13 @@
 
 - [ReactJs](https://reactjs.org/)
 - [React-Leaflet](https://react-leaflet.js.org/)
-- [Sweetalert2-React-Content](https://www.npmjs.com/package/sweetalert2-react-content)
-- [React-Image-Carousel-Viewer](https://www.npmjs.com/package/react-image-carousel-viewer)
 - [Moment js](https://momentjs.com/)
 - [Vite](https://vitejs.dev/)
 - [Tailwind](https://tailwindcss.com/)
-- [DaisyUI](https://daisyui.com/)
 - [Axios](https://axios-http.com/)
 - [React-router-dom](https://reactrouter.com/)
-- [React-Icons](https://react-icons.github.io/)
 - [React-cookie](https://www.npmjs.com/package/react-cookie)
 - [Sweetalert2](https://sweetalert2.github.io/)
-- [@uiball/loaders](https://www.npmjs.com/package/@uiball/loaders)
-- [GoogleFonts](https://fonts.google.com/)
 - [Vercel](https://vercel.com/)
 
 ## 🤝 Collaboration
