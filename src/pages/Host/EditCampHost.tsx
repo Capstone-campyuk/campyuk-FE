@@ -389,7 +389,7 @@ function EditCampHost() {
                 </div>
               ) : (
                 <div className="modal modal-bottom sm:modal-middle">
-                  <div className="modal-box">
+                  <div className="modal-box bg-bgcard">
                     <h3 className="font-bold text-lg py-5">Add Image</h3>
                     <div className="flex py-5 w-full px-10">
                       <form
@@ -479,7 +479,7 @@ function EditCampHost() {
                 </div>
               ) : (
                 <div className="modal modal-bottom sm:modal-middle">
-                  <div className="modal-box">
+                  <div className="modal-box bg-bgcard">
                     <form onSubmit={addItem}>
                       <h3 className="font-bold text-lg">Add Item</h3>
                       <div className="flex py-5 w-full px-10">
