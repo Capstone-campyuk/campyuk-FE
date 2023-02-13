@@ -13,6 +13,13 @@ import { DotWave } from "@uiball/loaders";
 import Swal from "../../utils/Swal";
 import tileLayer from "../../utils/const/tileLayer";
 
+import "leaflet/dist/leaflet.css";
+import { Icon } from "leaflet";
+const myIcon = new Icon({
+  iconUrl: "https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon-2x.png",
+  iconSize: [25, 41],
+});
+
 function AddCamp() {
   const [title, setTitle] = useState<string>("");
   const [price, setPrice] = useState<number | Blob>();
@@ -162,6 +169,7 @@ function AddCamp() {
             >
               <TileLayer {...tileLayer} />
               <Marker
+                icon={myIcon}
                 draggable={true}
                 eventHandlers={eventHandlers}
                 position={position}

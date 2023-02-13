@@ -15,6 +15,13 @@ import Swal from "../utils/Swal";
 import tileLayer from "../utils/const/tileLayer";
 import { CampTypes, ImageTypes } from "../utils/types/campsTypes";
 
+import "leaflet/dist/leaflet.css";
+import { Icon } from "leaflet";
+const myIcon = new Icon({
+  iconUrl: "https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon-2x.png",
+  iconSize: [25, 41],
+});
+
 const RecenterAutomatically = ({ lat, lng }: { lat: number; lng: number }) => {
   const map = useMap();
   useEffect(() => {
@@ -225,7 +232,7 @@ function DetailCampHost() {
               style={{ height: "400px" }}
             >
               <TileLayer {...tileLayer} />
-              <Marker position={[lat, lng]}>
+              <Marker icon={myIcon} position={[lat, lng]}>
                 <Popup>{camp.title}</Popup>
               </Marker>
               <RecenterAutomatically lat={lat} lng={lng} />
