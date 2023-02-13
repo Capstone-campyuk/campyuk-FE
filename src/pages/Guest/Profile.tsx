@@ -181,7 +181,7 @@ function Profile() {
 
             <input type="checkbox" id="my-modal-1" className="modal-toggle" />
             <div className="modal modal-middle sm:modal-middle">
-              <div className="modal-box bg-white  flex flex-col justify-center items-center">
+              <div className="modal-box bg-bgcard  flex flex-col justify-center items-center">
                 <h3 className="font-bold lg:text-2xl  text-base text-black text-center  ">
                   Update Profile
                 </h3>

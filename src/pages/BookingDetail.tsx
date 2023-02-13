@@ -205,12 +205,6 @@ function BookingDetail() {
                     label="Cancel"
                     onClick={() => handleCancel()}
                   />
-                  <Btns
-                    id="btn-accept"
-                    className="w-24"
-                    label="Accept"
-                    onClick={() => handleAccept()}
-                  />
                 </div>
               ) : cookie.role === "guest" && booking.status === "PENDING" ? (
                 <div className="flex gap-4">
