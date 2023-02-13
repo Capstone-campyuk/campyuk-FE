@@ -229,7 +229,6 @@ function Order() {
                     name="datemax"
                     min={new Date().toISOString().split("T")[0]}
                     onChange={(e) => setCheckin(e.target.value)}
-                    onKeyDown={(e) => e.preventDefault()}
                   />
                   <InputSolo
                     className="w-[30%]"
@@ -238,7 +237,6 @@ function Order() {
                     name="datemin"
                     min={check_in}
                     onChange={(e) => setCheckout(e.target.value)}
-                    onKeyDown={(e) => e.preventDefault()}
                   />
                   <InputSolo
                     className="w-[30%]"

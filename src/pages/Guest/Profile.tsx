@@ -59,6 +59,7 @@ function Profile() {
   }
 
   function updateProfile(e: React.FormEvent<HTMLFormElement>) {
+    setLoading(true);
     e.preventDefault();
     const formData = new FormData();
     if (username) {
@@ -94,7 +95,8 @@ function Profile() {
           title: "Oops...",
           showCancelButton: false,
         });
-      });
+      })
+      .finally(() => setLoading(false));
   }
 
   function deleteAcc() {
