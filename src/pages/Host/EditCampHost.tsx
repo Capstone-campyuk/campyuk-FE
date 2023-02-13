@@ -12,9 +12,15 @@ import { Layout } from "../../components/Layout";
 import { Btn, Btns } from "../../components/Button";
 import { InputSide } from "../../components/Input";
 
-import "leaflet/dist/leaflet.css";
 import tileLayer from "../../utils/const/tileLayer";
 import { CampTypes, ImageTypes } from "../../utils/types/campsTypes";
+
+import "leaflet/dist/leaflet.css";
+import { Icon } from "leaflet";
+const myIcon = new Icon({
+  iconUrl: "https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon-2x.png",
+  iconSize: [25, 41],
+});
 
 function EditCampHost() {
   const [camp, setCamp] = useState<CampTypes>({});
@@ -329,6 +335,7 @@ function EditCampHost() {
                 >
                   <TileLayer {...tileLayer} />
                   <Marker
+                    icon={myIcon}
                     draggable={true}
                     eventHandlers={eventHandlers}
                     position={position}
